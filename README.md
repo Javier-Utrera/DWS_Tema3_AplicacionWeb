@@ -148,7 +148,7 @@ Modelo: Vehiculo
 
     Atributos:
 
-        fecha_matriculacion: Fecha de matriculación del vehículo.
+        fecha_matriculacion: Campo tipo Date, Fecha de matriculación del vehículo.
         
         marca, modelo, numero_bastidor: Campos CharField que describen la marca, el modelo y el número de bastidor.
         
@@ -162,23 +162,27 @@ Modelo: Vehiculo
         
         mma: Campo PositiveIntegerField Masa Máxima Autorizada.
         
-        asientos, ejes: Número de asientos y ejes del vehículo.
+        asientos,ejes: Campo PosisiveSmallIntegerField Número de asientos y de ejes, este campo lo uso para ahorrar memoria, ya que no se va almacenar numeros muy grandes
         
         dni_propietario: DNI del propietario.
         
         matricula: Matrícula del vehículo.
 
 Modelo: Inspeccion
-
-Este modelo representa la inspección realizada.
+    
+    Modelo representa la inspección realizada,esta tabla es generada por una relacion MANYTOMANY entre trabajadores y vehiculos. le he añadido dos atributos propios.
 
     Relaciones:
+
         trabajador: Relación ForeignKey con Trabajador, indica quién realizó la inspección.
+
         vehiculo: Relación ForeignKey con Vehiculo, indica el vehículo inspeccionado.
 
     Atributos:
+
         fecha_inspeccion: Fecha en la que se realizó la inspección, con valor por defecto el día actual (timezone.now).
-        resultado_inspeccion: Resultado de la inspección (texto).
+        
+        resultado_inspeccion: Campo Charfield donde Resultado de la inspección
 
 Modelo: Factura
 
