@@ -123,7 +123,11 @@ class Inspeccion(models.Model):
     resultado_inspeccion = models.CharField(max_length=100)
       
 class Factura(models.Model):
+    #relaciones
+    #Cuando es una tabla intermedia ForeignKey
     id_inspeccion=models.OneToOneField(Inspeccion,on_delete=models.CASCADE)
+    resultado=models.OneToOneField(Inspeccion,related_name="Resultado_Inspeccion",on_delete=models.CASCADE)
+    #
     importe=models.DecimalField(max_digits=50,decimal_places=2)
     pagado=models.BooleanField(default=False)
-    resultado=models.OneToOneField(Inspeccion,related_name="Resultado_Inspeccion",on_delete=models.CASCADE)
+   

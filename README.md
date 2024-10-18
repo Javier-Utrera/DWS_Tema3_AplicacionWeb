@@ -1,4 +1,10 @@
 # DWS_Tema3_AplicacionWeb
+
+# Explicacion de mi aplicacion web
+
+Esta aplicacion esta enfocada en la gestion del servicio ITV a nivel autonómico, para ello un cliente que no necesariamente tiene que ser el dueño del vehiculo que va ser inspeccionado, pide una cita en la itv que desee, su vehiculo sera inspeccionado por los trabajadores generando un resultado de la inspeccion y su correspondiente factura para su pago.
+
+# Explicacion de los modelos, atributos y parametros
 Modelo: Cliente
     Modelo que representa a los clientes de la ITV.
 
@@ -186,12 +192,16 @@ Modelo: Inspeccion
 
 Modelo: Factura
 
-Este modelo representa las facturas generadas.
+    Modelo representa las facturas generadas.
 
     Relaciones:
+
         id_inspeccion: Relación OneToOneField con Inspeccion, cada inspección genera una factura.
-        resultado: Relación OneToOneField con Inspeccion, usando un related_name para diferenciar la relación.
+        
+        resultado: Relación OneToOneField con Inspeccion, usando un related_name ya que estoy relacionando en una misma tabla, la tabla Inspeccion 2 veces.
 
     Atributos:
-        importe: Importe de la factura, almacenado como DecimalField para mayor precisión.
+        importe: Importe de la factura, almacenado como 
+        DecimalField.
+        
         pagado: Campo BooleanField para indicar si se ha pagado la factura.
