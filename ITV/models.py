@@ -20,6 +20,7 @@ class Local(models.Model):
     precio=models.FloatField()
     metros=models.DecimalField(max_digits=50,decimal_places=3)
     anio_arrendamiento=models.DateField()
+    duenio=models.CharField(max_length=50)
     
 class EstacionItv(models.Model):
     #relaciones
@@ -28,6 +29,7 @@ class EstacionItv(models.Model):
     nombre=models.CharField(max_length=50,unique=True)
     munipio=models.CharField(max_length=50)
     eficiencia_energetica=models.CharField(max_length=1)
+    comunidad_autonoma=models.CharField(max_length=20,)
     
 class Cita(models.Model):
     #relaciones
@@ -65,6 +67,7 @@ class Maquinaria(models.Model):
     TIPO=[('EM','Emisiones'),('FR','Frenos'),('DI','Direccion')]
     tipo=models.CharField(max_length=2,choices=TIPO)
     ultimo_mantenimiento=models.DateField(blank=True)
+    funcionando=models.BooleanField(default=True)
     
 class Trabajador(models.Model):
     #relaciones
@@ -121,6 +124,9 @@ class Inspeccion(models.Model):
     #
     fecha_inspeccion = models.DateField(default=timezone.now)
     resultado_inspeccion = models.CharField(max_length=100)
+    notas_inspeccion = models.TextField()
+    cliente_puntual=models.BooleanField(default=True)
+    
       
 class Factura(models.Model):
     #relaciones
@@ -130,4 +136,7 @@ class Factura(models.Model):
     #
     importe=models.DecimalField(max_digits=50,decimal_places=2)
     pagado=models.BooleanField(default=False)
+    fecha_emision_factura= models.DateField(default=timezone.now)
+    observaciones=models.TextField()
+    
    

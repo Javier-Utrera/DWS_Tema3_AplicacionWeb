@@ -28,6 +28,8 @@ Modelo: Cliente
 
         dni: Campo CharField de 9 caracteres, que almacena el DNI del cliente. El modificador unique=True asegura que cada DNI sea único en la base de datos.
 
+        dueño: Campo Charfield de 50 caracteres donde almacena el dueño del local.
+
 Modelo: Local
 
     Modelo que representa la información de los locales donde se puede establecer una estación ITV.
@@ -55,6 +57,8 @@ Modelo: EstacionItv
         municipio: Campo CharField de 50 caracteres, almacena el municipio donde está la estación.
 
         eficiencia_energetica: Campo CharField que almacena un código de un carácter (como A, B, C...) para indicar la eficiencia energética.
+
+        comunidad_autonoma: Campo CharField que almacena la comunidad autonoma donde se encuentra la estacion
 
 Modelo: Cita
 
@@ -115,6 +119,8 @@ Modelo: Maquinaria
         tipo: Campo CharField con el parametro (choices) para especificar el tipo de maquinaria (emisiones, frenos, dirección).
 
         ultimo_mantenimiento: Campo DateField, almacena la fecha del último mantenimiento. blank=True indica que es opcional.
+
+        funcionando: Campo en el que por defecta es True, nos indica si la maquina esta en funcionamiento
 
 Modelo: Trabajador
 
@@ -190,6 +196,10 @@ Modelo: Inspeccion
         
         resultado_inspeccion: Campo Charfield donde Resultado de la inspección
 
+        notas_inspeccion: Campo Text en el que se almacena indicaciones o comentarios relevantes en inspeccion
+
+        cliente_puntual: Campo Boolean con parametro "default=True", almacena si el cliente ha sido puntual
+
 Modelo: Factura
 
     Modelo representa las facturas generadas.
@@ -201,7 +211,10 @@ Modelo: Factura
         resultado: Relación OneToOneField con Inspeccion, usando un related_name ya que estoy relacionando en una misma tabla, la tabla Inspeccion 2 veces.
 
     Atributos:
-        importe: Importe de la factura, almacenado como 
-        DecimalField.
+        importe: Importe de la factura, almacenado como DecimalField.
         
         pagado: Campo BooleanField para indicar si se ha pagado la factura.
+
+        fecha_emision_factura: Campo date para indicar cuando se emite la factura
+
+        observaciones: Campo Text en el que se almacena indicaciones o comentarios relevantes en la factura
