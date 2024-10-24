@@ -24,20 +24,21 @@ class Local(models.Model):
     
 class EstacionItv(models.Model):
     #relaciones
-    id_local=models.OneToOneField(Local,on_delete=models.CASCADE)
+    cliente=models.ManyToManyField(Cliente,through="Cita")
+    local=models.OneToOneField(Local,on_delete=models.CASCADE,null=True)
     #
     nombre=models.CharField(max_length=50,unique=True)
     munipio=models.CharField(max_length=50)
     eficiencia_energetica=models.CharField(max_length=1)
-    comunidad_autonoma=models.CharField(max_length=20,)
+    comunidad_autonoma=models.CharField(max_length=20)
     
 class Cita(models.Model):
     #relaciones
-    id_cliente=models.ForeignKey(Cliente,on_delete=models.CASCADE)
-    id_estacion=models.ForeignKey(EstacionItv,on_delete=models.CASCADE)
+    cliente=models.ForeignKey(Cliente,on_delete=models.CASCADE)
+    estacion=models.ForeignKey(EstacionItv,on_delete=models.CASCADE)
     #
     matricula=models.CharField(max_length=7)
-    fecha_matriculacion=models.DateField(help_text="Este campo o el numero de bastidor debe estar relleno")
+    fecha_matriculacion=models.DateField(help_text="Este campo o el numero de bastidor debe estar relleno",null=True)
     numero_bastidor=models.CharField(max_length=17)
     TIPOINSPECCION=[
         ('PE','Periodica'),
@@ -49,8 +50,8 @@ class Cita(models.Model):
     remolque=models.BooleanField(default=False)
     TIPOPAGO=[('TA','Tarjeta'),('EF','Efectivo')]
     tipo_pago=models.CharField(max_length=2,choices=TIPOPAGO)
-    fecha_propuesta=models.DateField()
-    hora_propuesta=models.TimeField()
+    fecha_propuesta=models.DateField(null=True)
+    hora_propuesta=models.TimeField(null=True)
 
 class EmpresaExterna(models.Model):
     nombre=models.CharField(max_length=50,null=False)
@@ -60,8 +61,8 @@ class EmpresaExterna(models.Model):
     
 class Maquinaria(models.Model):
     #relaciones
-    id_estacionItv=models.ForeignKey(EstacionItv,on_delete=models.CASCADE)
-    id_empresaExterna=models.OneToOneField(EmpresaExterna,on_delete=models.CASCADE)
+    iestacionItv=models.ForeignKey(EstacionItv,on_delete=models.CASCADE)
+    idmpresaExterna=models.ForeignKey(EmpresaExterna,on_delete=models.CASCADE)
     #
     nombre=models.CharField(max_length=50)
     TIPO=[('EM','Emisiones'),('FR','Frenos'),('DI','Direccion')]
@@ -71,7 +72,7 @@ class Maquinaria(models.Model):
     
 class Trabajador(models.Model):
     #relaciones
-    id_estacion=models.ManyToManyField(EstacionItv)
+    estacion=models.ManyToManyField(EstacionItv)
     jefe=models.ManyToManyField('self',blank=True,related_name='subordinados',symmetrical=False)
     #
     nombre=models.CharField(max_length=50,null=False)
@@ -131,7 +132,7 @@ class Inspeccion(models.Model):
 class Factura(models.Model):
     #relaciones
     #Cuando es una tabla intermedia ForeignKey
-    id_inspeccion=models.OneToOneField(Inspeccion,on_delete=models.CASCADE)
+    inspeccion=models.OneToOneField(Inspeccion,on_delete=models.CASCADE)
     resultado=models.OneToOneField(Inspeccion,related_name="Resultado_Inspeccion",on_delete=models.CASCADE)
     #
     importe=models.DecimalField(max_digits=50,decimal_places=2)
