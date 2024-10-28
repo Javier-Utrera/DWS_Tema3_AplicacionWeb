@@ -24,8 +24,8 @@ class Local(models.Model):
     
 class EstacionItv(models.Model):
     #relaciones
-    cliente=models.ManyToManyField(Cliente,through="Cita")
-    local=models.OneToOneField(Local,on_delete=models.CASCADE,null=True)
+    cliente=models.ManyToManyField(Cliente,through="Cita",related_name="cliente_EstacionItv")
+    local=models.OneToOneField(Local,on_delete=models.CASCADE,null=True,related_name="local_EstacionItv")
     #
     nombre=models.CharField(max_length=50,unique=True)
     munipio=models.CharField(max_length=50)
@@ -34,8 +34,8 @@ class EstacionItv(models.Model):
     
 class Cita(models.Model):
     #relaciones
-    cliente=models.ForeignKey(Cliente,on_delete=models.CASCADE)
-    estacion=models.ForeignKey(EstacionItv,on_delete=models.CASCADE)
+    cliente=models.ForeignKey(Cliente,on_delete=models.CASCADE,related_name="cliente_Cita")
+    estacion=models.ForeignKey(EstacionItv,on_delete=models.CASCADE, related_name="estacionitv_Cita")
     #
     matricula=models.CharField(max_length=7)
     fecha_matriculacion=models.DateField(help_text="Este campo o el numero de bastidor debe estar relleno",null=True)
@@ -61,8 +61,8 @@ class EmpresaExterna(models.Model):
     
 class Maquinaria(models.Model):
     #relaciones
-    iestacionItv=models.ForeignKey(EstacionItv,on_delete=models.CASCADE)
-    idmpresaExterna=models.ForeignKey(EmpresaExterna,on_delete=models.CASCADE)
+    iestacionItv=models.ForeignKey(EstacionItv,on_delete=models.CASCADE,related_name="estacionitv_Maquinaria")
+    idmpresaExterna=models.ForeignKey(EmpresaExterna,on_delete=models.CASCADE,related_name="empresaexterna_Maquinaria")
     #
     nombre=models.CharField(max_length=50)
     TIPO=[('EM','Emisiones'),('FR','Frenos'),('DI','Direccion')]
@@ -72,8 +72,7 @@ class Maquinaria(models.Model):
     
 class Trabajador(models.Model):
     #relaciones
-    estacion=models.ManyToManyField(EstacionItv)
-    jefe=models.ManyToManyField('self',blank=True,related_name='subordinados',symmetrical=False)
+    estacion=models.ManyToManyField(EstacionItv,related_name="estacionItv_trabajadores")
     #
     nombre=models.CharField(max_length=50,null=False)
     apellidos=models.CharField(max_length=50,null=False)
@@ -84,7 +83,7 @@ class Trabajador(models.Model):
 class Vehiculo(models.Model):
     #relaciones
     #Para relacionar vehiculo con trabajador usando la tabla intermedia Inspeccion
-    trabajadores = models.ManyToManyField(Trabajador, through='Inspeccion')
+    trabajadores = models.ManyToManyField(Trabajador, through='Inspeccion' ,related_name="trabajador_Vehiculo")
     #
     fecha_matriculacion=models.DateField()
     marca=models.CharField(max_length=50)
@@ -119,9 +118,9 @@ class Vehiculo(models.Model):
     
 class Inspeccion(models.Model):
     #relaciones
-    #Cuando es una tabla intermedia ForeignKey
-    trabajador = models.ForeignKey(Trabajador, on_delete=models.CASCADE)
-    vehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE)
+    #
+    trabajador = models.ForeignKey(Trabajador, on_delete=models.CASCADE,related_name="trabajador_Inspeccion")
+    vehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE,related_name="vehiculo_Inspeccion")
     #
     fecha_inspeccion = models.DateField(default=timezone.now)
     resultado_inspeccion = models.CharField(max_length=100)
@@ -131,9 +130,8 @@ class Inspeccion(models.Model):
       
 class Factura(models.Model):
     #relaciones
-    #Cuando es una tabla intermedia ForeignKey
-    inspeccion=models.OneToOneField(Inspeccion,on_delete=models.CASCADE)
-    resultado=models.OneToOneField(Inspeccion,related_name="Resultado_Inspeccion",on_delete=models.CASCADE)
+    #
+    inspeccion=models.OneToOneField(Inspeccion,on_delete=models.CASCADE,related_name="inspeccion_Factura")
     #
     importe=models.DecimalField(max_digits=50,decimal_places=2)
     pagado=models.BooleanField(default=False)
