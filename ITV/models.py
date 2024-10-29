@@ -2,8 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone 
 # Create your models here.
-#Tipos:10
-#Modificadores:10
+
 class Cliente(models.Model):
     nombre=models.CharField(max_length=50)
     apellidos=models.CharField(max_length=50,blank=True)
@@ -24,7 +23,6 @@ class Local(models.Model):
     
 class EstacionItv(models.Model):
     #relaciones
-    cliente=models.ManyToManyField(Cliente,through="Cita",related_name="cliente_EstacionItv")
     local=models.OneToOneField(Local,on_delete=models.CASCADE,null=True,related_name="local_EstacionItv")
     #
     nombre=models.CharField(max_length=50,unique=True)
@@ -126,8 +124,7 @@ class Inspeccion(models.Model):
     resultado_inspeccion = models.CharField(max_length=100)
     notas_inspeccion = models.TextField()
     cliente_puntual=models.BooleanField(default=True)
-    
-      
+         
 class Factura(models.Model):
     #relaciones
     #
@@ -137,5 +134,3 @@ class Factura(models.Model):
     pagado=models.BooleanField(default=False)
     fecha_emision_factura= models.DateField(default=timezone.now)
     observaciones=models.TextField()
-    
-   

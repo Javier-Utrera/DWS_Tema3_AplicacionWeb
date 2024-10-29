@@ -4,23 +4,22 @@ from .models import *
 def index(request):
     return render(request,"index.html")
 
-# 1. Listar clientes y sus citas, incluyendo información detallada sobre las inspecciones realizadas para cada cita.
+# Lista de Clientes: Todos los clientes filtrados por sexo, nombre y fecha de nacimiento.
 
-# 2. Mostrar un trabajador específico y todos los vehículos inspeccionados, utilizando la relación intermedia Inspeccion.
+# Citas de un Cliente: Todas las citas de un cliente específico.
 
-# 3. Listar estaciones ITV en una comunidad autónoma específica, ordenadas por eficiencia energética.
+# Estaciones ITV con Locales: Estaciones ITV junto a su local, ordenadas alfabéticamente.
 
-# 4. Mostrar información de un vehículo y sus inspecciones, incluyendo detalles de los trabajadores asociados a cada inspección.
+# Trabajadores de una Estación: Trabajadores de una estación ITV específica.
 
-# 5. Listar maquinarias de un tipo específico y/o con mantenimiento reciente.
+# Inspecciones de un Vehículo: Inspecciones de un vehículo específico por matrícula.
 
-# 6. Listar facturas, separadas en pagadas y pendientes, mostrando los detalles de cada inspección asociada.
+# Detalle de una Maquinaria y Empresa: Detalle de una maquinaria específica y su empresa externa asociada.
 
-# 7. Mostrar estadísticas de inspección por comunidad autónoma, incluyendo el número de inspecciones y el importe promedio.
+# Citas de una Estación en Rango de Fechas: Citas de una estación ITV en un rango de fechas determinado.
 
-# 8. Mostrar detalles de una cita específica, incluyendo información de cliente y estación ITV asociada.
+# Conteo de Vehículos por Combustible: Número total de vehículos agrupados por tipo de combustible.
 
-# 9. Listar trabajadores y las estaciones de ITV en las que trabajan, limitando el número de resultados.
+# Facturas no Pagadas: Facturas no pagadas, ordenadas por fecha de emisión descendente.
 
-# 10. Listar empresas externas y el coste total de las maquinarias asignadas a cada una.
-
+# Vehículos sin Trabajadores Asociados: Vehículos que no tienen trabajadores asociados.
