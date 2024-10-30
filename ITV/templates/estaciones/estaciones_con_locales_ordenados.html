@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% for estacion in views_estaciones_con_locales %}
+        <div style="background-color: rgb(176, 252, 226)">
+            <div style="background-color: rgb(176, 224, 252)">
+                <h2>ID Local : {{ estacion.local.id }} </h2>
+                <h2>Precio : {{ estacion.local.precio }} </h2>
+                <h2>Metros : {{ estacion.local.metros }} </h2>
+                <h2>Año arrendamiento : {{ estacion.local.anio_arrendamiento }} </h2>
+                <h2>Dueño : {{ estacion.local.duenio }} </h2>
+            </div>
+            <h2>Id Estacion: {{ estacion.id }}</h2>
+            <h2>Nombre: {{ estacion.nombre }}</h2>
+            <h2>Municipio: {{ estacion.munipio }}</h2>
+            <h2>Eficiencia: {{ estacion.eficiencia_energetica }}</h2>
+            <h2>Comunidad autonoma: {{ estacion.comunidad_autonoma }}</h2>
+        </div>
+    {% endfor %}
+</body>
+
+</html>

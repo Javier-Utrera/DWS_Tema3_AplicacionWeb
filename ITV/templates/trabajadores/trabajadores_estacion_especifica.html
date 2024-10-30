@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Trabajadores que trabajan en la estacion con id {{ estaciones.id }}</h1>
+    {% for trabajadores in views_trabajadores_estacion %}
+        <div style="background-color: rgb(176, 252, 226)">
+            <h2>Id Trabajador: {{ trabajadores.id }}</h2>
+            <h2>Nombre: {{ trabajadores.nombre }}</h2>
+            <h2>Apellidos: {{ trabajadores.apellidos }}</h2>
+            <h2>Puesto: {{ trabajadores.puesto }}</h2>
+            <h2>Sueldo: {{ trabajadores.sueldo }}</h2>
+            <h2>Observaciones: {{ trabajadores.observaciones }}</h2>
+            <h2>Estaciones en los que trabaja:</h2>
+                {% for estacion in trabajadores.estacion.all %}
+                <div style="background-color: rgb(252, 238, 176)">
+                    <h2>-Id Estacion: {{ estacion.id }}</h2>
+                    <h2>-Nombre: {{ estacion.nombre }}</h2>
+                </div>
+            {% endfor %}
+            <h2>Inspecciones que ha realizado:</h2>
+            {% for inspeccion in trabajadores.trabajador_Inspeccion.all %}
+                <div style="background-color: rgb(252, 219, 176)">
+                    <h2>-Id Inspeccion: {{ inspeccion.id }}</h2>
+                    <h2>-Resultado inspeccion: {{ inspeccion.resultado_inspeccion }}</h2>
+                </div>
+            {% endfor %}
+            <h2>Vehiculos a los que ha realizado una inspeccion:</h2>
+            {% for vehiculo in trabajadores.trabajador_Vehiculo.all %}
+                <div style="background-color: rgb(252, 187, 176)">
+                    <h2>-Id vehiculos: {{ vehiculo.id }}</h2>
+                    <h2>-Tipo Vehiculo: {{ vehiculo.tipo_vehiculo }}</h2>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</body>
+ 
+</html>
