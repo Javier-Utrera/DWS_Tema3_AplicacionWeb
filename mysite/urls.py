@@ -21,3 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ITV.urls'))
 ]
+handler400="ITV.views.mi_error_400"
+handler403="ITV.views.mi_error_403"
+handler404="ITV.views.mi_error_404"
+handler500="ITV.views.mi_error_500"

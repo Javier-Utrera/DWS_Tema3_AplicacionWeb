@@ -6,15 +6,49 @@
     <title>Index</title>
 </head>
 <body>
-    <h1>Gestor de tareas</h1>
+    <h1>ITV</h1>
     <h2>Listado de enlaces</h2>
     <ul>
         <li>
-            <a >
-                2.Mostrar una lista de todos los proyectos de la aplicación con sus datos correspondientes.
-            </a>
+            <a href="{% url 'urls_listar_clientes' %}">
+                1.</a>
         </li>
-        
+        <li>
+            <a href="{% url 'urls_cita_cliente' id_cliente=2 %}">
+                2.</a>
+        </li>
+        <li>
+            <a href="{% url 'urls_estaciones_con_locales' %}">
+                3. </a>
+        </li>
+        <li>
+            <a href="{% url 'urls_trabajadores_estacion' id_estacion=4 %}">
+                4.</a>
+        </li>
+        <li>
+            <a href="{% url 'urls_inspecciones_vehiculo' matricula='Wall.' %}">
+                5. </a>
+        </li>
+        <li>
+            <a href="{% url 'urls_maquinaria_empresa' id_maquina=2 %}">
+                6.</a>
+        </li>
+        <li>
+            <a href="{% url 'urls_citas_fechas' anio1=1990 anio2=2000 %}">
+                7. </a>
+        </li>
+        <li>
+            <a href="{% url 'urls_contador_vehiculos_combustible' combustible1='gas' combustible2='die' %}">
+                8.</a>
+        </li>
+        <li>
+            <a href="{% url 'urls_citas_estacion' id_cliente=2 tipo_inspeccion='VETAX'%}">
+                9. </a>
+        </li>
+        <li>
+            <a href="{% url 'urls_vehiculos_sin_trabajadores'%}">
+                10. </a>
+        </li>
     </ul> 
 </body>
 </html>

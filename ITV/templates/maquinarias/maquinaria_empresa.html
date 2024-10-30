@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+        <div style="background-color: rgb(176, 252, 226)">
+            <h2>Id Maquina: {{ views_maquinaria_empresa.id }}</h2>
+            <h2>Nombre: {{ views_maquinaria_empresa.nombre }}</h2>
+            <h2>Tipo: {{ views_maquinaria_empresa.tipo}}</h2>
+            <h2>Ultimo mantenimiento: {{ views_maquinaria_empresa.ultimo_mantenimiento}}</h2> 
+            <h2>Esta la maquina en funcionamiento?: {{ views_maquinaria_empresa.funcionando}}</h2>
+            <h2>Empresa que mantiene esta maquina</h2>
+                <div style="background-color: rgb(176, 210, 252)">
+                    <h2>Id empresa: {{ views_maquinaria_empresa.idmpresaExterna.id}}</h2>
+                    <h2>Nombre: {{ views_maquinaria_empresa.idmpresaExterna.nombre}}</h2>                
+                </div> 
+            <h2>Esta maquina se encuentra en la estacion itv:</h2>                   
+            <div style="background-color: rgb(176, 187, 252)">
+                <h2>Id Estacion: {{ views_maquinaria_empresa.iestacionItv.id }}</h2>
+                <h2>Nombre: {{ views_maquinaria_empresa.iestacionItv.nombre }}</h2>             
+            </div>
+        </div>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+        <div style="background-color: rgb(176, 252, 226)">
+            <h2>Id cita: {{ views_cita_cliente.id }}</h2>
+            <h2>Matrícula: {{ views_cita_cliente.matricula }}</h2>
+            <h2>Fecha de Matriculación: {{ views_cita_cliente.fecha_matriculacion }}</h2>
+            <h2>Número de Bastidor: {{ views_cita_cliente.numero_bastidor }}</h2>
+            <h2>Tipo de Inspección: {{ views_cita_cliente.tipo_inspeccion}}</h2>
+            <h2>Remolque: {{ views_cita_cliente.remolque}}</h2>
+            <h2>Tipo de Pago: {{ views_cita_cliente.tipo_pago}}</h2>
+            <h2>Fecha Propuesta: {{ views_cita_cliente.fecha_propuesta}}</h2>
+            <h2>Hora Propuesta: {{ views_cita_cliente.hora_propuesta}}</h2>
+            <div style="background-color: rgb(176, 224, 252)">
+                <h2>ID Cliente : {{ views_cita_cliente.cliente.id }} </h2>
+                <h2>Nombre Cliente: {{ views_cita_cliente.cliente.nombre }} </h2>
+                <h2>Apellidos : {{ views_cita_cliente.cliente.apellidos }} </h2>
+            </div>
+            <div style="background-color: rgb(192, 176, 252)">
+                <h2>ID Estacion : {{ views_cita_cliente.estacion.id }} </h2>
+                <h2>Nombre Estacion: {{ views_cita_cliente.estacion.nombre }} </h2>
+            </div>
+        </div>
+</body>
+
+</html>
