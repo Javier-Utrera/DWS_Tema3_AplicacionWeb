@@ -1,5 +1,18 @@
 [
 {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2024-10-30T18:57:33.210",
+        "user": 1,
+        "content_type": 16,
+        "object_id": "16",
+        "object_repr": "Vehiculo object (16)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
     "model": "auth.permission",
     "pk": 1,
     "fields": {
@@ -576,6 +589,24 @@
     }
 },
 {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$8WPY7Lov3VCU3k4Bu4Fd6a$MQVRRDpBBwTDbuPk/gVMPOypJUlMSJHEpmnLfaoYRus=",
+        "last_login": "2024-10-30T18:56:51.593",
+        "is_superuser": true,
+        "username": "javier",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2024-10-30T18:56:32.332",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
     "model": "contenttypes.contenttype",
     "pk": 1,
     "fields": {
@@ -701,6 +732,14 @@
     "fields": {
         "app_label": "ITV",
         "model": "vehiculo"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "abct5ogczjjyrftmblkvtbp80jviwhcr",
+    "fields": {
+        "session_data": ".eJxVjEEOgjAQRe_StWmmdDqIS_ecgUw7U4saSCisjHdXEha6_e-9_zIDb2sZtqrLMIq5GGdOv1vk9NBpB3Ln6TbbNE_rMka7K_ag1faz6PN6uH8HhWv51iw5kJyBMnifCSlgTA7RAXFDosBtch0gYBNbVa-QugyEXiAGp2jeH9KhN1U:1t6Cw7:vIiSUd8C5KpvWQp5PFfjbvPwBsF4ArpbnOuMIwUNz94",
+        "expire_date": "2024-11-13T18:56:51.693"
     }
 },
 {
@@ -2324,6 +2363,25 @@
         "ejes": 2492,
         "dni_propietario": "Four.",
         "matricula": "Keep."
+    }
+},
+{
+    "model": "ITV.vehiculo",
+    "pk": 16,
+    "fields": {
+        "fecha_matriculacion": "2024-10-09",
+        "marca": "marca prueba",
+        "modelo": "modelo prueba",
+        "numero_bastidor": "12345",
+        "tipo_vehiculo": "tur",
+        "cilindrada": 1,
+        "potencia": 1,
+        "combustible": "gas",
+        "mma": 1,
+        "asientos": 1,
+        "ejes": 1,
+        "dni_propietario": "12345",
+        "matricula": "12345"
     }
 },
 {
