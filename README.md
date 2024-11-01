@@ -218,3 +218,46 @@ Modelo: Factura
         fecha_emision_factura: Campo date para indicar cuando se emite la factura
 
         observaciones: Campo Text en el que se almacena indicaciones o comentarios relevantes en la factura
+
+
+VISTAS:
+    
+1. Lista de Clientes
+    Lista todos los clientes, ordenados por sexo, nombre y fecha de nacimiento.	
+    Relación ManyToOne, order_by, carga optimizada con prefetch_related.
+
+2. Citas de un Cliente	
+    Muestra todas las citas de un cliente específico.	
+    Parámetro entero, relación ManyToOne (cliente, estacion), select_related.
+
+3. Estaciones con Locales	
+    Lista las estaciones junto a su local, ordenadas por el precio del local.	
+    Relación OneToOne y ManyToMany, order_by, select_related, prefetch_related.
+
+4. Trabajadores de Estación	
+    Muestra los trabajadores de una estación específica.	
+    Parámetro entero, relaciones ManyToMany, prefetch_related.
+
+5. Inspecciones de Vehículo	
+    Lista todas las inspecciones de un vehículo usando la matrícula.	
+    Parámetro str, relación ManyToOne, select_related, prefetch_related.
+
+6. Maquinaria y Empresa	
+    Muestra el detalle de una maquinaria y su empresa externa asociada.	
+    Parámetro entero, relación OneToOne, select_related.
+
+7. Citas por Rango de Fechas	
+    Muestra la cita más reciente dentro de un rango de años.	
+    Dos parámetros, AND, order_by, relación ManyToOne.
+
+8. Conteo de Vehículos	
+    Cuenta vehículos por dos tipos de combustible.	
+    Filtro OR, aggregate, ManyToMany (trabajadores), prefetch_related.
+
+9. Citas de una Estación	
+    Filtra las citas de una estación por cliente y tipo de inspección.	
+    Dos parámetros, filtro AND, ManyToOne, select_related.
+    
+10. Vehículos sin Trabajadores	
+    Lista vehículos que no tienen trabajadores asociados.	
+    Filtro con None, ManyToMany, filter.

@@ -19,7 +19,8 @@ from django.urls import path , include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('ITV.urls'))
+    path('', include('ITV.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
 handler400="ITV.views.mi_error_400"
 handler403="ITV.views.mi_error_403"

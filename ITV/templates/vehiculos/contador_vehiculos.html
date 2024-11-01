@@ -29,13 +29,21 @@
         {% for trabajador in vehiculo.trabajadores.all %}
         <div style="background-color: rgb(176, 227, 252)">
             <h2>Nombre: {{ trabajador.nombre }}</h2>
+            <h2>Apellidos: {{ trabajador.apellidos }}</h2>
+            <h2>Puesto: {{ trabajador.puesto }}</h2>
+            <h2>Sueldo: {{ trabajador.sueldo }}</h2>
+            <h2>Observaciones: {{ trabajador.observaciones }}</h2>
         </div>
         {% endfor %}
-
+        
         <h2>Inspecciones que se han realizado a este vehiculo</h2>
         {% for inspeccion in vehiculo.vehiculo_Inspeccion.all %}
         <div style="background-color: rgb(197, 176, 252)">
-            <h2>Id inspeccion: {{ inspeccion.id }}</h2>
+            <h2>Id Inspeccion: {{ inspeccion.id }}</h2>
+            <h2>Fecha: {{ inspeccion.fecha_inspeccion }}</h2>
+            <h2>Resultado: {{ inspeccion.resultado_inspeccion }}</h2>
+            <h2>Notas: {{ inspeccion.notas_inspeccion }}</h2>
+            <h2>Cliente puntual: {{ inspeccion.cliente_puntual }}</h2>
         </div>
         {% endfor %}
     </div>

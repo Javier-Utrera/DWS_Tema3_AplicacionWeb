@@ -23,20 +23,6 @@
         <h2>Ejes: {{ vehiculo.ejes }}</h2>
         <h2>Dni propietario: {{ vehiculo.dni_propietario }}</h2>
         <h2>Matricula: {{ vehiculo.matricula }}</h2>
-        <h2>Trabajadores que han realizados inpsecciones a este vehiculo</h2>
-
-        {% for trabajador in vehiculo.trabajadores.all %}
-        <div style="background-color: rgb(176, 227, 252)">
-            <h2>Nombre: {{ trabajador.nombre }}</h2>
-        </div>
-        {% endfor %}
-
-        <h2>Inspecciones que se han realizado a este vehiculo</h2>
-        {% for inspeccion in vehiculo.vehiculo_Inspeccion.all %}
-        <div style="background-color: rgb(197, 176, 252)">
-            <h2>Id inspeccion: {{ inspeccion.id }}</h2>
-        </div>
-        {% endfor %}
     </div>
     {% endfor %}
 </body>

@@ -7,33 +7,35 @@ def index(request):
 
 # 1 Lista de Clientes: Todos los clientes filtrados por sexo, nombre y fecha de nacimiento.
 def listar_clientes(request):
-    clientes=Cliente.objects.order_by("sexo","nombre","fecha_nacimiento").all()
+    clientes=Cliente.objects.prefetch_related(Prefetch("cliente_Cita")) # me genera 2 queries
+    clientes=clientes.order_by("sexo","nombre","fecha_nacimiento").all()
     return render(request,"clientes/listar_clientes.html",{'views_listar_cliente':clientes})
 
 # 2 Citas de un Cliente: Todas las citas de un cliente específico.
 def cita_cliente(request,id_cliente):
-    citas=Cita.objects.select_related("cliente","estacion")
+    citas=Cita.objects.select_related("cliente","estacion") # me genera 1 queries
     citas=citas.filter(cliente_id=id_cliente).all()
     return render(request,"citas/cita_cliente.html",{'views_cita_cliente':citas})
     
 # 3 Estaciones ITV con Locales: Estaciones ITV junto a su local, ordenadas por el precio del local.
 def estaciones_con_locales(request):
-    estaciones=EstacionItv.objects.select_related("local").order_by("local__precio").all()
+    estaciones=EstacionItv.objects.select_related("local").prefetch_related(Prefetch("estacionitv_Cita"),
+                                                                            Prefetch("estacionitv_Maquinaria"),
+                                                                            Prefetch("estacionItv_trabajadores"),)
+    estaciones=estaciones.order_by("local__precio").all()
     return render(request,"estaciones/estaciones_con_locales_ordenados.html",{'views_estaciones_con_locales':estaciones})
-
 
 # 4 Trabajadores de una Estación: todos los datos de los trabajadores de una estación ITV específica.
 def trabajadores_estacion(request,id_estacion):
-    estacion=EstacionItv.objects.get(id=id_estacion)
     trabajadores=Trabajador.objects.prefetch_related("estacion",
                                                      Prefetch("trabajador_Inspeccion"),
                                                      Prefetch("trabajador_Vehiculo"))
     trabajadores=trabajadores.filter(estacion=id_estacion).all()
-    return render(request,"trabajadores/trabajadores_estacion_especifica.html",{'views_trabajadores_estacion':trabajadores,'estaciones':estacion})
+    return render(request,"trabajadores/trabajadores_estacion_especifica.html",{'views_trabajadores_estacion':trabajadores})
 
 # 5 Inspecciones de un Vehículo: Inspecciones de un vehículo específico por matrícula.
 def inspecciones_vehiculo(request,matricula):
-    inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo")
+    inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura"))
     inspecciones=inspecciones.filter(vehiculo__matricula=matricula).all()
     return render(request,"inspecciones/inspecciones_vehiculo.html",{'views_inspecciones_vehiculo':inspecciones})
 
@@ -63,9 +65,9 @@ def citas_estacion(request,id_cliente,tipo_inspeccion):
     citas=citas.filter(cliente_id=id_cliente,tipo_inspeccion=tipo_inspeccion).all()
     return render(request,"citas/citas_estacion.html",{'views_citas_estacion':citas})
     
-# Vehículos sin Trabajadores Asociados: Vehículos que no tienen trabajadores asociados.
+#10 Vehículos sin Trabajadores Asociados: Vehículos que no tienen trabajadores asociados.
 def vehiculos_sin_trabajadores(request):
-    vehiculos=Vehiculo.objects.prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion"))
+    vehiculos=Vehiculo.objects
     vehiculos=vehiculos.filter(trabajadores=None).all()
     return render(request,"vehiculos/vehiculos_sin_trabajador.html",{'views_vehiculos_sin_trabajadores':vehiculos})
 
