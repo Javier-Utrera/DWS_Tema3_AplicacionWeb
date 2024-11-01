@@ -67,7 +67,7 @@ def citas_estacion(request,id_cliente,tipo_inspeccion):
     
 #10 Vehículos sin Trabajadores Asociados: Vehículos que no tienen trabajadores asociados.
 def vehiculos_sin_trabajadores(request):
-    vehiculos=Vehiculo.objects
+    vehiculos=Vehiculo.objects.prefetch_related("trabajadores")
     vehiculos=vehiculos.filter(trabajadores=None).all()
     return render(request,"vehiculos/vehiculos_sin_trabajador.html",{'views_vehiculos_sin_trabajadores':vehiculos})
 
