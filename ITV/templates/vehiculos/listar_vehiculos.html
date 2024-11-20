@@ -1,3 +1,10 @@
+{% extends "estructura/padre.html"%}
+{% block cabecera %}
+<h1>Este es el indice</h1>
+{% endblock %}
+{% block contenido%}
+<p>Se ha movido el contenido del index a la estructura menu</p>
+{% endblock%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,8 +15,7 @@
 </head>
 
 <body>
-    <h2>Numero de vehiculos encontrados {{ contador }}</h2>
-    {% for vehiculo in views_contador_vehiculos_combustible %}
+    {% for vehiculo in views_vehiculos %}
     <div style="background-color: rgb(176, 252, 226)">
         <h2>Id vehiculo: {{ vehiculo.id }}</h2>
         <h2>Marca: {{ vehiculo.marca }}</h2>

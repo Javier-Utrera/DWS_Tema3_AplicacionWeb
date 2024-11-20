@@ -1,54 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-</head>
-<body>
-    <h1>ITV</h1>
-    <h2>Listado de enlaces</h2>
-    <ul>
-        <li>
-            <a href="{% url 'urls_listar_clientes' %}">
-                1.Todos los clientes filtrados por sexo, nombre y fecha de nacimiento.</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_cita_cliente' id_cliente=2 %}">
-                2.Todas las citas del cliente Con ID:2</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_estaciones_con_locales' %}">
-                3. Estaciones ITV junto a su local, ordenadas por el precio del local.</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_trabajadores_estacion' id_estacion=4 %}">
-                4.todos los datos de los trabajadores que trabajan en la estación ITV con ID:4</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_inspecciones_vehiculo' matricula='Wall.' %}">
-                5.Inspecciones de un vehículo específico por matrícula=Wall. . </a>
-        </li>
-        <li>
-            <a href="{% url 'urls_maquinaria_empresa' id_maquina=2 %}">
-                6.Detalle de una maquinaria específica con id:2 y su empresa externa asociada.</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_citas_fechas' anio1=1990 anio2=2000 %}">
-                7.Citas de las Estaciones en Rango de Fechas entre 1990 y 2000 mostrando la cita mas reciente de ese rango</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_contador_vehiculos_combustible' combustible1='gas' combustible2='die' %}">
-                8.Conteo de Vehículos por un tipo de combustible 'gas' u 'die'.</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_citas_estacion' id_cliente=2 tipo_inspeccion='VETAX'%}">
-                9. Muestra todas las citas de una estación ITV, filtradas por el ID:2 del cliente y el tipo de inspección:'VETAX'</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_vehiculos_sin_trabajadores'%}">
-                10. Vehículos sin Trabajadores Asociados: Vehículos que no tienen trabajadores asociados.</a>
-        </li>
-    </ul> 
-</body>
-</html>
+{% extends "estructura/padre.html"%}
+{% block cabecera %}
+<h1>Este es el indice</h1>
+{% endblock %}
+{% block contenido%}
+<p>Se ha movido el contenido del index a la estructura menu</p>
+{% endblock%}

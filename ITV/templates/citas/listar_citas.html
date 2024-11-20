@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "estructura/padre.html"%}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block cabecera %}
+    <h1>Listado de citas</h1>
+{% endblock %}
 
-<body>
-    {% for cita in views_cita_cliente %}
+{% block contenido%}
+    {% for cita in views_citas %}
         <div style="background-color: rgb(176, 252, 226)">
             <h2>Id cita: {{ cita.id }}</h2>
             <h2>Matrícula: {{ cita.matricula }}</h2>
@@ -40,7 +37,7 @@
                 <h2>Comunidad autonoma: {{ cita.estacion.comunidad_autonoma }}</h2>
             </div>
         </div>
-    {% endfor %}    
-</body>
-
-</html>
+    {% empty %}  
+        <h1>Lo siento, no existen citas</h1>
+    {% endfor %} 
+{% endblock%}

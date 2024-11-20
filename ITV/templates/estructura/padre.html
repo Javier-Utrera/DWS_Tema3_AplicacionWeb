@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <script src="{% static 'scripts/script.js' %}"></script>
+    <title>Document</title>
+</head>
+<body>
+    <img src="{% static 'imagenes/ba.jpg' %}">
+    {% include 'estructura/menu.html'%}
+
+    {% block cabecera%}
+    {% endblock%}
+    
+    {% block contenido%}
+    {% endblock%}
+
+
+
+    {% include 'estructura/footer.html'%}
+
+</body>
+</html>

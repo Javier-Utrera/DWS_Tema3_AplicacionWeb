@@ -261,3 +261,17 @@ VISTAS:
 10. Vehículos sin Trabajadores	
     Lista vehículos que no tienen trabajadores asociados.	
     Filtro con None, ManyToMany, filter.
+
+
+TEMPLATES MEJORADOS y STATICS
+
+    -Primero voy a crear la estructura que la voy a dividir en un padre, en un menu (head) y un footer. Voy a utilizar la misma estructura de la tarea anterior para facilitarme el trabajo
+
+    -Vamos a unificar los templates para no tener dos templates mostrando lo mismo aunque usen views distintas
+
+    -Una vez unificados los he renombrado a listar_loquelisten
+
+    -Vamos a borrar la estructura html de los templates para que extiendan del padre
+
+    -
+

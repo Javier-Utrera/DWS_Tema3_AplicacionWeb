@@ -1,3 +1,10 @@
+{% extends "estructura/padre.html"%}
+{% block cabecera %}
+<h1>Este es el indice</h1>
+{% endblock %}
+{% block contenido%}
+<p>Se ha movido el contenido del index a la estructura menu</p>
+{% endblock%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +40,7 @@
                     <h2>Esta la maquina en funcionamiento?: {{ maquina.funcionando}}</h2>
                 {% endfor %}
             </div>
-            <!-- <h2>Trabajan los siguientes trabajadores:</h2>
+             <h2>Trabajan los siguientes trabajadores:</h2>
             <div style="background-color: rgb(252, 176, 242)">
                 {% for trabajador in estacion.estacionItv_trabajadores.all %}
                     <h2>Id Trabajador: {{ trabajador.id }}</h2>
@@ -57,7 +64,7 @@
                 <h2>Fecha Propuesta: {{ cita.fecha_propuesta}}</h2>
                 <h2>Hora Propuesta: {{ cita.hora_propuesta}}</h2>
                 {% endfor %}
-            </div> -->
+            </div> 
         </div>
     {% endfor %}
 </body>

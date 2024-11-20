@@ -11,11 +11,11 @@ def listar_clientes(request):
     clientes=clientes.order_by("sexo","nombre","fecha_nacimiento").all()
     return render(request,"clientes/listar_clientes.html",{'views_listar_cliente':clientes})
 
-# 2 Citas de un Cliente: Todas las citas de un cliente específico.
+# 2 Citas de un Cliente: Todas las citas de un cliente específico. 
 def cita_cliente(request,id_cliente):
     citas=Cita.objects.select_related("cliente","estacion") # me genera 1 queries
     citas=citas.filter(cliente_id=id_cliente).all()
-    return render(request,"citas/cita_cliente.html",{'views_cita_cliente':citas})
+    return render(request,"citas/listar_citas.html",{'views_citas':citas})
     
 # 3 Estaciones ITV con Locales: Estaciones ITV junto a su local, ordenadas por el precio del local.
 def estaciones_con_locales(request):
@@ -23,7 +23,7 @@ def estaciones_con_locales(request):
                                                                             Prefetch("estacionitv_Maquinaria"),
                                                                             Prefetch("estacionItv_trabajadores"),)
     estaciones=estaciones.order_by("local__precio").all()
-    return render(request,"estaciones/estaciones_con_locales_ordenados.html",{'views_estaciones_con_locales':estaciones})
+    return render(request,"estaciones/listar_estaciones.html",{'views_estaciones_con_locales':estaciones})
 
 # 4 Trabajadores de una Estación: todos los datos de los trabajadores de una estación ITV específica.
 def trabajadores_estacion(request,id_estacion):
@@ -31,13 +31,13 @@ def trabajadores_estacion(request,id_estacion):
                                                      Prefetch("trabajador_Inspeccion"),
                                                      Prefetch("trabajador_Vehiculo"))
     trabajadores=trabajadores.filter(estacion=id_estacion).all()
-    return render(request,"trabajadores/trabajadores_estacion_especifica.html",{'views_trabajadores_estacion':trabajadores})
+    return render(request,"trabajadores/listar_trabajadores.html",{'views_trabajadores_estacion':trabajadores})
 
 # 5 Inspecciones de un Vehículo: Inspecciones de un vehículo específico por matrícula.
 def inspecciones_vehiculo(request,matricula):
     inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura"))
     inspecciones=inspecciones.filter(vehiculo__matricula=matricula).all()
-    return render(request,"inspecciones/inspecciones_vehiculo.html",{'views_inspecciones_vehiculo':inspecciones})
+    return render(request,"inspecciones/listar_inspecciones.html",{'views_inspecciones_vehiculo':inspecciones})
 
 # 6 Detalle de una Maquinaria y Empresa: Detalle de una maquinaria específica y su empresa externa asociada.
 def maquinaria_empresa(request,id_maquina):
@@ -45,9 +45,9 @@ def maquinaria_empresa(request,id_maquina):
     maquinarias=maquinarias.filter(id=id_maquina).get()
     return render(request,"maquinarias/maquinaria_empresa.html",{'views_maquinaria_empresa':maquinarias})
 
-# 7 Citas de las Estaciones en Rango de Fechas mostrando la cita mas reciente de ese rango
+# 7 Citas de las Estaciones en Rango de Fechas mostrando la cita mas reciente de ese rango 
 def citas_fechas(request,anio1,anio2):
-    citas=Cita.objects.select_related("cliente","estacion")
+    citas=Cita.objects.select_related("cliente","estacion") 
     citas=citas.filter(fecha_propuesta__year__gte=anio1,fecha_propuesta__year__lte=anio2)
     citas=citas.order_by("-fecha_propuesta")[:1].get()
     return render(request,"citas/cita_fecha.html",{'views_citas_fechas':citas})
@@ -56,20 +56,19 @@ def citas_fechas(request,anio1,anio2):
 def contador_vehiculos_combustible(request,combustible1,combustible2):
     vehiculos=Vehiculo.objects.prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion"))
     vehiculos=vehiculos.filter(Q(combustible=combustible1) | Q(combustible=combustible2)).all()
-    contador=vehiculos.aggregate(Count("id"))
-    return render(request,"vehiculos/contador_vehiculos.html",{'views_contador_vehiculos_combustible':vehiculos,'contador':contador})
+    return render(request,"vehiculos/listar_vehiculos.html",{'views_vehiculos':vehiculos})
 
-# 9 Muestra todas las citas de una estación ITV, filtradas por el ID del cliente y el tipo de inspección
+# 9 Muestra todas las citas de una estación ITV, filtradas por el ID del cliente y el tipo de inspección 
 def citas_estacion(request,id_cliente,tipo_inspeccion):
     citas=Cita.objects.select_related("cliente","estacion")
     citas=citas.filter(cliente_id=id_cliente,tipo_inspeccion=tipo_inspeccion).all()
-    return render(request,"citas/citas_estacion.html",{'views_citas_estacion':citas})
+    return render(request,"citas/listar_citas.html",{'views_citas':citas})
     
 #10 Vehículos sin Trabajadores Asociados: Vehículos que no tienen trabajadores asociados.
 def vehiculos_sin_trabajadores(request):
     vehiculos=Vehiculo.objects.prefetch_related("trabajadores")
     vehiculos=vehiculos.filter(trabajadores=None).all()
-    return render(request,"vehiculos/vehiculos_sin_trabajador.html",{'views_vehiculos_sin_trabajadores':vehiculos})
+    return render(request,"vehiculos/listar_vehiculos.html",{'views_vehiculos':vehiculos})
 
 def mi_error_400(request,exception=None):
     return render(request,"errores/400.html",None,None,400)
