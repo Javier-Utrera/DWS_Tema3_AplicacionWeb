@@ -273,5 +273,22 @@ TEMPLATES MEJORADOS y STATICS
 
     -Vamos a borrar la estructura html de los templates para que extiendan del padre
 
-    -
+    -Refactorizamos el contenido creando un html para cada tido de listado ej:vehiculo.html,trabajador.html etc...
+
+    -Voy a realizar un bloque de ifs else, para el "tipo de inspeccion" del modelo cita en el template cita.html, dependiendo de que tipo de cita sea, se coloreara de un color u otro
+    
+    -Se le da formato todas las fechas
+
+    -Voy aplicar los 10 template filters en el template de vehiculo
+
+        Filtros aplicados:
+            -|date:"d/m/Y"
+            -|lower
+            -|upper
+            -|truncatechars:10
+            -|length (Cuento el numero de trabajadores que hay en la lista)
+            -|default:"Sin notas"
+            -inspección{{ vehiculo.vehiculo_Inspeccion.all|pluralize:"es" }} 
+
+
 

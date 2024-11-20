@@ -1,44 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <div style="background-color: rgb(176, 252, 226)">
-        <h2>Id cita: {{ views_citas_fechas.id }}</h2>
-        <h2>Matrícula: {{ views_citas_fechas.matricula }}</h2>
-        <h2>Fecha de Matriculación: {{ views_citas_fechas.fecha_matriculacion }}</h2>
-        <h2>Número de Bastidor: {{ views_citas_fechas.numero_bastidor }}</h2>
-        <h2>Tipo de Inspección: {{ views_citas_fechas.tipo_inspeccion}}</h2>
-        <h2>Remolque: {{ views_citas_fechas.remolque}}</h2>
-        <h2>Tipo de Pago: {{ views_citas_fechas.tipo_pago}}</h2>
-        <h2>Fecha Propuesta: {{ views_citas_fechas.fecha_propuesta}}</h2>
-        <h2>Hora Propuesta: {{ views_citas_fechas.hora_propuesta}}</h2>
-        <h2>Cliente de la cita:</h2>
-        <div style="background-color: rgb(176, 224, 252)">
-            <h2>ID Cliente : {{ views_citas_fechas.cliente.id }} </h2>
-            <h2>Nombre : {{ views_citas_fechas.cliente.nombre }} </h2>
-            <h2>Apellidos : {{ views_citas_fechas.cliente.apellidos }} </h2>
-            <h2>Sexo : {{ views_citas_fechas.cliente.sexo }} </h2>
-            <h2>Dni : {{ views_citas_fechas.cliente.dni }} </h2>
-            <h2>Telefono : {{ views_citas_fechas.cliente.telefono }} </h2>
-            <h2>Correo : {{ views_citas_fechas.cliente.correo }} </h2>
-            <h2>Domicilio : {{ views_citas_fechas.cliente.domicilio }} </h2>
-            <h2>Fecha de nacimiento : {{ views_citas_fechas.cliente.fecha_nacimiento }} </h2>
-        </div>
-        <h2>Estacion de la cita:</h2>
-        <div style="background-color: rgb(192, 176, 252)">
-            <h2>ID Estacion : {{ views_citas_fechas.estacion.id }} </h2>
-            <h2>Nombre: {{ views_citas_fechas.estacion.nombre }}</h2>
-            <h2>Municipio: {{ views_citas_fechas.estacion.munipio }}</h2>
-            <h2>Eficiencia: {{ views_citas_fechas.estacion.eficiencia_energetica }}</h2>
-            <h2>Comunidad autonoma: {{ views_citas_fechas.estacion.comunidad_autonoma }}</h2>
-        </div>
+{% extends "estructura/padre.html"%}
+{% block cabecera %}
+<h1>Cita fecha concreta</h1>
+{% endblock %}
+{% block contenido%}
+<div style="background-color: rgb(176, 252, 226)">
+    <h2>Id cita: {{ views_citas_fechas.id }}</h2>
+    <h2>Matrícula: {{ views_citas_fechas.matricula }}</h2>
+    <h2>Fecha de Matriculación: {{ views_citas_fechas.fecha_matriculacion }}</h2>
+    <h2>Número de Bastidor: {{ views_citas_fechas.numero_bastidor }}</h2>
+    <h2>Tipo de Inspección: {{ views_citas_fechas.tipo_inspeccion}}</h2>
+    <h2>Remolque: {{ views_citas_fechas.remolque}}</h2>
+    <h2>Tipo de Pago: {{ views_citas_fechas.tipo_pago}}</h2>
+    <h2>Fecha Propuesta: {{ views_citas_fechas.fecha_propuesta}}</h2>
+    <h2>Hora Propuesta: {{ views_citas_fechas.hora_propuesta}}</h2>
+    <h2>Cliente de la cita:</h2>
+    <div style="background-color: rgb(176, 224, 252)">
+        <h2>ID Cliente : {{ views_citas_fechas.cliente.id }} </h2>
+        <h2>Nombre : {{ views_citas_fechas.cliente.nombre }} </h2>
+        <h2>Apellidos : {{ views_citas_fechas.cliente.apellidos }} </h2>
+        <h2>Sexo : {{ views_citas_fechas.cliente.sexo }} </h2>
+        <h2>Dni : {{ views_citas_fechas.cliente.dni }} </h2>
+        <h2>Telefono : {{ views_citas_fechas.cliente.telefono }} </h2>
+        <h2>Correo : {{ views_citas_fechas.cliente.correo }} </h2>
+        <h2>Domicilio : {{ views_citas_fechas.cliente.domicilio }} </h2>
+        <h2>Fecha de nacimiento : {{ views_citas_fechas.cliente.fecha_nacimiento }} </h2>
     </div>
-</body>
-
-</html>
+    <h2>Estacion de la cita:</h2>
+    <div style="background-color: rgb(192, 176, 252)">
+        <h2>ID Estacion : {{ views_citas_fechas.estacion.id }} </h2>
+        <h2>Nombre: {{ views_citas_fechas.estacion.nombre }}</h2>
+        <h2>Municipio: {{ views_citas_fechas.estacion.munipio }}</h2>
+        <h2>Eficiencia: {{ views_citas_fechas.estacion.eficiencia_energetica }}</h2>
+        <h2>Comunidad autonoma: {{ views_citas_fechas.estacion.comunidad_autonoma }}</h2>
+    </div>
+</div>
+{% endblock%}

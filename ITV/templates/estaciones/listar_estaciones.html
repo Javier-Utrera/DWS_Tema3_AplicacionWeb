@@ -1,72 +1,13 @@
-{% extends "estructura/padre.html"%}
+{% extends "estructura/padre.html" %}
+
 {% block cabecera %}
-<h1>Este es el indice</h1>
+    <h1>Listado de estaciones</h1>
 {% endblock %}
-{% block contenido%}
-<p>Se ha movido el contenido del index a la estructura menu</p>
-{% endblock%}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
+{% block contenido %}
     {% for estacion in views_estaciones_con_locales %}
-        <div style="background-color: rgb(176, 252, 226)">
-            <h2>Id Estacion: {{ estacion.id }}</h2>
-            <h2>Nombre: {{ estacion.nombre }}</h2>
-            <h2>Municipio: {{ estacion.munipio }}</h2>
-            <h2>Eficiencia: {{ estacion.eficiencia_energetica }}</h2>
-            <h2>Comunidad autonoma: {{ estacion.comunidad_autonoma }}</h2>
-            <h2>Alojado en el local:</h2>
-            <div style="background-color: rgb(176, 224, 252)">
-                <h2>ID Local : {{ estacion.local.id }} </h2>
-                <h2>Precio : {{ estacion.local.precio }} </h2>
-                <h2>Metros : {{ estacion.local.metros }} </h2>
-                <h2>Año arrendamiento : {{ estacion.local.anio_arrendamiento }} </h2>
-                <h2>Dueño : {{ estacion.local.duenio }} </h2>
-            </div>
-            <h2>Dispone de las siguientes maquinas:</h2>
-            <div style="background-color: rgb(187, 176, 252)">
-                {% for maquina in estacion.estacionitv_Maquinaria.all %}
-                    <h2>Id Maquina: {{ maquina.id }}</h2>
-                    <h2>Nombre: {{ maquina.nombre }}</h2>
-                    <h2>Tipo: {{ maquina.tipo}}</h2>
-                    <h2>Ultimo mantenimiento: {{ maquina.ultimo_mantenimiento}}</h2> 
-                    <h2>Esta la maquina en funcionamiento?: {{ maquina.funcionando}}</h2>
-                {% endfor %}
-            </div>
-             <h2>Trabajan los siguientes trabajadores:</h2>
-            <div style="background-color: rgb(252, 176, 242)">
-                {% for trabajador in estacion.estacionItv_trabajadores.all %}
-                    <h2>Id Trabajador: {{ trabajador.id }}</h2>
-                    <h2>Nombre: {{ trabajador.nombre }}</h2>
-                    <h2>Apellidos: {{ trabajador.apellidos }}</h2>
-                    <h2>Puesto: {{ trabajador.puesto }}</h2>
-                    <h2>Sueldo: {{ trabajador.sueldo }}</h2>
-                    <h2>Observaciones: {{ trabajador.observaciones }}</h2>
-                {% endfor %}
-            </div>
-            <h2>Esta estacion tiene las siguientes citas:</h2>
-            <div style="background-color: rgb(252, 176, 201)">
-                {% for cita in estacion.estacionitv_Cita.all %}
-                <h2>Id cita: {{ cita.id }}</h2>
-                <h2>Matrícula: {{ cita.matricula }}</h2>
-                <h2>Fecha de Matriculación: {{ cita.fecha_matriculacion }}</h2>
-                <h2>Número de Bastidor: {{ cita.numero_bastidor }}</h2>
-                <h2>Tipo de Inspección: {{ cita.tipo_inspeccion}}</h2>
-                <h2>Remolque: {{ cita.remolque}}</h2>
-                <h2>Tipo de Pago: {{ cita.tipo_pago}}</h2>
-                <h2>Fecha Propuesta: {{ cita.fecha_propuesta}}</h2>
-                <h2>Hora Propuesta: {{ cita.hora_propuesta}}</h2>
-                {% endfor %}
-            </div> 
-        </div>
+        {% include 'estaciones/estacion.html' %}        
+    {% empty %}
+        <h1>Lo siento, no existen estaciones</h1>
     {% endfor %}
-</body>
-
-</html>
+{% endblock %}

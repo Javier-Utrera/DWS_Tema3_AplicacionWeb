@@ -1,0 +1,26 @@
+<div style="background-color: rgb(176, 252, 226);">
+    <h2>ID Cliente: {{ cliente.id }}</h2>
+    <h2>Nombre: {{ cliente.nombre }}</h2>
+    <h2>Apellidos: {{ cliente.apellidos }}</h2>
+    <h2>Sexo: {{ cliente.sexo }}</h2>
+    <h2>DNI: {{ cliente.dni }}</h2>
+    <h2>Teléfono: {{ cliente.telefono }}</h2>
+    <h2>Correo: {{ cliente.correo }}</h2>
+    <h2>Domicilio: {{ cliente.domicilio }}</h2>
+    <h2>Fecha de nacimiento: {{ cliente.fecha_nacimiento|date:"Y-m-d" }}</h2>
+    <h2>Tiene las siguientes citas:</h2>
+
+    {% for cita in cliente.cliente_Cita.all %}
+        <div style="background-color: rgb(176, 222, 252);">
+            <h2>Id cita: {{ cita.id }}</h2>
+            <h2>Matrícula: {{ cita.matricula }}</h2>
+            <h2>Fecha de Matriculación: {{ cita.fecha_matriculacion|date:"Y-m-d" }}</h2>
+            <h2>Número de Bastidor: {{ cita.numero_bastidor }}</h2>
+            <h2>Tipo de Inspección: {{ cita.tipo_inspeccion }}</h2>
+            <h2>Remolque: {{ cita.remolque }}</h2>
+            <h2>Tipo de Pago: {{ cita.tipo_pago }}</h2>
+            <h2>Fecha Propuesta: {{ cita.fecha_propuesta }}</h2>
+            <h2>Hora Propuesta: {{ cita.hora_propuesta }}</h2>
+        </div>
+    {% endfor %}
+</div>

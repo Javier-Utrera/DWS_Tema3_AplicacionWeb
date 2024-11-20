@@ -1,0 +1,46 @@
+<div style="background-color: rgb(176, 252, 226);">
+    <h2>Id cita: {{ cita.id }}</h2>
+    <h2>Matrícula: {{ cita.matricula }}</h2>
+    <h2>Fecha de Matriculación: {{ cita.fecha_matriculacion|date:"Y-m-d" }}</h2>
+    <h2>Número de Bastidor: {{ cita.numero_bastidor }}</h2>
+
+    <h2>Tipo de Inspección:</h2>
+    {% if cita.tipo_inspeccion == 'PE' %}
+        <span style="color: green;">Periódica</span>
+    {% elif cita.tipo_inspeccion == 'NOPE' %}
+        <span style="color: blue;">No Periódica</span>
+    {% elif cita.tipo_inspeccion == 'VETAX' %}
+        <span style="color: orange;">Verificación Taxímetro</span>
+    {% elif cita.tipo_inspeccion == 'VETAXV' %}
+        <span style="color: red;">Verificación Taxímetro Cambio Vehículo</span>
+    {% else %}
+        <span style="color: black;">Desconocido</span>
+    {% endif %}
+
+    <h2>Remolque: {{ cita.remolque }}</h2>
+    <h2>Tipo de Pago: {{ cita.tipo_pago }}</h2>
+    <h2>Fecha Propuesta: {{ cita.fecha_propuesta }}</h2>
+    <h2>Hora Propuesta: {{ cita.hora_propuesta }}</h2>
+
+    <h2>Datos del cliente:</h2>
+    <div style="background-color: rgb(176, 224, 252);">
+        <h2>ID Cliente: {{ cita.cliente.id }}</h2>
+        <h2>Nombre: {{ cita.cliente.nombre }}</h2>
+        <h2>Apellidos: {{ cita.cliente.apellidos }}</h2>
+        <h2>Sexo: {{ cita.cliente.sexo }}</h2>
+        <h2>DNI: {{ cita.cliente.dni }}</h2>
+        <h2>Teléfono: {{ cita.cliente.telefono }}</h2>
+        <h2>Correo: {{ cita.cliente.correo }}</h2>
+        <h2>Domicilio: {{ cita.cliente.domicilio }}</h2>
+        <h2>Fecha de nacimiento: {{ cita.cliente.fecha_nacimiento|date:"Y-m-d" }}</h2>
+    </div>
+
+    <h2>Datos de la estación que recibe la cita:</h2>
+    <div style="background-color: rgb(192, 176, 252);">
+        <h2>Id Estación: {{ cita.estacion.id }}</h2>
+        <h2>Nombre: {{ cita.estacion.nombre }}</h2>
+        <h2>Municipio: {{ cita.estacion.munipio }}</h2>
+        <h2>Eficiencia: {{ cita.estacion.eficiencia_energetica }}</h2>
+        <h2>Comunidad Autónoma: {{ cita.estacion.comunidad_autonoma }}</h2>
+    </div>
+</div>
