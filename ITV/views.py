@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import *
+from .forms import *
 from django.db.models import Q,Prefetch, Count
 # Create your views here.
 def index(request):
@@ -81,3 +82,9 @@ def mi_error_404(request,exception=None):
 
 def mi_error_500(request,exception=None):
     return render(request,"errores/500.html",None,None,500)
+
+#FORMULARIOS
+
+def cliente_crear(request):
+    formulario=CrearCliente()
+    return render(request,'clientes/create.html',{"formulario":formulario})
