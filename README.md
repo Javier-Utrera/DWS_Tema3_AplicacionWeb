@@ -289,6 +289,9 @@ TEMPLATES MEJORADOS y STATICS
             -|length (Cuento el numero de trabajadores que hay en la lista)
             -|default:"Sin notas"
             -inspección{{ vehiculo.vehiculo_Inspeccion.all|pluralize:"es" }} 
+            -|add:"2"
+            -|divisibleby:"2"
+            -|get_digit:"1"
 
 
 

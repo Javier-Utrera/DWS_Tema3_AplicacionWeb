@@ -10,6 +10,7 @@
     <h2>Masa Máxima Autorizada: {{ vehiculo.mma }}</h2>
     <h2>Asientos: {{ vehiculo.asientos }}</h2>
     <h2>Ejes: {{ vehiculo.ejes }}</h2>
+    <h2>Ejejes pares?: {{ vehiculo.ejes|divisibleby:"2" }}</h2>
     <h2>DNI Propietario: {{ vehiculo.dni_propietario }}</h2>
     <h2>Matrícula: {{ vehiculo.matricula }}</h2>
 
@@ -20,8 +21,8 @@
             <h2>Nombre: {{ trabajador.nombre|lower }}</h2>
             <h2>Apellidos: {{ trabajador.apellidos|upper }}</h2>
             <h2>Puesto: {{ trabajador.puesto }}</h2>
-            <h2>Sueldo: {{ trabajador.sueldo }}</h2>
-            <h2>Observaciones: {{ trabajador.observaciones }}</h2>
+            <h2>Sueldo: {{ trabajador.sueldo|add:"2" }}</h2>
+            <h2>Observaciones: {{ trabajador.observaciones|capfirst }}</h2>
         </div>
     {% endfor %}
 
