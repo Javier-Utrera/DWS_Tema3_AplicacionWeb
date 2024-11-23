@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from .models import *
 from .forms import *
-from django.db.models import Q,Prefetch, Count
+from django.db.models import Q,Prefetch
+from django.shortcuts import redirect
+from django.contrib import messages
 # Create your views here.
 def index(request):
     return render(request,"index.html")
@@ -85,6 +87,61 @@ def mi_error_500(request,exception=None):
 
 #FORMULARIOS
 
-def cliente_crear(request):
-    formulario=CrearCliente()
+    #CLIENTE
+
+def procesar_cliente(request):
+    datosFormulario=None
+    if request.method == "POST":
+        datosFormulario = request.POST
+        
+    formulario=ClienteForm(datosFormulario)
+    
+    if (request.method== "POST"):
+        cliente_creado=crear_cliente(formulario)
+        if(cliente_creado):
+            return redirect("urls_listar_clientes")
     return render(request,'clientes/create.html',{"formulario":formulario})
+
+def crear_cliente(formulario):
+    cliente_creado=False
+    
+    if formulario.is_valid():
+        
+        cliente= Cliente.objects.create(
+                nombre=formulario.cleaned_data.get('nombre'),
+                apellidos=formulario.cleaned_data.get('apellidos'),
+                sexo=formulario.cleaned_data.get('sexo'),
+                fecha_nacimiento=formulario.cleaned_data.get('fecha_nacimiento'),
+                codigo_postal=formulario.cleaned_data.get('codigo_postal'),
+                domicilio=formulario.cleaned_data.get('domicilio'),
+                correo= formulario.cleaned_data.get('correo'),
+                telefono=formulario.cleaned_data.get('telefono'),
+                dni=formulario.cleaned_data.get('dni'),
+        )       
+        try:
+            cliente.save()
+            cliente_creado=True
+        except:
+            pass
+    return cliente_creado
+
+    #Inspeccion
+    
+def procesar_inspeccion(request):      
+    formulario=InspeccionForm()  
+    return render(request,'inspecciones/create.html',{"formulario":formulario})
+
+def crear_inspeccion(formulario):
+    inspeccion_creado=False
+    
+    if formulario.is_valid():
+        inspeccion = Inspeccion.objects.create(
+            fecha_inspeccion = formulario.cleaned_data.get('fecha_inspeccion'),
+            resultado_inspeccion = formulario.cleaned_data.get('resultado_inspeccion'), 
+            notas_inspeccion = formulario.cleaned_data.get('notas_inspeccion'), 
+            cliente_puntual = formulario.cleaned_data.get('cliente_puntual'),
+            trabajador = formulario.cleaned_data.get('trabajador'),
+            vehiculo = formulario.cleaned_data.get('vehiculo'),
+        )
+        
+    

@@ -33,4 +33,13 @@ urlpatterns = [
     
     #10
     path('vehiculos/vehiculos_sin_trabajador', views.vehiculos_sin_trabajadores,name="urls_vehiculos_sin_trabajadores"),
+    
+    
+    #FOMULARIOS
+
+    #Crear cliente
+    path('clientes/create', views.procesar_cliente,name="urls_crear_cliente"),
+    
+    #Crear inspeccion
+    path('inspecciones/formulario/create', views.procesar_inspeccion,name="urls_crear_inspeccion"),
 ]       

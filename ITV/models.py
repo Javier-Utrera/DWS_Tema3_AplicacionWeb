@@ -14,12 +14,18 @@ class Cliente(models.Model):
     correo= models.EmailField(max_length=50)
     telefono=models.PositiveIntegerField()
     dni=models.CharField(max_length=9,unique=True)
+    
+    def __str__(self):
+        return self.dni + " "+ self.nombre + " "+ self.apellidos
 
 class Local(models.Model):
     precio=models.FloatField()
     metros=models.DecimalField(max_digits=50,decimal_places=3)
     anio_arrendamiento=models.DateField()
     duenio=models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.duenio + " "+ self.metros
     
 class EstacionItv(models.Model):
     #relaciones
@@ -29,6 +35,9 @@ class EstacionItv(models.Model):
     munipio=models.CharField(max_length=50)
     eficiencia_energetica=models.CharField(max_length=1)
     comunidad_autonoma=models.CharField(max_length=20)
+    
+    def __str__(self):
+        return self.munipio + " "+ self.nombre
     
 class Cita(models.Model):
     #relaciones
@@ -51,12 +60,18 @@ class Cita(models.Model):
     fecha_propuesta=models.DateField(null=True)
     hora_propuesta=models.TimeField(null=True)
 
+    def __str__(self):
+        return self.tipo_inspeccion + " "+ self.fecha_propuesta+ " "+ self.hora_propuesta
+    
 class EmpresaExterna(models.Model):
     nombre=models.CharField(max_length=50,null=False)
     municipio=models.CharField(max_length=50)
     coste=models.FloatField(editable=True)
     cif=models.CharField(max_length=15,null=False)
-    
+
+    def __str__(self):
+        return self.nombre + " "+ self.cif
+        
 class Maquinaria(models.Model):
     #relaciones
     iestacionItv=models.ForeignKey(EstacionItv,on_delete=models.CASCADE,related_name="estacionitv_Maquinaria")
@@ -77,6 +92,9 @@ class Trabajador(models.Model):
     puesto=models.CharField(max_length=2,choices=Maquinaria.TIPO)
     sueldo=models.FloatField(editable=True,null=False)
     observaciones=models.TextField()
+    
+    def __str__(self):
+        return self.nombre + " "+ self.apellidos
     
 class Vehiculo(models.Model):
     #relaciones
@@ -114,6 +132,9 @@ class Vehiculo(models.Model):
     dni_propietario=models.CharField(max_length=9)
     matricula=models.CharField(max_length=7)
     
+    def __str__(self):
+        return self.marca + " "+ self.modelo
+    
 class Inspeccion(models.Model):
     #relaciones
     #
@@ -124,6 +145,7 @@ class Inspeccion(models.Model):
     resultado_inspeccion = models.CharField(max_length=100)
     notas_inspeccion = models.TextField()
     cliente_puntual=models.BooleanField(default=True)
+    
          
 class Factura(models.Model):
     #relaciones
