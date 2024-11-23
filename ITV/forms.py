@@ -82,5 +82,6 @@ class InspeccionForm(ModelForm):
         resultado_inspeccion = self.cleaned_data.get('resultado_inspeccion') 
         notas_inspeccion = self.cleaned_data.get('notas_inspeccion') 
         cliente_puntual= self.cleaned_data.get('cliente_puntual') 
-        
+        #Que la fecha de inspeccion no puede superior a la actual
+            
         return self.cleaned_data

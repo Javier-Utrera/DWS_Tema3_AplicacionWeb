@@ -125,10 +125,18 @@ def crear_cliente(formulario):
             pass
     return cliente_creado
 
-    #Inspeccion
+    #Inspeccion   
+def procesar_inspeccion(request): 
+    datosFomulario=None
+    if (request.method == "POST"):
+        datosFomulario=request.POST
+        
+    formulario=InspeccionForm(datosFomulario)
     
-def procesar_inspeccion(request):      
-    formulario=InspeccionForm()  
+    if(request.method == "POST"):
+        inspeccion_creado=crear_inspeccion(formulario)
+        if(inspeccion_creado):
+            return redirect("urls_inspecciones_vehiculo")
     return render(request,'inspecciones/create.html',{"formulario":formulario})
 
 def crear_inspeccion(formulario):
@@ -144,4 +152,9 @@ def crear_inspeccion(formulario):
             vehiculo = formulario.cleaned_data.get('vehiculo'),
         )
         
-    
+        try:
+            inspeccion.save()
+            inspeccion_creado=True
+        except:
+            pass
+    return inspeccion_creado
