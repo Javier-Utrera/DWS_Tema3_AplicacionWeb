@@ -17,7 +17,7 @@ urlpatterns = [
     path('trabajadores/trabajador_estacion/<int:id_estacion>', views.trabajadores_estacion,name="urls_trabajadores_estacion"),
     
     #5
-    path('inspecciones/<str:matricula>', views.inspecciones_vehiculo,name="urls_inspecciones_vehiculo"),
+    path('inspecciones', views.inspecciones_vehiculo,name="urls_inspecciones_vehiculo"),
     
     #6
     path('maquinarias/<int:id_maquina>', views.maquinaria_empresa,name="urls_maquinaria_empresa"),
@@ -26,7 +26,7 @@ urlpatterns = [
     path('citas/<int:anio1>/<int:anio2>', views.citas_fechas,name="urls_citas_fechas"),
     
     #8
-    path('vehiculos/vehiculo_contador/<str:combustible1>/<str:combustible2>', views.contador_vehiculos_combustible,name="urls_contador_vehiculos_combustible"),
+    path('vehiculos', views.contador_vehiculos_combustible,name="urls_vehiculos"),
     
     #9
     path('citas/citas_estacion/<int:id_cliente>/<str:tipo_inspeccion>', views.citas_estacion,name="urls_citas_estacion"),
@@ -41,5 +41,8 @@ urlpatterns = [
     path('clientes/create', views.procesar_cliente,name="urls_crear_cliente"),
     
     #Crear inspeccion
-    path('inspecciones/formulario/create', views.procesar_inspeccion,name="urls_crear_inspeccion"),
+    path('inspecciones/create', views.procesar_inspeccion,name="urls_crear_inspeccion"),
+    
+    #Crear vehiculo
+    path('vehiculos/create', views.procesar_vehiculo,name="urls_crear_inspeccion"),
 ]       

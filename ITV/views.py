@@ -4,6 +4,7 @@ from .forms import *
 from django.db.models import Q,Prefetch
 from django.shortcuts import redirect
 from django.contrib import messages
+
 # Create your views here.
 def index(request):
     return render(request,"index.html")
@@ -37,9 +38,8 @@ def trabajadores_estacion(request,id_estacion):
     return render(request,"trabajadores/listar_trabajadores.html",{'views_trabajadores_estacion':trabajadores})
 
 # 5 Inspecciones de un Vehículo: Inspecciones de un vehículo específico por matrícula.
-def inspecciones_vehiculo(request,matricula):
-    inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura"))
-    inspecciones=inspecciones.filter(vehiculo__matricula=matricula).all()
+def inspecciones_vehiculo(request):
+    inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura")).all()
     return render(request,"inspecciones/listar_inspecciones.html",{'views_inspecciones_vehiculo':inspecciones})
 
 # 6 Detalle de una Maquinaria y Empresa: Detalle de una maquinaria específica y su empresa externa asociada.
@@ -56,9 +56,8 @@ def citas_fechas(request,anio1,anio2):
     return render(request,"citas/cita_fecha.html",{'views_citas_fechas':citas})
 
 # 8 Conteo de Vehículos por un tipo de combustible u otro: Número total de vehículos que sea 
-def contador_vehiculos_combustible(request,combustible1,combustible2):
-    vehiculos=Vehiculo.objects.prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion"))
-    vehiculos=vehiculos.filter(Q(combustible=combustible1) | Q(combustible=combustible2)).all()
+def contador_vehiculos_combustible(request):
+    vehiculos=Vehiculo.objects.prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion")).all()
     return render(request,"vehiculos/listar_vehiculos.html",{'views_vehiculos':vehiculos})
 
 # 9 Muestra todas las citas de una estación ITV, filtradas por el ID del cliente y el tipo de inspección 
@@ -87,7 +86,7 @@ def mi_error_500(request,exception=None):
 
 #FORMULARIOS
 
-    #CLIENTE
+    #CLIENTE------------------------------
 
 def procesar_cliente(request):
     datosFormulario=None
@@ -125,9 +124,11 @@ def crear_cliente(formulario):
             pass
     return cliente_creado
 
-    #Inspeccion   
+    #Inspeccion------------------------------
+       
 def procesar_inspeccion(request): 
     datosFomulario=None
+    
     if (request.method == "POST"):
         datosFomulario=request.POST
         
@@ -158,3 +159,47 @@ def crear_inspeccion(formulario):
         except:
             pass
     return inspeccion_creado
+
+    #CLIENTE------------------------------
+    
+def procesar_vehiculo(request):
+    datosFomulario=None
+    
+    if (request.method == "POST"):
+        datosFomulario=request.POST
+        
+    formulario=VehiculoForm(datosFomulario)
+    
+    if(request.method == "POST"):
+        inspeccion_creado=crear_vehiculo(formulario)
+        if(inspeccion_creado):
+            return redirect("urls_vehiculos")
+    return render(request,'vehiculos/create.html',{"formulario":formulario})
+
+def crear_vehiculo(formulario):
+    vehiculo_creado=False
+    
+    if formulario.is_valid():
+        vehiculo = Vehiculo.objects.create(
+            fecha_matriculacion=formulario.cleaned_data.get("fecha_matriculacion"),
+            marca=formulario.cleaned_data.get("marca"),
+            modelo=formulario.cleaned_data.get("modelo"),
+            numero_bastidor=formulario.cleaned_data.get("numero_bastidor"),
+            tipo_vehiculo=formulario.cleaned_data.get("tipo_vehiculo"),
+            cilindrada=formulario.cleaned_data.get("cilindrada"),
+            potencia=formulario.cleaned_data.get("potencia"),
+            combustible=formulario.cleaned_data.get("combustible"),
+            mma=formulario.cleaned_data.get("mma"),
+            asientos=formulario.cleaned_data.get("asientos"),
+            ejes=formulario.cleaned_data.get("ejes"),
+            dni_propietario=formulario.cleaned_data.get("dni_propietario"),
+            matricula=formulario.cleaned_data.get("matricula"),
+            trabajadores=formulario.cleaned_data.get("trabajadores"),
+        )
+        
+        try:
+            vehiculo.save()
+            vehiculo_creado=True
+        except:
+            pass
+    return vehiculo_creado

@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from .models import *
 from datetime import *
 import re 
+from django.utils import timezone 
 
 class ClienteForm(ModelForm):
     class Meta:
@@ -29,14 +30,14 @@ class ClienteForm(ModelForm):
         
         super().clean()
         
-        nombre=self.cleaned_data.get('nombre')
-        apellidos=self.cleaned_data.get('apellidos')
-        sexo=self.cleaned_data.get('sexo')
-        fecha_nacimiento=self.cleaned_data.get('fecha_nacimiento')
-        codigo_postal=self.cleaned_data.get('codigo_postal')
-        domicilio=self.cleaned_data.get('domicilio')
-        correo= self.cleaned_data.get('correo')
-        telefono=self.cleaned_data.get('telefono')
+        # nombre=self.cleaned_data.get('nombre')
+        # apellidos=self.cleaned_data.get('apellidos')
+        # sexo=self.cleaned_data.get('sexo')
+        # fecha_nacimiento=self.cleaned_data.get('fecha_nacimiento')
+        # codigo_postal=self.cleaned_data.get('codigo_postal')
+        # domicilio=self.cleaned_data.get('domicilio')
+        # correo= self.cleaned_data.get('correo')
+        # telefono=self.cleaned_data.get('telefono')
         dni=self.cleaned_data.get('dni')
         
         #VALIDAMOS DNI
@@ -70,18 +71,51 @@ class InspeccionForm(ModelForm):
         widgets = {
             "fecha_inspeccion" : forms.SelectDateWidget(),
             "notas_inspeccion" : forms.TextInput(),
+            "cliente_puntual":forms.CheckboxInput(),
+            "trabajador" : forms.Select(),
         }
     
     def clean(self):
         
         super().clean()
         
-        trabajador = self.cleaned_data.get('trabajador') 
-        vehiculo = self.cleaned_data.get('vehiculo') 
+        # trabajador = self.cleaned_data.get('trabajador') 
+        # vehiculo = self.cleaned_data.get('vehiculo') 
         fecha_inspeccion =self.cleaned_data.get('fecha_inspeccion') 
-        resultado_inspeccion = self.cleaned_data.get('resultado_inspeccion') 
+        # resultado_inspeccion = self.cleaned_data.get('resultado_inspeccion') 
         notas_inspeccion = self.cleaned_data.get('notas_inspeccion') 
-        cliente_puntual= self.cleaned_data.get('cliente_puntual') 
+        # cliente_puntual= self.cleaned_data.get('cliente_puntual') 
         #Que la fecha de inspeccion no puede superior a la actual
+        if(fecha_inspeccion>timezone.now().date()):
+            self.add_error("fecha_inspeccion","La fecha de la inspeccion no puede ser superior a la actual")
+            
+        if(notas_inspeccion==" "):
+            self.add_error("notas_inspeccion","Las notas de la inspeccion no pueden estar vacias")
             
         return self.cleaned_data
+    
+
+class VehiculoForm(ModelForm):
+    class Meta:
+        model=Vehiculo
+        fields='__all__'
+        labels = {
+            "fecha_matriculacion": ("Fecha de matriculación"),
+            "marca": ("Marca del vehículo"),
+            "modelo": ("Modelo del vehículo"),
+            "numero_bastidor": ("Número de bastidor"),
+            "tipo_vehiculo": ("Tipo de vehículo (ITV)"),
+            "cilindrada": ("Cilindrada (cc)"),
+            "potencia": ("Potencia (CV)"),
+            "combustible": ("Tipo de combustible"),
+            "mma": ("Masa Máxima Autorizada (kg)"),
+            "asientos": ("Número de asientos"),
+            "ejes": ("Número de ejes"),
+            "dni_propietario": ("DNI del propietario"),
+            "matricula": ("Matrícula"),
+            "trabajadores" : ("Trabajadores")
+        }
+        help_texts = {
+            "trabajadores" : ("Manten pulsada la tecla control para seleccionar varios elementos"),
+        }
+        localized_fields = ["fecha_matriculacion"]
