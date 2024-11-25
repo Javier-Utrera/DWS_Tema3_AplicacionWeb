@@ -58,8 +58,7 @@ class ClienteForm(ModelForm):
 class InspeccionForm(ModelForm):
     class Meta:
         model=Inspeccion
-        fields=["fecha_inspeccion","resultado_inspeccion","notas_inspeccion",
-                "cliente_puntual","trabajador","vehiculo"]
+        fields='__all__'
         labels= {
             "fecha_inspeccion" : ("Fecha de la inspección"),
             "resultado_inspeccion" : ("Resultado de la inspección"),
@@ -118,4 +117,33 @@ class VehiculoForm(ModelForm):
         help_texts = {
             "trabajadores" : ("Manten pulsada la tecla control para seleccionar varios elementos"),
         }
+        widgets = {
+            "fecha_matriculacion" : forms.SelectDateWidget(),
+            "trabajadores" : forms.SelectMultiple(),
+            "tipo_vehiculo" : forms.Select(),
+            "combustible" : forms.Select(),
+            "numero_bastidor":forms.NumberInput
+        }
         localized_fields = ["fecha_matriculacion"]
+        
+    def clean(self):
+        super().clean()
+        tipo_vehiculo=self.cleaned_data.get("tipo_vehiculo")
+        ejes=self.cleaned_data.get("ejes")
+        asientos=self.cleaned_data.get("asientos")
+        matricula=self.cleaned_data.get("matricula")
+        
+        if(tipo_vehiculo=="moto" and asientos>1):
+            self.add_error("asientos","Para el tipo de vehiculo Motocicleta solo puedes escoger un asiento")
+            
+        if(tipo_vehiculo=="bus" and ejes<=2):
+            self.add_error("ejes","Revisa el tipo de vehiculo, el que has seleccionado tiene mas de 2 ejes")
+            
+        matriculaVehiculo=Vehiculo.objects.filter(matricula=matricula).first()
+        
+        if(matriculaVehiculo):
+            self.add_error("matricula","Esta matricula ya esta registrada") 
+            
+        return self.cleaned_data
+        
+        
