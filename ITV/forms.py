@@ -146,4 +146,90 @@ class VehiculoForm(ModelForm):
             
         return self.cleaned_data
         
+class LocalForm(ModelForm):
+    class Meta:
+        model=Local
+        fields='__all__'
+        labels = {
+            "precio": ("Precio del local"),
+            "metros": ("Metros del local"),
+            "anio_arrendamiento": ("Año en el que se arrendó"),
+            "duenio": ("Dueño del local")
+        }
+        widgets = {
+            "anio_arrendamiento" : forms.SelectDateWidget(),
+            "metros" : forms.NumberInput,
+        }
+        localized_fields = ["anio_arrendamiento"]
+        
+    def clean(self):
+        super().clean()
+        precio=self.cleaned_data.get("precio")
+        metros=self.cleaned_data.get("metros")
+        
+        if (precio<0):
+            self.add_error("precio","El precio no puede ser negativo")
+        if(metros<0):
+            self.add_error("metros","Los metros no pueden ser negativos")
+            
+        return self.cleaned_data
+    
+class EstacionForm(ModelForm):
+    class Meta:
+        model=EstacionItv
+        fields='__all__'
+        labels = {
+            "nombre": ("Nombre de la estacion"),
+            "munipio": ("Municipio de la estacion"),
+            "eficiencia_energetica": ("Eficiencia energetica"),
+            "comunidad_autonoma": ("Comunidad autonoma"),
+            "local": ("Locales"),
+        }
+        help_texts = {
+            "eficiencia_energetica" : ("Una sola letra"),
+        }
+        widgets = {
+            "local" : forms.Select()
+        }        
+        
+    def clean(self):
+        comunidad_autonoma=self.cleaned_data.get("comunidad_autonoma")
+        eficiencia_energetica=self.cleaned_data.get("eficiencia_energetica")
+        
+        if(comunidad_autonoma[0].islower()):
+            self.add_error("comunidad_autonoma","La primera letra tiene que ser mayuscula")
+        
+        if(eficiencia_energetica==" "):
+            self.add_error("eficiencia_energetica","El unico caracter no puede ser un espacio")
+        return self.cleaned_data
+            
+class TrabajadorForm(ModelForm):
+    class Meta:
+        model=Trabajador
+        fields='__all__'
+        labels = {
+            "nombre": ("Nombre del trabajador"),
+            "apellidos": ("Apellidos del trabajador"),
+            "puesto": ("Puesto del trabajador"),
+            "sueldo": ("Sueldo del trabajador"),
+            "observaciones": ("Observaciones del trabajador"),
+            "estacion": ("Estacion del trabajador"),  
+        }
+        widgets = {
+            "estacion" : forms.SelectMultiple()
+        }
+    
+    def clean(self):
+        sueldo=self.cleaned_data.get("sueldo")
+        observaciones=self.cleaned_data.get("observaciones")
+        caracter="!"
+        
+        if caracter in observaciones:
+            self.add_error("observaciones","El campo observaciones no puede contener un '!'")
+            
+        if sueldo < 0:
+            self.add_error("sueldo","El sueldo no puede ser negativo")
+            
+        return self.cleaned_data
+            
         

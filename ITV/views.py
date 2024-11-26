@@ -72,6 +72,10 @@ def vehiculos_sin_trabajadores(request):
     vehiculos=vehiculos.filter(trabajadores=None).all()
     return render(request,"vehiculos/listar_vehiculos.html",{'views_vehiculos':vehiculos})
 
+def locales(request):
+    locales=Local.objects.all()
+    return render(request,"locales/listar_local.html",{'views_locales':locales})
+
 def mi_error_400(request,exception=None):
     return render(request,"errores/400.html",None,None,400)
 
@@ -89,117 +93,85 @@ def mi_error_500(request,exception=None):
     #CLIENTE------------------------------
 
 def procesar_cliente(request):
-    datosFormulario=None
-    if request.method == "POST":
-        datosFormulario = request.POST
-        
-    formulario=ClienteForm(datosFormulario)
-    
-    if (request.method== "POST"):
-        cliente_creado=crear_cliente(formulario)
-        if(cliente_creado):
-            return redirect("urls_listar_clientes")
+    if (request.method == "POST"):
+        formulario=ClienteForm(request.POST)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect("urls_listar_clientes")
+            except Exception as error:
+                print(error)
+    else:
+        formulario=ClienteForm()             
     return render(request,'clientes/create.html',{"formulario":formulario})
-
-def crear_cliente(formulario):
-    cliente_creado=False
-    
-    if formulario.is_valid():
-        
-        cliente= Cliente.objects.create(
-                nombre=formulario.cleaned_data.get('nombre'),
-                apellidos=formulario.cleaned_data.get('apellidos'),
-                sexo=formulario.cleaned_data.get('sexo'),
-                fecha_nacimiento=formulario.cleaned_data.get('fecha_nacimiento'),
-                codigo_postal=formulario.cleaned_data.get('codigo_postal'),
-                domicilio=formulario.cleaned_data.get('domicilio'),
-                correo= formulario.cleaned_data.get('correo'),
-                telefono=formulario.cleaned_data.get('telefono'),
-                dni=formulario.cleaned_data.get('dni'),
-        )       
-        try:
-            cliente.save()
-            cliente_creado=True
-        except:
-            pass
-    return cliente_creado
 
     #Inspeccion------------------------------
        
 def procesar_inspeccion(request): 
-    datosFomulario=None
-    
     if (request.method == "POST"):
-        datosFomulario=request.POST
-        
-    formulario=InspeccionForm(datosFomulario)
-    
-    if(request.method == "POST"):
-        inspeccion_creado=crear_inspeccion(formulario)
-        if(inspeccion_creado):
-            return redirect("urls_inspecciones_vehiculo")
+        formulario=InspeccionForm(request.POST)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect("urls_inspecciones_vehiculo")
+            except Exception as error:
+                print(error)
+    else:
+        formulario=InspeccionForm()  
     return render(request,'inspecciones/create.html',{"formulario":formulario})
 
-def crear_inspeccion(formulario):
-    inspeccion_creado=False
-    
-    if formulario.is_valid():
-        inspeccion = Inspeccion.objects.create(
-            fecha_inspeccion = formulario.cleaned_data.get('fecha_inspeccion'),
-            resultado_inspeccion = formulario.cleaned_data.get('resultado_inspeccion'), 
-            notas_inspeccion = formulario.cleaned_data.get('notas_inspeccion'), 
-            cliente_puntual = formulario.cleaned_data.get('cliente_puntual'),
-            trabajador = formulario.cleaned_data.get('trabajador'),
-            vehiculo = formulario.cleaned_data.get('vehiculo'),
-        )
-        
-        try:
-            inspeccion.save()
-            inspeccion_creado=True
-        except:
-            pass
-    return inspeccion_creado
+
 
     #CLIENTE------------------------------
     
 def procesar_vehiculo(request):
-    datosFomulario=None
-    
     if (request.method == "POST"):
-        datosFomulario=request.POST
-        
-    formulario=VehiculoForm(datosFomulario)
-    
-    if(request.method == "POST"):
-        inspeccion_creado=crear_vehiculo(formulario)
-        if(inspeccion_creado):
-            return redirect("urls_vehiculos")
+        formulario=VehiculoForm(request.POST)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect("urls_vehiculos")
+            except Exception as error:
+                print(error)
+    else:
+        formulario=VehiculoForm()          
     return render(request,'vehiculos/create.html',{"formulario":formulario})
 
-def crear_vehiculo(formulario):
-    vehiculo_creado=False
-    
-    if formulario.is_valid():
-        vehiculo = Vehiculo.objects.create(
-            fecha_matriculacion=formulario.cleaned_data.get("fecha_matriculacion"),
-            marca=formulario.cleaned_data.get("marca"),
-            modelo=formulario.cleaned_data.get("modelo"),
-            numero_bastidor=formulario.cleaned_data.get("numero_bastidor"),
-            tipo_vehiculo=formulario.cleaned_data.get("tipo_vehiculo"),
-            cilindrada=formulario.cleaned_data.get("cilindrada"),
-            potencia=formulario.cleaned_data.get("potencia"),
-            combustible=formulario.cleaned_data.get("combustible"),
-            mma=formulario.cleaned_data.get("mma"),
-            asientos=formulario.cleaned_data.get("asientos"),
-            ejes=formulario.cleaned_data.get("ejes"),
-            dni_propietario=formulario.cleaned_data.get("dni_propietario"),
-            matricula=formulario.cleaned_data.get("matricula"),
-            trabajadores=formulario.cleaned_data.get("trabajadores"),
-        )
-        
-        try:
-            vehiculo.save()
-            vehiculo_creado=True
-        except:
-            pass
-    return vehiculo_creado
+def procesar_local(request):
+    if(request.method=="POST"):
+        formulario=LocalForm(request.POST)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect("urls_locales")
+            except Exception as error:
+                print(error)
+    else:
+        formulario=LocalForm()
+    return render(request,'locales/create.html',{"formulario":formulario})
+
+def procesar_estacion(request):
+    if(request.method=="POST"):
+        formulario=EstacionForm(request.POST)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect("urls_estaciones_con_locales")
+            except Exception as error:
+                print(error)
+    else:
+        formulario=EstacionForm()
+    return render(request,'estaciones/create.html',{"formulario":formulario})
+
+def procesar_trabajador(request):
+    if(request.method=="POST"):
+        formulario=TrabajadorForm(request.POST)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect("urls_estaciones_con_locales")
+            except Exception as error:
+                print(error)
+    else:
+        formulario=TrabajadorForm()
+    return render(request,'trabajadores/create.html',{"formulario":formulario})

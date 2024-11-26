@@ -5,12 +5,9 @@
 {% endblock %}
 
 {% block contenido %}
-    {% for inspeccion in views_locales %}
-        {% include 'inspecciones/inspeccion.html' %}   
+    {% for local in views_inspecciones_vehiculo %}
+        {% include 'locales/local.html' %}   
     {% empty %}
-        <h1>Lo siento, no existen inspecciones</h1>
+        <h1>Lo siento, no existen locales</h1>
     {% endfor %}
 {% endblock %}
-
-
-

@@ -25,7 +25,7 @@ class Local(models.Model):
     duenio=models.CharField(max_length=50)
     
     def __str__(self):
-        return self.duenio + " "+ self.metros
+        return self.duenio + " "+ str(self.metros)
     
 class EstacionItv(models.Model):
     #relaciones
