@@ -122,7 +122,7 @@ def procesar_inspeccion(request):
 
 
 
-    #CLIENTE------------------------------
+    #Vehiculo------------------------------
     
 def procesar_vehiculo(request):
     if (request.method == "POST"):
