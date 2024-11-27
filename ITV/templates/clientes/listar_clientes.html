@@ -5,11 +5,15 @@
 {% endblock %}
 
 {% block contenido %}
+<div class="row">
     {% for cliente in views_listar_cliente %}
-        {% include 'clientes/cliente.html' %} 
+    <div class="col-sm-4 mb-2">
+        {% include 'clientes/cliente.html' %}
+    </div>
     {% empty %}
         <h1>Lo siento, no existen clientes</h1>
     {% endfor %}
+</div>
 {% endblock %}
 
 

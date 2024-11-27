@@ -5,9 +5,13 @@
 {% endblock %}
 
 {% block contenido %}
+<div class="row">
     {% for vehiculo in views_vehiculos %}
-        {% include 'vehiculos/vehiculo.html' %}   
+    <div class="col-sm-4 mb-2">
+        {% include 'vehiculos/vehiculo.html' %} 
+    </div>         
     {% empty %}
         <h1>Lo siento, no existen vehículos</h1>
     {% endfor %}
+</div>    
 {% endblock %}

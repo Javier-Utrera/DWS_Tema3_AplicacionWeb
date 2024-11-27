@@ -1,44 +1,155 @@
-<h1>ITV</h1>
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-success px-4">
+    <a class="navbar-brand" href="#">
+      <img src="{% static  'imagenes/ba.jpg' %}" 
+          alt="" width="100" height="50" 
+          class="d-inline-block align-text-middle">
+    </a>
+    <button class="navbar-toggler" type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#accionesBiblioteca" 
+      aria-controls="navbarAccionesBiblioteca" 
+      aria-expanded="false" 
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="accionesBiblioteca">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'urls_index' %}">Inicio</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" 
+              id="accionesLibrosLink" 
+              role="button" 
+              data-bs-toggle="dropdown" 
+              aria-expanded="false">
+            Citas
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
+            <li><a class="dropdown-item" href="{% url 'listar_citas' %}">Ver Citas</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" 
+                id="accionesLibrosLink" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+              Clientes
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
+              <li><a class="dropdown-item" href="{% url 'listar_clientes' %}">Ver Clientes</a></li>
+              <li><a class="dropdown-item" href="{% url 'procesar_cliente' %}">Crear Clientes</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" 
+                id="accionesLibrosLink" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+              Estaciones
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
+              <li><a class="dropdown-item" href="{% url 'listar_estaciones' %}">Ver Estaciones</a></li>
+              <li><a class="dropdown-item" href="{% url 'procesar_estacion' %}">Crear Estaciones</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" 
+                id="accionesLibrosLink" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+              Inspecciones
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
+              <li><a class="dropdown-item" href="{% url 'listar_inspecciones' %}">Ver Inspecciones</a></li>
+              <li><a class="dropdown-item" href="{% url 'procesar_inspeccion' %}">Crear Inspeccion</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" 
+                id="accionesLibrosLink" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+              Locales
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
+              <li><a class="dropdown-item" href="{% url 'listar_locales' %}">Ver Locales</a></li>
+              <li><a class="dropdown-item" href="{% url 'procesar_local' %}">Crear Local</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" 
+                id="accionesLibrosLink" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+              Trabajadores
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
+              <li><a class="dropdown-item" href="{% url 'listar_trabajadores' %}">Ver Trabajadores</a></li>
+              <li><a class="dropdown-item" href="{% url 'procesar_trabajador' %}">Crear Trabajador</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" 
+                id="accionesLibrosLink" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+              Vehiculos
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
+              <li><a class="dropdown-item" href="{% url 'listar_vehiculos' %}">Ver Vehiculos</a></li>
+              <li><a class="dropdown-item" href="{% url 'procesar_vehiculo' %}">Crear Vehiculo</a></li>
+            </ul>
+        </li>
+
+      </ul>
+
+    </div>
+</nav>
+{% comment %} <h1>ITV</h1>
     <h2>Listado de enlaces</h2>
     <ul>
         <li>
-            <a href="{% url 'urls_listar_clientes' %}">
-                1.Todos los clientes filtrados por sexo, nombre y fecha de nacimiento.</a>
+            <a href="{% url 'listar_clientes' %}">
+                1.Listado de clientes.</a>
         </li>
         <li>
-            <a href="{% url 'urls_cita_cliente' id_cliente=2 %}">
-                2.Todas las citas del cliente Con ID:2</a>
+            <a href="{% url 'listar_citas' %}">
+                2.Listado de citas</a>
         </li>
         <li>
-            <a href="{% url 'urls_estaciones_con_locales' %}">
-                3. Estaciones ITV junto a su local, ordenadas por el precio del local.</a>
+            <a href="{% url 'listar_estaciones' %}">
+                3.Listado de estaciones</a>
         </li>
         <li>
-            <a href="{% url 'urls_trabajadores_estacion' id_estacion=4 %}">
-                4.todos los datos de los trabajadores que trabajan en la estación ITV con ID:4</a>
+            <a href="{% url 'listar_trabajadores'%}">
+                4.Listado de trabajadores</a>
         </li>
         <li>
-            <a href="{% url 'urls_inspecciones_vehiculo' %}">
-                5.Inspecciones de un vehículo específico por matrícula=Wall. . </a>
+            <a href="{% url 'listar_inspecciones' %}">
+                5.Listado de inspecciones</a>
         </li>
         <li>
-            <a href="{% url 'urls_maquinaria_empresa' id_maquina=2 %}">
-                6.Detalle de una maquinaria específica con id:2 y su empresa externa asociada.</a>
+            <a href="{% url 'listar_vehiculos' %}">
+                7.Listado de vehiculos</a>
         </li>
         <li>
-            <a href="{% url 'urls_citas_fechas' anio1=1990 anio2=2000 %}">
-                7.Citas de las Estaciones en Rango de Fechas entre 1990 y 2000 mostrando la cita mas reciente de ese rango</a>
+            <a href="{% url 'listar_locales'%}">
+                8.Listado de locales</a>
         </li>
-        <li>
-            <a href="{% url 'urls_vehiculos'%}">
-                8.Conteo de Vehículos por un tipo de combustible 'gas' u 'die'.</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_citas_estacion' id_cliente=2 tipo_inspeccion='VETAX'%}">
-                9. Muestra todas las citas de una estación ITV, filtradas por el ID:2 del cliente y el tipo de inspección:'VETAX'</a>
-        </li>
-        <li>
-            <a href="{% url 'urls_vehiculos_sin_trabajadores'%}">
-                10. Vehículos sin Trabajadores Asociados: Vehículos que no tienen trabajadores asociados.</a>
-        </li>
-    </ul> 
+    </ul>  {% endcomment %}

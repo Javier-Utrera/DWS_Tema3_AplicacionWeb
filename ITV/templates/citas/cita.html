@@ -1,46 +1,51 @@
-<div style="background-color: rgb(176, 252, 226);">
-    <h2>Id cita: {{ cita.id }}</h2>
-    <h2>Matrícula: {{ cita.matricula }}</h2>
-    <h2>Fecha de Matriculación: {{ cita.fecha_matriculacion|date:"Y-m-d" }}</h2>
-    <h2>Número de Bastidor: {{ cita.numero_bastidor }}</h2>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Id cita: {{ cita.id }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Matrícula: {{ cita.matricula }}</h6>
+        <p class="card-text"><strong>Fecha de Matriculación:</strong> {{ cita.fecha_matriculacion|date:"Y-m-d" }}</p>
+        <p class="card-text"><strong>Número de Bastidor:</strong> {{ cita.numero_bastidor }}</p>
 
-    <h2>Tipo de Inspección:</h2>
-    {% if cita.tipo_inspeccion == 'PE' %}
-        <span style="color: green;">Periódica</span>
-    {% elif cita.tipo_inspeccion == 'NOPE' %}
-        <span style="color: blue;">No Periódica</span>
-    {% elif cita.tipo_inspeccion == 'VETAX' %}
-        <span style="color: orange;">Verificación Taxímetro</span>
-    {% elif cita.tipo_inspeccion == 'VETAXV' %}
-        <span style="color: red;">Verificación Taxímetro Cambio Vehículo</span>
-    {% else %}
-        <span style="color: black;">Desconocido</span>
-    {% endif %}
+        <h5 class="mt-3">Tipo de Inspección:</h5>
+        <p class="card-text">
+            {% if cita.tipo_inspeccion == 'PE' %}
+                <span class="text-success">Periódica</span>
+            {% elif cita.tipo_inspeccion == 'NOPE' %}
+                <span class="text-primary">No Periódica</span>
+            {% elif cita.tipo_inspeccion == 'VETAX' %}
+                <span class="text-warning">Verificación Taxímetro</span>
+            {% elif cita.tipo_inspeccion == 'VETAXV' %}
+                <span class="text-danger">Verificación Taxímetro Cambio Vehículo</span>
+            {% else %}
+                <span class="text-dark">Desconocido</span>
+            {% endif %}
+        </p>
 
-    <h2>Remolque: {{ cita.remolque }}</h2>
-    <h2>Tipo de Pago: {{ cita.tipo_pago }}</h2>
-    <h2>Fecha Propuesta: {{ cita.fecha_propuesta }}</h2>
-    <h2>Hora Propuesta: {{ cita.hora_propuesta }}</h2>
-
-    <h2>Datos del cliente:</h2>
-    <div style="background-color: rgb(176, 224, 252);">
-        <h2>ID Cliente: {{ cita.cliente.id }}</h2>
-        <h2>Nombre: {{ cita.cliente.nombre }}</h2>
-        <h2>Apellidos: {{ cita.cliente.apellidos }}</h2>
-        <h2>Sexo: {{ cita.cliente.sexo }}</h2>
-        <h2>DNI: {{ cita.cliente.dni }}</h2>
-        <h2>Teléfono: {{ cita.cliente.telefono }}</h2>
-        <h2>Correo: {{ cita.cliente.correo }}</h2>
-        <h2>Domicilio: {{ cita.cliente.domicilio }}</h2>
-        <h2>Fecha de nacimiento: {{ cita.cliente.fecha_nacimiento|date:"Y-m-d" }}</h2>
-    </div>
-
-    <h2>Datos de la estación que recibe la cita:</h2>
-    <div style="background-color: rgb(192, 176, 252);">
-        <h2>Id Estación: {{ cita.estacion.id }}</h2>
-        <h2>Nombre: {{ cita.estacion.nombre }}</h2>
-        <h2>Municipio: {{ cita.estacion.munipio }}</h2>
-        <h2>Eficiencia: {{ cita.estacion.eficiencia_energetica }}</h2>
-        <h2>Comunidad Autónoma: {{ cita.estacion.comunidad_autonoma }}</h2>
+        <p class="card-text"><strong>Remolque:</strong> {{ cita.remolque }}</p>
+        <p class="card-text"><strong>Tipo de Pago:</strong> {{ cita.tipo_pago }}</p>
+        <p class="card-text"><strong>Fecha Propuesta:</strong> {{ cita.fecha_propuesta }}</p>
+        <p class="card-text"><strong>Hora Propuesta:</strong> {{ cita.hora_propuesta }}</p>
+        <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#contenidoCollapse_{{ cita.id }}" aria-expanded="false" aria-controls="contenidoCollapse_{{ cita.id }}">
+            Mostrar/Ocultar Datos
+        </button>
+        <h5 class="mt-4">Datos del Cliente:</h5>
+        <div class="p-3 mb-3 rounded collapse" id="contenidoCollapse_{{ cita.id }}">
+            <p><strong>ID Cliente:</strong> {{ cita.cliente.id }}</p>
+            <p><strong>Nombre:</strong> {{ cita.cliente.nombre }}</p>
+            <p><strong>Apellidos:</strong> {{ cita.cliente.apellidos }}</p>
+            <p><strong>Sexo:</strong> {{ cita.cliente.sexo }}</p>
+            <p><strong>DNI:</strong> {{ cita.cliente.dni }}</p>
+            <p><strong>Teléfono:</strong> {{ cita.cliente.telefono }}</p>
+            <p><strong>Correo:</strong> {{ cita.cliente.correo }}</p>
+            <p><strong>Domicilio:</strong> {{ cita.cliente.domicilio }}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {{ cita.cliente.fecha_nacimiento|date:"Y-m-d" }}</p>
+        </div>
+        <h5 class="mt-4">Datos de la Estación:</h5>
+        <div class="p-3 rounded collapse" id="contenidoCollapse_{{ cita.id }}">
+            <p><strong>Id Estación:</strong> {{ cita.estacion.id }}</p>
+            <p><strong>Nombre:</strong> {{ cita.estacion.nombre }}</p>
+            <p><strong>Municipio:</strong> {{ cita.estacion.munipio }}</p>
+            <p><strong>Eficiencia Energética:</strong> {{ cita.estacion.eficiencia_energetica }}</p>
+            <p><strong>Comunidad Autónoma:</strong> {{ cita.estacion.comunidad_autonoma }}</p>
+        </div>
     </div>
 </div>

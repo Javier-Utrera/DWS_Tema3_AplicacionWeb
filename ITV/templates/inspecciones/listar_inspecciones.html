@@ -1,15 +1,19 @@
 {% extends "estructura/padre.html" %}
 
 {% block cabecera %}
-    <h1>Listado de locales</h1>
+    <h1>Listado de Inspecciones</h1>
 {% endblock %}
 
 {% block contenido %}
-    {% for inspeccion in views_locales %}
+<div class="row">
+    {% for inspeccion in views_inspecciones_vehiculo %}
+    <div class="col-sm-4 mb-2">
         {% include 'inspecciones/inspeccion.html' %}   
+    </div> 
     {% empty %}
         <h1>Lo siento, no existen inspecciones</h1>
     {% endfor %}
+</div> 
 {% endblock %}
 
 

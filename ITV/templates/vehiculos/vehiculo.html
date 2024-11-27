@@ -1,42 +1,53 @@
-<div style="background-color: rgb(176, 252, 226);">
-    <h2>Id Vehículo: {{ vehiculo.id }}</h2>
-    <h2>Marca: {{ vehiculo.marca|lower }}</h2>
-    <h2>Modelo: {{ vehiculo.modelo|upper }}</h2>
-    <h2>Número del Bastidor: {{ vehiculo.numero_bastidor|truncatechars:10 }}</h2>
-    <h2>Tipo de Vehículo: {{ vehiculo.tipo_vehiculo }}</h2>
-    <h2>Cilindrada: {{ vehiculo.cilindrada }}</h2>
-    <h2>Potencia: {{ vehiculo.potencia }}</h2>
-    <h2>Combustible: {{ vehiculo.combustible }}</h2>
-    <h2>Masa Máxima Autorizada: {{ vehiculo.mma }}</h2>
-    <h2>Asientos: {{ vehiculo.asientos }}</h2>
-    <h2>Ejes: {{ vehiculo.ejes }}</h2>
-    <h2>Ejejes pares?: {{ vehiculo.ejes|divisibleby:"2" }}</h2>
-    <h2>DNI Propietario: {{ vehiculo.dni_propietario }}</h2>
-    <h2>Matrícula: {{ vehiculo.matricula }}</h2>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Detalles del Vehículo</h5>
+        <p class="card-text"><strong>Id Vehículo:</strong> {{ vehiculo.id }}</p>
+        <p class="card-text"><strong>Marca:</strong> {{ vehiculo.marca|lower }}</p>
+        <p class="card-text"><strong>Modelo:</strong> {{ vehiculo.modelo|upper }}</p>
+        <p class="card-text"><strong>Número del Bastidor:</strong> {{ vehiculo.numero_bastidor|truncatechars:10 }}</p>
+        <p class="card-text"><strong>Tipo de Vehículo:</strong> {{ vehiculo.tipo_vehiculo }}</p>
+        <p class="card-text"><strong>Cilindrada:</strong> {{ vehiculo.cilindrada }}</p>
+        <p class="card-text"><strong>Potencia:</strong> {{ vehiculo.potencia }}</p>
+        <p class="card-text"><strong>Combustible:</strong> {{ vehiculo.combustible }}</p>
+        <p class="card-text"><strong>Masa Máxima Autorizada:</strong> {{ vehiculo.mma }}</p>
+        <p class="card-text"><strong>Asientos:</strong> {{ vehiculo.asientos }}</p>
+        <p class="card-text"><strong>Ejes:</strong> {{ vehiculo.ejes }}</p>
+        <p class="card-text"><strong>Ejes pares:</strong> {{ vehiculo.ejes|divisibleby:"2" }}</p>
+        <p class="card-text"><strong>DNI Propietario:</strong> {{ vehiculo.dni_propietario }}</p>
+        <p class="card-text"><strong>Matrícula:</strong> {{ vehiculo.matricula }}</p>
 
-    <h2>Trabajadores que han realizado inspecciones a este vehículo:</h2>
-    <h3>Numero de trabajadores {{ vehiculo.trabajadores.all|length }}</h3>
-    {% for trabajador in vehiculo.trabajadores.all %}
-        <div style="background-color: rgb(176, 227, 252);">
-            <h2>Nombre: {{ trabajador.nombre|lower }}</h2>
-            <h2>Apellidos: {{ trabajador.apellidos|upper }}</h2>
-            <h2>Puesto: {{ trabajador.puesto }}</h2>
-            <h2>Sueldo: {{ trabajador.sueldo|add:"2" }}</h2>
-            <h2>Observaciones: {{ trabajador.observaciones|capfirst }}</h2>
+        <h5 class="mt-4">Trabajadores que han realizado inspecciones:</h5>
+        <p class="card-text"><strong>Número de Trabajadores:</strong> {{ vehiculo.trabajadores.all|length }}</p>
+        <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_trabajador_{{vehiculo.id}}" aria-expanded="false" aria-controls="collapse_trabajador_{{vehiculo.id}}">
+            Mostrar/Ocultar Datos
+        </button>
+        {% for trabajador in vehiculo.trabajadores.all %}
+        <div class="mb-3 p-2 rounded collapse" id="collapse_trabajador_{{vehiculo.id}}">
+            <p class="card-text"><strong>Nombre:</strong> {{ trabajador.nombre|lower }}</p>
+            <p class="card-text"><strong>Apellidos:</strong> {{ trabajador.apellidos|upper }}</p>
+            <p class="card-text"><strong>Puesto:</strong> {{ trabajador.puesto }}</p>
+            <p class="card-text"><strong>Sueldo:</strong> {{ trabajador.sueldo|add:"2" }}</p>
+            <p class="card-text"><strong>Observaciones:</strong> {{ trabajador.observaciones|capfirst }}</p>
         </div>
-    {% endfor %}
+        {% empty %}
+            <h1>Lo siento, no existen trabajadores</h1>
+        {% endfor %}
 
-    <h2>Inspecciones que se han realizado a este vehículo:</h2>
-    <h3>Numero de inspección{{ vehiculo.vehiculo_Inspeccion.all|pluralize:"es" }} {{ vehiculo.vehiculo_Inspeccion.all|length }}
-              
-    </h3>
-    {% for inspeccion in vehiculo.vehiculo_Inspeccion.all %}
-        <div style="background-color: rgb(197, 176, 252);">
-            <h2>Id Inspección: {{ inspeccion.id }}</h2>
-            <h2>Fecha: {{ inspeccion.fecha_inspeccion|date:"Y-m-d" }}</h2>
-            <h2>Resultado: {{ inspeccion.resultado_inspeccion }}</h2>
-            <h2>Notas: {{ inspeccion.notas_inspeccion|default:"Sin notas" }}</h2>
-            <h2>Cliente Puntual: {{ inspeccion.cliente_puntual }}</h2>
+        <h5 class="mt-4">Inspecciones realizadas al vehículo:</h5>
+        <p class="card-text"><strong>Número de Inspecciones:</strong> {{ vehiculo.vehiculo_Inspeccion.all|length }}</p>
+        <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_inspeccion_{{vehiculo.id}}" aria-expanded="false" aria-controls="collapse_inspeccion_{{vehiculo.id}}">
+            Mostrar/Ocultar Datos
+        </button>
+        {% for inspeccion in vehiculo.vehiculo_Inspeccion.all %}
+        <div class="mb-3 p-2 rounded collapse" id="collapse_inspeccion_{{vehiculo.id}}">
+            <p class="card-text"><strong>Id Inspección:</strong> {{ inspeccion.id }}</p>
+            <p class="card-text"><strong>Fecha:</strong> {{ inspeccion.fecha_inspeccion|date:"Y-m-d" }}</p>
+            <p class="card-text"><strong>Resultado:</strong> {{ inspeccion.resultado_inspeccion }}</p>
+            <p class="card-text"><strong>Notas:</strong> {{ inspeccion.notas_inspeccion|default:"Sin notas" }}</p>
+            <p class="card-text"><strong>Cliente Puntual:</strong> {{ inspeccion.cliente_puntual }}</p>
         </div>
+        {% empty %}
+        <h1>Lo siento, no existen inspecciones</h1>
     {% endfor %}
+    </div>
 </div>

@@ -5,9 +5,13 @@
 {% endblock %}
 
 {% block contenido %}
+<div class="row">
     {% for estacion in views_estaciones_con_locales %}
-        {% include 'estaciones/estacion.html' %}        
+    <div class="col-sm-4 mb-2">
+        {% include 'estaciones/estacion.html' %}
+    </div>            
     {% empty %}
         <h1>Lo siento, no existen estaciones</h1>
     {% endfor %}
+</div>   
 {% endblock %}

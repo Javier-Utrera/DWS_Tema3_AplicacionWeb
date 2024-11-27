@@ -29,15 +29,6 @@ class ClienteForm(ModelForm):
     def clean(self):
         
         super().clean()
-        
-        # nombre=self.cleaned_data.get('nombre')
-        # apellidos=self.cleaned_data.get('apellidos')
-        # sexo=self.cleaned_data.get('sexo')
-        # fecha_nacimiento=self.cleaned_data.get('fecha_nacimiento')
-        # codigo_postal=self.cleaned_data.get('codigo_postal')
-        # domicilio=self.cleaned_data.get('domicilio')
-        # correo= self.cleaned_data.get('correo')
-        # telefono=self.cleaned_data.get('telefono')
         dni=self.cleaned_data.get('dni')
         
         #VALIDAMOS DNI
@@ -53,7 +44,9 @@ class ClienteForm(ModelForm):
            self.add_error("dni","El dni ya existe en la base de datos") 
            
         return self.cleaned_data
-    
+
+# class BusquedaAvanzadaCliente(forms.Form):
+
     
 class InspeccionForm(ModelForm):
     class Meta:
@@ -112,14 +105,14 @@ class VehiculoForm(ModelForm):
             "ejes": ("Número de ejes"),
             "dni_propietario": ("DNI del propietario"),
             "matricula": ("Matrícula"),
-            "trabajadores" : ("Trabajadores")
+            # "trabajadores" : ("Trabajadores")
         }
         help_texts = {
-            "trabajadores" : ("Manten pulsada la tecla control para seleccionar varios elementos"),
+            # "trabajadores" : ("Manten pulsada la tecla control para seleccionar varios elementos"),
         }
         widgets = {
             "fecha_matriculacion" : forms.SelectDateWidget(),
-            "trabajadores" : forms.SelectMultiple(),
+            # "trabajadores" : forms.SelectMultiple(),
             "tipo_vehiculo" : forms.Select(),
             "combustible" : forms.Select(),
             "numero_bastidor":forms.NumberInput

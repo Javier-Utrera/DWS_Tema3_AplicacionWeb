@@ -1,39 +1,48 @@
-<div style="background-color: rgb(176, 252, 226);">
-    <h2>Id Inspección: {{ inspeccion.id }}</h2>
-    <h2>Fecha: {{ inspeccion.fecha_inspeccion|date:"Y-m-d" }}</h2>
-    <h2>Resultado: {{ inspeccion.resultado_inspeccion }}</h2>
-    <h2>Notas: {{ inspeccion.notas_inspeccion }}</h2>
-    <h2>Cliente puntual: {{ inspeccion.cliente_puntual }}</h2>
-    
-    <h2>Trabajador que ha realizado la inspección:</h2>
-    <div style="background-color: rgb(176, 206, 252);">
-        <h2>Id Trabajador: {{ inspeccion.trabajador.id }}</h2>
-        <h2>Nombre: {{ inspeccion.trabajador.nombre }}</h2>
-    </div>
-    
-    <h2>Vehículo al que se le realiza la inspección:</h2>
-    <div style="background-color: rgb(183, 176, 252);">
-        <h2>Id Vehículo: {{ inspeccion.vehiculo.id }}</h2>
-        <h2>Marca: {{ inspeccion.vehiculo.marca }}</h2>
-        <h2>Modelo: {{ inspeccion.vehiculo.modelo }}</h2>
-        <h2>Número de Bastidor: {{ inspeccion.vehiculo.numero_bastidor }}</h2>
-        <h2>Tipo de Vehículo: {{ inspeccion.vehiculo.tipo_vehiculo }}</h2>
-        <h2>Cilindrada: {{ inspeccion.vehiculo.cilindrada }}</h2>
-        <h2>Potencia: {{ inspeccion.vehiculo.potencia }}</h2>
-        <h2>Combustible: {{ inspeccion.vehiculo.combustible }}</h2>
-        <h2>Masa Máxima Autorizada: {{ inspeccion.vehiculo.mma }}</h2>
-        <h2>Asientos: {{ inspeccion.vehiculo.asientos }}</h2>
-        <h2>Ejes: {{ inspeccion.vehiculo.ejes }}</h2>
-        <h2>DNI Propietario: {{ inspeccion.vehiculo.dni_propietario }}</h2>
-        <h2>Matrícula: {{ inspeccion.vehiculo.matricula }}</h2>
-    </div>
-    
-    <h2>Factura que genera esta inspección:</h2>
-    <div style="background-color: rgb(243, 176, 252);">
-        <h2>Id Factura: {{ inspeccion.inspeccion_Factura.id }}</h2>
-        <h2>Importe: {{ inspeccion.inspeccion_Factura.importe }}</h2>
-        <h2>¿Está pagado?: {{ inspeccion.inspeccion_Factura.pagado }}</h2>
-        <h2>Fecha Emisión Factura: {{ inspeccion.inspeccion_Factura.fecha_emision_factura|date:"Y-m-d" }}</h2>
-        <h2>Observaciones: {{ inspeccion.inspeccion_Factura.observaciones }}</h2>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Detalles de la Inspección</h5>
+        <p class="card-text"><strong>Id Inspección:</strong> {{ inspeccion.id }}</p>
+        <p class="card-text"><strong>Fecha:</strong> {{ inspeccion.fecha_inspeccion|date:"Y-m-d" }}</p>
+        <p class="card-text"><strong>Resultado:</strong> {{ inspeccion.resultado_inspeccion }}</p>
+        <p class="card-text"><strong>Notas:</strong> {{ inspeccion.notas_inspeccion }}</p>
+        <p class="card-text"><strong>Cliente Puntual:</strong> {{ inspeccion.cliente_puntual }}</p>
+
+        <h5 class="mt-4">Trabajador que realizó la inspección</h5>
+        <div class="p-3 rounded">
+            <p class="card-text"><strong>Id Trabajador:</strong> {{ inspeccion.trabajador.id }}</p>
+            <p class="card-text"><strong>Nombre:</strong> {{ inspeccion.trabajador.nombre }}</p>
+        </div>
+
+        <h5 class="mt-4">Vehículo inspeccionado</h5>
+        <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_vehiculo_{{ inspeccion.id }}" aria-expanded="false" aria-controls="collapse_vehiculo_{{ inspeccion.id }}">
+            Mostrar/Ocultar Datos
+        </button>
+        <div class="p-3 rounded collapse" id="collapse_vehiculo_{{ inspeccion.id }}">
+            <p class="card-text"><strong>Id Vehículo:</strong> {{ inspeccion.vehiculo.id }}</p>
+            <p class="card-text"><strong>Marca:</strong> {{ inspeccion.vehiculo.marca }}</p>
+            <p class="card-text"><strong>Modelo:</strong> {{ inspeccion.vehiculo.modelo }}</p>
+            <p class="card-text"><strong>Número de Bastidor:</strong> {{ inspeccion.vehiculo.numero_bastidor }}</p>
+            <p class="card-text"><strong>Tipo de Vehículo:</strong> {{ inspeccion.vehiculo.tipo_vehiculo }}</p>
+            <p class="card-text"><strong>Cilindrada:</strong> {{ inspeccion.vehiculo.cilindrada }}</p>
+            <p class="card-text"><strong>Potencia:</strong> {{ inspeccion.vehiculo.potencia }}</p>
+            <p class="card-text"><strong>Combustible:</strong> {{ inspeccion.vehiculo.combustible }}</p>
+            <p class="card-text"><strong>Masa Máxima Autorizada:</strong> {{ inspeccion.vehiculo.mma }}</p>
+            <p class="card-text"><strong>Asientos:</strong> {{ inspeccion.vehiculo.asientos }}</p>
+            <p class="card-text"><strong>Ejes:</strong> {{ inspeccion.vehiculo.ejes }}</p>
+            <p class="card-text"><strong>DNI Propietario:</strong> {{ inspeccion.vehiculo.dni_propietario }}</p>
+            <p class="card-text"><strong>Matrícula:</strong> {{ inspeccion.vehiculo.matricula }}</p>
+        </div>
+
+        <h5 class="mt-4">Factura asociada a la inspección</h5>
+        <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_factura_{{ inspeccion.id }}" aria-expanded="false" aria-controls="collapse_factura_{{ inspeccion.id }}">
+            Mostrar/Ocultar Datos
+        </button>
+        <div class="p-3 rounded collapse" id="collapse_factura_{{ inspeccion.id }}">
+            <p class="card-text"><strong>Id Factura:</strong> {{ inspeccion.inspeccion_Factura.id }}</p>
+            <p class="card-text"><strong>Importe:</strong> {{ inspeccion.inspeccion_Factura.importe }}</p>
+            <p class="card-text"><strong>¿Está pagado?:</strong> {{ inspeccion.inspeccion_Factura.pagado }}</p>
+            <p class="card-text"><strong>Fecha de Emisión:</strong> {{ inspeccion.inspeccion_Factura.fecha_emision_factura|date:"Y-m-d" }}</p>
+            <p class="card-text"><strong>Observaciones:</strong> {{ inspeccion.inspeccion_Factura.observaciones }}</p>
+        </div>
     </div>
 </div>

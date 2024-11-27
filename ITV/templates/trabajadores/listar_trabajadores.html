@@ -5,10 +5,14 @@
 {% endblock %}
 
 {% block contenido %}
+<div class="row">
     {% for trabajadores in views_trabajadores_estacion %}
-        {% include 'trabajadores/trabajador.html' %}   
+    <div class="col-sm-4 mb-2">
+        {% include 'trabajadores/trabajador.html' %}  
+    </div>         
     {% empty %}
         <h1>Lo siento, no existen trabajadores</h1>
     {% endfor %}
+</div>    
 {% endblock %}
 
