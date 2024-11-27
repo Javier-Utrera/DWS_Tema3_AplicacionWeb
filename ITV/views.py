@@ -77,6 +77,18 @@ def procesar_cliente(request):
         formulario=ClienteForm()             
     return render(request,'clientes/create.html',{"formulario":formulario})
 
+def buscar_cliente(request):
+    formulario = BusquedaAvanzadaCliente(request.GET)
+    
+    if formulario.is_valid():
+        texto=formulario.cleaned_data.get("textoBusqueda")
+        cliente=Cliente.objects.prefetch_related(Prefetch("cliente_Cita"))
+        cliente=cliente.filter(Q(nombre__contains=texto)| Q(dni__contains=texto)).all()
+        return render(request,'clientes/lista_buscar.html',{"views_listar_cliente":cliente,"texto_busqueda":texto})
+    if("HTTP_REFERER" in request.META):
+        return redirect(request.META["HTTP_REFERER"])
+    else:
+        return redirect("urls_index")
 #INSPECCION------------------------------
        
 def procesar_inspeccion(request): 

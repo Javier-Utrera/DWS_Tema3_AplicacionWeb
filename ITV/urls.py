@@ -52,4 +52,5 @@ urlpatterns = [
         
     #Buscar cliente
     
+    path('clientes/buscar/',views.buscar_cliente,name="buscar_cliente"),   
 ]       

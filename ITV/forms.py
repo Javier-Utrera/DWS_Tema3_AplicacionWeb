@@ -45,8 +45,8 @@ class ClienteForm(ModelForm):
            
         return self.cleaned_data
 
-# class BusquedaAvanzadaCliente(forms.Form):
-
+class BusquedaAvanzadaCliente(forms.Form):
+    textoBusqueda=forms.CharField(required=True)
     
 class InspeccionForm(ModelForm):
     class Meta:

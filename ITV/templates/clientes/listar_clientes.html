@@ -5,15 +5,23 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="row">
-    {% for cliente in views_listar_cliente %}
-    <div class="col-sm-4 mb-2">
-        {% include 'clientes/cliente.html' %}
+<form action="{% url 'buscar_cliente' %}" class="d-flex mt-3" role="search" method="GET">
+    <input name="textoBusqueda" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-light btn-outline-dark" type="submit">Search</button>
+</form>
+    {% block busqueda %}
+    {% endblock %}
+
+    <div class="row">
+        {% for cliente in views_listar_cliente %}
+        <div class="col-sm-4 mb-2">
+            {% include 'clientes/cliente.html' %}
+        </div>
+        {% empty %}
+            <h1>Lo siento, no existen clientes</h1>
+        {% endfor %}
     </div>
-    {% empty %}
-        <h1>Lo siento, no existen clientes</h1>
-    {% endfor %}
-</div>
+
 {% endblock %}
 
 
