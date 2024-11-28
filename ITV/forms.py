@@ -46,8 +46,37 @@ class ClienteForm(ModelForm):
         return self.cleaned_data
 
 class BusquedaAvanzadaCliente(forms.Form):
-    textoBusqueda=forms.CharField(required=True)
+    nombre=forms.CharField(required=False,label="Nombre del usuario")
+    dni=forms.CharField(required=False,label="Dni del usuario")
+    fecha_nacimiento=forms.DateField(required=False,label="Fecha de nacimiento"
+                                     ,widget=forms.DateInput(format="%Y-%m-%d", 
+                                                            attrs={"type": "date"},
+                                                            )
+                                    )
     
+    def clean(self):
+        super().clean()
+        
+        nombre=self.cleaned_data.get("nombre")
+        dni=self.cleaned_data.get("dni") 
+        fecha_nacimiento=self.cleaned_data.get("fecha_nacimiento") 
+        
+        if(nombre == "" and dni == "" and fecha_nacimiento is None):
+            self.add_error("nombre","Debe introducir al menos un valor en un campo del formulario")
+            self.add_error("dni","Debe introducir al menos un valor en un campo del formulario")
+            self.add_error("fecha_nacimiento","Debe introducir al menos un valor en un campo del formulario")
+        else:
+            if(nombre!="" and len(nombre)>50):
+                self.add_error("nombre","No puede introducir mas de 50 caracteres")
+            
+            if(not fecha_nacimiento is None and fecha_nacimiento>=timezone.now().date()):
+                self.add_error("fecha_nacimiento","La fecha de nacimiento no puede ser mayor a la de hoy")
+            
+            expresion = "^[0-9]{8}[A-Z]$"       
+            if(dni!="" and not re.search(expresion,dni)):
+                self.add_error("dni","El formato del dni no es correcto")
+                
+        return self.cleaned_data
 class InspeccionForm(ModelForm):
     class Meta:
         model=Inspeccion
@@ -71,13 +100,9 @@ class InspeccionForm(ModelForm):
         
         super().clean()
         
-        # trabajador = self.cleaned_data.get('trabajador') 
-        # vehiculo = self.cleaned_data.get('vehiculo') 
         fecha_inspeccion =self.cleaned_data.get('fecha_inspeccion') 
-        # resultado_inspeccion = self.cleaned_data.get('resultado_inspeccion') 
         notas_inspeccion = self.cleaned_data.get('notas_inspeccion') 
-        # cliente_puntual= self.cleaned_data.get('cliente_puntual') 
-        #Que la fecha de inspeccion no puede superior a la actual
+        
         if(fecha_inspeccion>timezone.now().date()):
             self.add_error("fecha_inspeccion","La fecha de la inspeccion no puede ser superior a la actual")
             
@@ -86,7 +111,36 @@ class InspeccionForm(ModelForm):
             
         return self.cleaned_data
     
-
+class BusquedaAvanzadaInspeccion(forms.Form):
+    
+    resultado_inspeccion=forms.CharField(required=False,label="Resultado de la inspeccion")
+    notas_inspeccion=forms.CharField(required=False,label="Notas de la inspeccion")
+    fecha_inspeccion=forms.DateField(required=False,label="Fecha de la inspeccion",
+                                     widget=forms.DateInput(format="%Y-%m-%d", 
+                                                            attrs={"type": "date"},))
+    
+    def clean(self):
+        
+        super().clean()
+        
+        resultado_inspeccion=self.cleaned_data.get("resultado_inspeccion")
+        notas_inspeccion=self.cleaned_data.get("notas_inspeccion") 
+        fecha_inspeccion=self.cleaned_data.get("fecha_inspeccion") 
+        
+        if(resultado_inspeccion =="" and notas_inspeccion=="" and fecha_inspeccion is None):
+            self.add_error("resultado_inspeccion","Debes rellenar algun dato")
+            self.add_error("notas_inspeccion","Debes rellenar algun dato")
+            self.add_error("fecha_inspeccion","Debes rellenar algun dato")
+        else:
+            if resultado_inspeccion !="" and ('_' in resultado_inspeccion):
+                self.add_error("resultado_inspeccion","Este campo no puede contener una _")
+            if notas_inspeccion!="" and ('!' in notas_inspeccion):
+                self.add_error("notas_inspeccion","Este campo no permite un caracter '!'")
+            if not fecha_inspeccion is None and fecha_inspeccion>timezone.now().date():
+                self.add_error("fecha_inspeccion","La fecha de la inspeccion no puede ser superior a la de hoy")
+        
+        return self.cleaned_data       
+    
 class VehiculoForm(ModelForm):
     class Meta:
         model=Vehiculo

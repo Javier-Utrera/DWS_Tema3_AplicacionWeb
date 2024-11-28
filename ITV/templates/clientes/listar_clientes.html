@@ -5,10 +5,7 @@
 {% endblock %}
 
 {% block contenido %}
-<form action="{% url 'buscar_cliente' %}" class="d-flex mt-3" role="search" method="GET">
-    <input name="textoBusqueda" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-light btn-outline-dark" type="submit">Search</button>
-</form>
+
     {% block busqueda %}
     {% endblock %}
 

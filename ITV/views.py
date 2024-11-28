@@ -78,17 +78,38 @@ def procesar_cliente(request):
     return render(request,'clientes/create.html',{"formulario":formulario})
 
 def buscar_cliente(request):
-    formulario = BusquedaAvanzadaCliente(request.GET)
+        
+    if len(request.GET)>0:
+        formulario = BusquedaAvanzadaCliente(request.GET)
+        if formulario.is_valid():
+            mensaje="Se ha buscado los siguientes valores: \n"
+            clientes=Cliente.objects.prefetch_related(Prefetch("cliente_Cita"))
+            
+            nombrev=formulario.cleaned_data.get("nombre")
+            dniv=formulario.cleaned_data.get("dni") 
+            fecha_nacimientov=formulario.cleaned_data.get("fecha_nacimiento")
+            
+            if(nombrev!=""):
+                clientes=clientes.filter(nombre__contains=nombrev)
+                mensaje+="Nombre que se ha buscado " + nombrev  +"\n"
+            if(dniv!=""):
+                clientes=clientes.filter(dni=dniv)
+                mensaje+="Dni por el que se ha buscado " + dniv + "\n"
+            if(not fecha_nacimientov is None):
+                clientes=clientes.filter(fecha_nacimiento=fecha_nacimientov)
+                mensaje+="La fecha por la que se esta buscando es" + datetime.strftime(fecha_nacimientov,'%d-%m-%Y')+"\n"
+            
+            clientes=clientes.all()
+            
+            return render(request,"clientes/lista_buscar.html",{
+            "views_listar_cliente":clientes,
+            "texto_busqueda":mensaje})
     
-    if formulario.is_valid():
-        texto=formulario.cleaned_data.get("textoBusqueda")
-        cliente=Cliente.objects.prefetch_related(Prefetch("cliente_Cita"))
-        cliente=cliente.filter(Q(nombre__contains=texto)| Q(dni__contains=texto)).all()
-        return render(request,'clientes/lista_buscar.html',{"views_listar_cliente":cliente,"texto_busqueda":texto})
-    if("HTTP_REFERER" in request.META):
-        return redirect(request.META["HTTP_REFERER"])
     else:
-        return redirect("urls_index")
+        formulario=BusquedaAvanzadaCliente(None)
+    return render(request, 'clientes/busqueda_avanzada.html',{"formulario":formulario})
+            
+            
 #INSPECCION------------------------------
        
 def procesar_inspeccion(request): 
@@ -104,7 +125,37 @@ def procesar_inspeccion(request):
         formulario=InspeccionForm()  
     return render(request,'inspecciones/create.html',{"formulario":formulario})
 
-
+def buscar_inspeccion(request):
+        
+    if len(request.GET)>0:
+        formulario = BusquedaAvanzadaInspeccion(request.GET)
+        if formulario.is_valid():
+            mensaje="Se ha buscado los siguientes valores: \n"
+            inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura"))
+            
+            resultado_inspeccionv=formulario.cleaned_data.get("resultado_inspeccion")
+            notas_inspeccionv=formulario.cleaned_data.get("notas_inspeccion") 
+            fecha_inspeccionv=formulario.cleaned_data.get("fecha_inspeccion") 
+            
+            if(resultado_inspeccionv !=""):
+                inspecciones=inspecciones.filter(resultado_inspeccion__contains=resultado_inspeccionv)
+                mensaje+="Texto que se ha buscado " + resultado_inspeccionv  +"\n"
+            if(notas_inspeccionv!=""):
+                inspecciones=inspecciones.filter(notas_inspeccion__contains=notas_inspeccionv)
+                mensaje+="Texto de la inspeccion por el que se ha buscado " + notas_inspeccionv + "\n"
+            if(not fecha_inspeccionv is None):
+                inspecciones=inspecciones.filter(fecha_inspeccion=fecha_inspeccionv)
+                mensaje+="La fecha por la que se esta buscando es" + datetime.strftime(fecha_inspeccionv,'%d-%m-%Y')+"\n"
+            
+            inspecciones=inspecciones.all()
+            
+            return render(request,"inspecciones/lista_buscar.html",{
+            "views_inspecciones_vehiculo":inspecciones,
+            "texto_busqueda":mensaje})
+    
+    else:
+        formulario=BusquedaAvanzadaInspeccion(None)
+    return render(request, 'inspecciones/busqueda_avanzada.html',{"formulario":formulario})
 
 #VEHICULO------------------------------
     

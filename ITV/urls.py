@@ -50,7 +50,21 @@ urlpatterns = [
     
         #BUSQUEDA AVANZADA
         
-    #Buscar cliente
+    #Buscar cliente   
+    path('clientes/buscar',views.buscar_cliente,name="buscar_cliente"),
     
-    path('clientes/buscar/',views.buscar_cliente,name="buscar_cliente"),   
+    #Buscar inspeccion
+    path('inspecciones/buscar',views.buscar_inspeccion,name="buscar_inspeccion"),
+    
+    # #Buscar vehiculo 
+    # path('vehiculos/buscar',views.buscar_vehiculo,name="buscar_vehiculo"),
+    
+    # #Buscar local
+    # path('locales/buscar',views.buscar_local,name="buscar_local"), 
+    
+    # #Buscar estacion 
+    # path('estaciones/buscar',views.buscar_estacion,name="buscar_estacion"),
+    
+    # #Buscar trabajador  
+    # path('trabajadores/buscar',views.buscar_trabajador,name="buscar_trabajador"),  
 ]       
