@@ -56,15 +56,35 @@ urlpatterns = [
     #Buscar inspeccion
     path('inspecciones/buscar',views.buscar_inspeccion,name="buscar_inspeccion"),
     
-    # #Buscar vehiculo 
+    #Buscar vehiculo 
     path('vehiculos/buscar',views.buscar_vehiculo,name="buscar_vehiculo"),
     
-    # #Buscar local
-    # path('locales/buscar',views.buscar_local,name="buscar_local"), 
+    #Buscar local
+    path('locales/buscar',views.buscar_local,name="buscar_local"), 
     
-    # #Buscar estacion 
-    # path('estaciones/buscar',views.buscar_estacion,name="buscar_estacion"),
+    #Buscar estacion 
+    path('estaciones/buscar',views.buscar_estacion,name="buscar_estacion"),
     
-    # #Buscar trabajador  
-    # path('trabajadores/buscar',views.buscar_trabajador,name="buscar_trabajador"),  
+    #Buscar trabajador  
+    path('trabajadores/buscar',views.buscar_trabajador,name="buscar_trabajador"),
+    
+        #ACTUALIZAR
+    
+    #Actualizar cliente
+    path('clientes/editar/<int:cliente_id>', views.editar_cliente,name="editar_cliente"),
+    
+    #Actualizar inspeccion
+    path('inspecciones/editar/<int:inspeccion_id>', views.editar_inspeccion,name="editar_inspeccion"),
+    
+    #Actualizar vehiculo
+    path('vehiculos/editar/<int:vehiculo_id>', views.editar_vehiculo,name="editar_vehiculo"),
+    
+    #Actualizar local
+    path('locales/editar/<int:local_id>', views.editar_local,name="editar_local"),
+    
+    #Actualizar estacion
+    # path('estaciones/editar/<int:estacion_id>', views.editar_estacion,name="editar_estacion"),
+    
+    #Actualizar trabajador
+    # path('trabajadores/editar/<int:trabajador_id>', views.editar_trabajador,name="editar_trabajador"),
 ]       

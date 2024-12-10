@@ -33,6 +33,14 @@
                     <h1>Lo siento, no existen citas</h1>
                 {% endfor %}
             </div>
-
+        {% load bootstrap_icons %}
+        <div class="row btn-group">
+            <div class="mb-2">
+                <button type="button" 
+                        class="btn btn-outline-primary"> 
+                        <a href="{% url 'editar_cliente' cliente.id %}" ><span>{% bs_icon 'pencil' %}</span></a>
+                </button>
+            </div>
+        </div>
     </div>
 </div>

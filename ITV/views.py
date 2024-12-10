@@ -101,7 +101,7 @@ def buscar_cliente(request):
             
             clientes=clientes.all()
             
-            return render(request,"clientes/lista_buscar.html",{
+            return render(request,"clientes/listar_clientes.html",{
             "views_listar_cliente":clientes,
             "texto_busqueda":mensaje})
     
@@ -109,6 +109,27 @@ def buscar_cliente(request):
         formulario=BusquedaAvanzadaCliente(None)
     return render(request, 'clientes/busqueda_avanzada.html',{"formulario":formulario})
             
+def editar_cliente(request,cliente_id):
+    cliente = Cliente.objects.get(id=cliente_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    
+    formulario = ClienteForm(datosFormulario,instance = cliente)
+    
+    if (request.method == "POST"):
+       
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado el cliente '+formulario.cleaned_data.get('nombre')+" correctamente")
+                return redirect('listar_clientes')  
+            except Exception as error:
+                print(error)
+    return render(request, 'clientes/actualizar.html',{"formulario":formulario,"cliente":cliente})
             
 #INSPECCION------------------------------
        
@@ -149,13 +170,35 @@ def buscar_inspeccion(request):
             
             inspecciones=inspecciones.all()
             
-            return render(request,"inspecciones/lista_buscar.html",{
+            return render(request,"inspecciones/lista_inspecciones.html",{
             "views_inspecciones_vehiculo":inspecciones,
             "texto_busqueda":mensaje})
     
     else:
         formulario=BusquedaAvanzadaInspeccion(None)
     return render(request, 'inspecciones/busqueda_avanzada.html',{"formulario":formulario})
+
+def editar_inspeccion(request,inspeccion_id):
+    inspeccion = Inspeccion.objects.get(id=inspeccion_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    
+    formulario = InspeccionForm(datosFormulario,instance = inspeccion)
+    
+    if (request.method == "POST"):
+       
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado la inspeccion '+formulario.cleaned_data.get('resultado_inspeccion')+" correctamente")
+                return redirect('listar_inspecciones')  
+            except Exception as error:
+                print(error)
+    return render(request, 'inspecciones/actualizar.html',{"formulario":formulario,"inspeccion":inspeccion})
 
 #VEHICULO------------------------------
     
@@ -184,25 +227,47 @@ def buscar_vehiculo(request):
             potenciav=formulario.cleaned_data.get("potencia") 
             matriculav=formulario.cleaned_data.get("matricula") 
             
-            if(marcav !=""):
+            if(marcav != ""):
                 vehiculos=vehiculos.filter(marca=marcav)
-                mensaje+="Texto de la marca que se ha buscado " + marcav  +"\n"
-            if(potenciav!=""):
+                mensaje+="Marca que se ha buscado " + marcav  +"\n"
+            if(potenciav!= ""):
                 vehiculos=vehiculos.filter(potencia=potenciav)
-                mensaje+="Texto de la inspeccion por el que se ha buscado " + str(potenciav) + "\n"
-            if(matriculav!=""):
+                mensaje+="Inspeccion por el que se ha buscado " + str(potenciav) + "\n"
+            if(matriculav!= ""):
                 vehiculos=vehiculos.filter(matricula__contains=matriculav)
-                mensaje+="La fecha por la que se esta buscando es" + matriculav +"\n"
+                mensaje+="Matricula que se esta buscando es" + matriculav +"\n"
             
             vehiculos=vehiculos.all()
             
-            return render(request,"vehiculos/lista_buscar.html",{
+            return render(request,"vehiculos/lista_vehiculos.html",{
             "views_vehiculos":vehiculos,
             "texto_busqueda":mensaje})
     
     else:
         formulario=BusquedaAvanzadaVehiculo(None)
     return render(request,'vehiculos/busqueda_avanzada.html',{"formulario":formulario})
+
+def editar_vehiculo(request,vehiculo_id):
+    vehiculo = Vehiculo.objects.get(id=vehiculo_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    
+    formulario = VehiculoForm(datosFormulario,instance = vehiculo)
+    
+    if (request.method == "POST"):
+       
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado el vehiculo con matricula '+formulario.cleaned_data.get('matricula')+" correctamente")
+                return redirect('listar_vehiculos')  
+            except Exception as error:
+                print(error)
+    return render(request, 'vehiculos/actualizar.html',{"formulario":formulario,"vehiculo":vehiculo})
 
 #LOCAL------------------------------
 
@@ -219,6 +284,60 @@ def procesar_local(request):
         formulario=LocalForm()
     return render(request,'locales/create.html',{"formulario":formulario})
 
+def buscar_local(request):
+        
+    if len(request.GET)>0:
+        formulario = BusquedaAvanzadaLocal(request.GET)
+        if formulario.is_valid():
+            mensaje="Se ha buscado los siguientes valores: \n"
+            locales=Local.objects
+            
+            preciov=formulario.cleaned_data.get("precio")
+            metrosv=formulario.cleaned_data.get("metros") 
+            anio_arrendamientov=formulario.cleaned_data.get("anio_arrendamiento") 
+            
+            if(not preciov is None):
+                locales=locales.filter(precio=preciov)
+                mensaje+="Precio que se ha buscado " + str(preciov)  +"\n"
+            if(not metrosv is None):
+                locales=locales.filter(metros=metrosv)
+                mensaje+="Metros por el que se ha buscado " + str(metrosv) + "\n"
+            if(not anio_arrendamientov is None):
+                locales=locales.filter(anio_arrendamiento=anio_arrendamientov)
+                mensaje+="La fecha por la que se esta buscando es" +  datetime.strftime(anio_arrendamientov,'%d-%m-%Y')+"\n"
+            
+            locales=locales.all()
+            
+            return render(request,"locales/listar_local.html",{
+            "views_locales":locales,
+            "texto_busqueda":mensaje})
+    
+    else:
+        formulario=BusquedaAvanzadaLocal(None)
+    return render(request,'locales/busqueda_avanzada.html',{"formulario":formulario})
+
+def editar_local(request,local_id):
+    local = Local.objects.get(id=local_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    
+    formulario = LocalForm(datosFormulario,instance = local)
+    
+    if (request.method == "POST"):
+       
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado el local con el dueño '+formulario.cleaned_data.get('duenio')+" correctamente")
+                return redirect('listar_locales')  
+            except Exception as error:
+                print(error)
+    return render(request, 'locales/actualizar.html',{"formulario":formulario,"local":local})
+
 #ESTACION------------------------------
 
 def procesar_estacion(request):
@@ -234,6 +353,39 @@ def procesar_estacion(request):
         formulario=EstacionForm()
     return render(request,'estaciones/create.html',{"formulario":formulario})
 
+def buscar_estacion(request):
+        
+    if len(request.GET)>0:
+        formulario = BusquedaAvanzadaEstacion(request.GET)
+        if formulario.is_valid():
+            mensaje="Se ha buscado los siguientes valores: \n"
+            estaciones=EstacionItv.objects.select_related("local").prefetch_related(Prefetch("estacionitv_Cita"),
+                                                                                    Prefetch("estacionitv_Maquinaria"),
+                                                                                    Prefetch("estacionItv_trabajadores"),)
+            
+            nombrev=formulario.cleaned_data.get("nombre")
+            munipiov=formulario.cleaned_data.get("munipio") 
+            comunidad_autonomav=formulario.cleaned_data.get("comunidad_autonoma") 
+            
+            if(nombrev != ""):
+                estaciones=estaciones.filter(nombre__contains=nombrev)
+                mensaje+="Texto que se ha buscado " + nombrev  +"\n"
+            if(munipiov != ""):
+                estaciones=estaciones.filter(munipio=munipiov)
+                mensaje+="Municipio que se ha buscado " + munipiov + "\n"
+            if(comunidad_autonomav != ""):
+                estaciones=estaciones.filter(comunidad_autonoma=comunidad_autonomav)
+                mensaje+="Comunidad autonoma que se esta buscando es" +  comunidad_autonomav+"\n"
+            
+            estaciones=estaciones.all()
+            
+            return render(request,"estaciones/listar_estaciones.html",{
+            "views_estaciones_con_locales":estaciones,
+            "texto_busqueda":mensaje})
+    
+    else:
+        formulario=BusquedaAvanzadaEstacion(None)
+    return render(request,'estaciones/busqueda_avanzada.html',{"formulario":formulario})
 #TRABAJADOR------------------------------
 
 def procesar_trabajador(request):
@@ -248,3 +400,37 @@ def procesar_trabajador(request):
     else:
         formulario=TrabajadorForm()
     return render(request,'trabajadores/create.html',{"formulario":formulario})
+
+def buscar_trabajador(request):
+        
+    if len(request.GET)>0:
+        formulario = BusquedaAvanzadaTrabajador(request.GET)
+        if formulario.is_valid():
+            mensaje="Se ha buscado los siguientes valores: \n"
+            trabajadores=Trabajador.objects.prefetch_related("estacion",
+                                                     Prefetch("trabajador_Inspeccion"),
+                                                     Prefetch("trabajador_Vehiculo"))
+            
+            nombrev=formulario.cleaned_data.get("nombre")
+            sueldov=formulario.cleaned_data.get("sueldo") 
+            puestov=formulario.cleaned_data.get("puesto") 
+            
+            if(nombrev != ""):
+                trabajadores=trabajadores.filter(nombre__contains=nombrev)
+                mensaje+="Texto que se ha buscado " + nombrev  +"\n"
+            if(not sueldov is None):
+                trabajadores=trabajadores.filter(sueldo=sueldov)
+                mensaje+="Sueldo que se ha buscado " + str(sueldov) + "\n"
+            if(puestov != ""):
+                trabajadores=trabajadores.filter(puesto=puestov)
+                mensaje+="Puesto que se esta buscando es" +  puestov+"\n"
+            
+            trabajadores=trabajadores.all()
+            
+            return render(request,"trabajadores/listar_trabajadores.html",{
+            "views_trabajadores_estacion":trabajadores,
+            "texto_busqueda":mensaje})
+    
+    else:
+        formulario=BusquedaAvanzadaTrabajador(None)
+    return render(request,'trabajadores/busqueda_avanzada.html',{"formulario":formulario})

@@ -44,5 +44,14 @@
             <p class="card-text"><strong>Fecha de Emisión:</strong> {{ inspeccion.inspeccion_Factura.fecha_emision_factura|date:"Y-m-d" }}</p>
             <p class="card-text"><strong>Observaciones:</strong> {{ inspeccion.inspeccion_Factura.observaciones }}</p>
         </div>
+        {% load bootstrap_icons %}
+        <div class="row btn-group">
+            <div class="mb-2">
+                <button type="button" 
+                        class="btn btn-outline-primary"> 
+                        <a href="{% url 'editar_inspeccion' inspeccion.id %}" ><span>{% bs_icon 'pencil' %}</span></a>
+                </button>
+            </div>
+        </div>
     </div>
 </div>

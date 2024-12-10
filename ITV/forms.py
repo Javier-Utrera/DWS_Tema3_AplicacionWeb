@@ -67,14 +67,14 @@ class BusquedaAvanzadaCliente(forms.Form):
             self.add_error("dni","Debe introducir al menos un valor en un campo del formulario")
             self.add_error("fecha_nacimiento","Debe introducir al menos un valor en un campo del formulario")
         else:
-            if(nombre!="" and len(nombre)>50):
+            if(nombre and len(nombre)>50):
                 self.add_error("nombre","No puede introducir mas de 50 caracteres")
             
-            if(not fecha_nacimiento is None and fecha_nacimiento>=timezone.now().date()):
+            if(fecha_nacimiento is not None and fecha_nacimiento>=timezone.now().date()):
                 self.add_error("fecha_nacimiento","La fecha de nacimiento no puede ser mayor a la de hoy")
             
             expresion = "^[0-9]{8}[A-Z]$"       
-            if(dni!="" and not re.search(expresion,dni)):
+            if(dni and not re.search(expresion,dni)):
                 self.add_error("dni","El formato del dni no es correcto")
                 
         return self.cleaned_data
@@ -135,11 +135,11 @@ class BusquedaAvanzadaInspeccion(forms.Form):
             self.add_error("notas_inspeccion","Debes rellenar algun dato")
             self.add_error("fecha_inspeccion","Debes rellenar algun dato")
         else:
-            if resultado_inspeccion !="" and ('_' in resultado_inspeccion):
+            if resultado_inspeccion and ('_' in resultado_inspeccion):
                 self.add_error("resultado_inspeccion","Este campo no puede contener una _")
-            if notas_inspeccion!="" and ('!' in notas_inspeccion):
+            if notas_inspeccion and ('!' in notas_inspeccion):
                 self.add_error("notas_inspeccion","Este campo no permite un caracter '!'")
-            if not fecha_inspeccion is None and fecha_inspeccion>timezone.now().date():
+            if fecha_inspeccion is not None and fecha_inspeccion>timezone.now().date():
                 self.add_error("fecha_inspeccion","La fecha de la inspeccion no puede ser superior a la de hoy")
         
         return self.cleaned_data 
@@ -179,9 +179,11 @@ class VehiculoForm(ModelForm):
         
     def clean(self):
         super().clean()
+        
         tipo_vehiculo=self.cleaned_data.get("tipo_vehiculo")
         ejes=self.cleaned_data.get("ejes")
         asientos=self.cleaned_data.get("asientos")
+        
         matricula=self.cleaned_data.get("matricula")
         
         if(tipo_vehiculo=="moto" and asientos>1):
@@ -216,11 +218,11 @@ class BusquedaAvanzadaVehiculo(forms.Form):
             self.add_error("potencia","Debes rellenar algun dato")
             self.add_error("matricula","Debes rellenar algun dato")
         else:
-            if marca !="" and ('_' in marca):
+            if marca and ('_' in marca):
                 self.add_error("marca","Este campo no puede contener una _")
-            if not potencia is None and (potencia<0):
+            if potencia is not None and (potencia<0):
                 self.add_error("potencia","La potencia tiene que ser mayor que 0")
-            if matricula!="" and ('!' in matricula):
+            if matricula and ('!' in matricula):
                 self.add_error("matricula","Este campo no permite un caracter '!'")
         
         return self.cleaned_data 
@@ -253,6 +255,36 @@ class LocalForm(ModelForm):
             self.add_error("metros","Los metros no pueden ser negativos")
             
         return self.cleaned_data
+    
+class BusquedaAvanzadaLocal(forms.Form):
+    
+    precio=forms.FloatField(required=False,label="Precio")
+    metros=forms.DecimalField(required=False,label="Metros")
+    anio_arrendamiento=forms.DateField(required=False,label="Año del arrendamiento",
+                                    widget=forms.DateInput(format="%Y-%m-%d", 
+                                                        attrs={"type": "date"},))
+    
+    def clean(self):
+        
+        super().clean()
+        
+        precio=self.cleaned_data.get("precio")
+        metros=self.cleaned_data.get("metros") 
+        anio_arrendamiento=self.cleaned_data.get("anio_arrendamiento") 
+        
+        if(precio is None and metros is None and anio_arrendamiento is None):
+            self.add_error("precio","Debes rellenar algun dato")
+            self.add_error("metros","Debes rellenar algun dato")
+            self.add_error("anio_arrendamiento","Debes rellenar algun dato")
+        else:
+            if precio is not None and (precio<0):
+                self.add_error("precio","Este campo no puede ser negativo")
+            if metros is not None and (metros<0):
+                self.add_error("metros","La potencia no puede ser negativa")
+            if anio_arrendamiento is not None and anio_arrendamiento>timezone.now().date():
+                self.add_error("anio_arrendamiento","La fecha no puede ser superior a la actual")
+        
+        return self.cleaned_data 
 
     #ESTACION    
 class EstacionForm(ModelForm):
@@ -283,6 +315,34 @@ class EstacionForm(ModelForm):
         if(eficiencia_energetica==" "):
             self.add_error("eficiencia_energetica","El unico caracter no puede ser un espacio")
         return self.cleaned_data
+    
+class BusquedaAvanzadaEstacion(forms.Form):
+   
+    nombre=forms.CharField(required=False,label="Nombre")
+    munipio=forms.CharField(required=False,label="Municipio")
+    comunidad_autonoma=forms.CharField(required=False,label="Comunidad autonoma")
+    
+    def clean(self):
+        
+        super().clean()
+        
+        nombre=self.cleaned_data.get("nombre")
+        munipio=self.cleaned_data.get("munipio") 
+        comunidad_autonoma=self.cleaned_data.get("comunidad_autonoma") 
+        
+        if(nombre =="" and  munipio =="" and comunidad_autonoma ==""):
+            self.add_error("nombre","Debes rellenar algun dato")
+            self.add_error("munipio","Debes rellenar algun dato")
+            self.add_error("comunidad_autonoma","Debes rellenar algun dato")
+        else:
+            if nombre and (not nombre[0].isupper()):
+                self.add_error("nombre","El nombre debe empezar por una mayuscula")
+            if munipio and (munipio[0].isdigit()):
+                self.add_error("munipio","El primer caracter no puede ser un numero")
+            if comunidad_autonoma and ('_' in comunidad_autonoma):
+                self.add_error("comunidad_autonoma","La comunidad autonoma no puede contener un '_'")
+        
+        return self.cleaned_data 
 
     #TRABAJADOR            
 class TrabajadorForm(ModelForm):
@@ -313,5 +373,34 @@ class TrabajadorForm(ModelForm):
             self.add_error("sueldo","El sueldo no puede ser negativo")
             
         return self.cleaned_data
+    
+class BusquedaAvanzadaTrabajador(forms.Form):
+    
+    nombre=forms.CharField(required=False,label="Nombre")
+    sueldo=forms.FloatField(required=False,label="Sueldo")
+    puesto=forms.CharField(required=False,label="Puesto")
+    
+    def clean(self):
+        
+        super().clean()
+        
+        nombre=self.cleaned_data.get("nombre")
+        sueldo=self.cleaned_data.get("sueldo") 
+        puesto=self.cleaned_data.get("puesto") 
+        
+        if(nombre =="" and  sueldo is None and puesto ==""):
+            self.add_error("nombre","Debes rellenar algun dato")
+            self.add_error("sueldo","Debes rellenar algun dato")
+            self.add_error("puesto","Debes rellenar algun dato")
+        else:
+            if nombre and (len(nombre) < 3 or any(char.isdigit() for char in nombre)):
+                self.add_error("nombre","El nombre debe tener al menos 3 caracteres y no puede contener números")
+            if not sueldo is None and (sueldo <= 10):
+                self.add_error("sueldo","El sueldo debe ser mayor a 10")
+            if puesto and (char in "@#$%&*" for char in puesto):
+                self.add_error("puesto","El puesto no puede contener caracteres especiales como @, #, $, %, etc")
+        
+        return self.cleaned_data 
+
             
         

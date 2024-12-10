@@ -5,5 +5,16 @@
         <p class="card-text"><strong>Metros:</strong> {{ local.metros }}</p>
         <p class="card-text"><strong>Año de Arrendamiento:</strong> {{ local.anio_arrendamiento }}</p>
         <p class="card-text"><strong>Dueño:</strong> {{ local.duenio }}</p>
+    <br>
+    {% load bootstrap_icons %}
+    <div class="row btn-group">
+        <div class="mb-2">
+            <button type="button" 
+                    class="btn btn-outline-primary"> 
+                    <a href="{% url 'editar_local' local.id %}" ><span>{% bs_icon 'pencil' %}</span></a>
+            </button>
+        </div>
     </div>
+    </div>
+    
 </div>
