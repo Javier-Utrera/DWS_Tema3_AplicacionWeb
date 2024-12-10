@@ -57,7 +57,7 @@ urlpatterns = [
     path('inspecciones/buscar',views.buscar_inspeccion,name="buscar_inspeccion"),
     
     # #Buscar vehiculo 
-    # path('vehiculos/buscar',views.buscar_vehiculo,name="buscar_vehiculo"),
+    path('vehiculos/buscar',views.buscar_vehiculo,name="buscar_vehiculo"),
     
     # #Buscar local
     # path('locales/buscar',views.buscar_local,name="buscar_local"), 

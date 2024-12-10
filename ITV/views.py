@@ -172,6 +172,38 @@ def procesar_vehiculo(request):
         formulario=VehiculoForm()          
     return render(request,'vehiculos/create.html',{"formulario":formulario})
 
+def buscar_vehiculo(request):
+        
+    if len(request.GET)>0:
+        formulario = BusquedaAvanzadaVehiculo(request.GET)
+        if formulario.is_valid():
+            mensaje="Se ha buscado los siguientes valores: \n"
+            vehiculos=Vehiculo.objects.prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion"))
+            
+            marcav=formulario.cleaned_data.get("marca")
+            potenciav=formulario.cleaned_data.get("potencia") 
+            matriculav=formulario.cleaned_data.get("matricula") 
+            
+            if(marcav !=""):
+                vehiculos=vehiculos.filter(marca=marcav)
+                mensaje+="Texto de la marca que se ha buscado " + marcav  +"\n"
+            if(potenciav!=""):
+                vehiculos=vehiculos.filter(potencia=potenciav)
+                mensaje+="Texto de la inspeccion por el que se ha buscado " + str(potenciav) + "\n"
+            if(matriculav!=""):
+                vehiculos=vehiculos.filter(matricula__contains=matriculav)
+                mensaje+="La fecha por la que se esta buscando es" + matriculav +"\n"
+            
+            vehiculos=vehiculos.all()
+            
+            return render(request,"vehiculos/lista_buscar.html",{
+            "views_vehiculos":vehiculos,
+            "texto_busqueda":mensaje})
+    
+    else:
+        formulario=BusquedaAvanzadaVehiculo(None)
+    return render(request,'vehiculos/busqueda_avanzada.html',{"formulario":formulario})
+
 #LOCAL------------------------------
 
 def procesar_local(request):

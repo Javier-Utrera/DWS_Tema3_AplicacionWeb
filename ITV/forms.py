@@ -5,6 +5,7 @@ from datetime import *
 import re 
 from django.utils import timezone 
 
+    #CLIENTE   
 class ClienteForm(ModelForm):
     class Meta:
         model = Cliente
@@ -77,6 +78,8 @@ class BusquedaAvanzadaCliente(forms.Form):
                 self.add_error("dni","El formato del dni no es correcto")
                 
         return self.cleaned_data
+    
+    #INSPECCION
 class InspeccionForm(ModelForm):
     class Meta:
         model=Inspeccion
@@ -139,8 +142,9 @@ class BusquedaAvanzadaInspeccion(forms.Form):
             if not fecha_inspeccion is None and fecha_inspeccion>timezone.now().date():
                 self.add_error("fecha_inspeccion","La fecha de la inspeccion no puede ser superior a la de hoy")
         
-        return self.cleaned_data       
-    
+        return self.cleaned_data 
+          
+    #VEHICULO
 class VehiculoForm(ModelForm):
     class Meta:
         model=Vehiculo
@@ -192,7 +196,36 @@ class VehiculoForm(ModelForm):
             self.add_error("matricula","Esta matricula ya esta registrada") 
             
         return self.cleaned_data
+
+class BusquedaAvanzadaVehiculo(forms.Form):
+    
+    marca=forms.CharField(required=False,label="Marca")
+    potencia=forms.IntegerField(required=False,label="Potencia")
+    matricula=forms.CharField(required=False,label="Matricula")
+    
+    def clean(self):
         
+        super().clean()
+        
+        marca=self.cleaned_data.get("marca")
+        potencia=self.cleaned_data.get("potencia") 
+        matricula=self.cleaned_data.get("matricula") 
+        
+        if(marca == "" and potencia is None and matricula == ""):
+            self.add_error("marca","Debes rellenar algun dato")
+            self.add_error("potencia","Debes rellenar algun dato")
+            self.add_error("matricula","Debes rellenar algun dato")
+        else:
+            if marca !="" and ('_' in marca):
+                self.add_error("marca","Este campo no puede contener una _")
+            if not potencia is None and (potencia<0):
+                self.add_error("potencia","La potencia tiene que ser mayor que 0")
+            if matricula!="" and ('!' in matricula):
+                self.add_error("matricula","Este campo no permite un caracter '!'")
+        
+        return self.cleaned_data 
+    
+    #LOCAL   
 class LocalForm(ModelForm):
     class Meta:
         model=Local
@@ -220,7 +253,8 @@ class LocalForm(ModelForm):
             self.add_error("metros","Los metros no pueden ser negativos")
             
         return self.cleaned_data
-    
+
+    #ESTACION    
 class EstacionForm(ModelForm):
     class Meta:
         model=EstacionItv
@@ -249,7 +283,8 @@ class EstacionForm(ModelForm):
         if(eficiencia_energetica==" "):
             self.add_error("eficiencia_energetica","El unico caracter no puede ser un espacio")
         return self.cleaned_data
-            
+
+    #TRABAJADOR            
 class TrabajadorForm(ModelForm):
     class Meta:
         model=Trabajador
