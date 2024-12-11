@@ -155,5 +155,5 @@ class Factura(models.Model):
     #
     importe=models.DecimalField(max_digits=50,decimal_places=2)
     pagado=models.BooleanField(default=False)
-    fecha_emision_factura= models.DateField(default=timezone.now())
+    fecha_emision_factura= models.DateField(default=timezone.now)
     observaciones=models.TextField()
