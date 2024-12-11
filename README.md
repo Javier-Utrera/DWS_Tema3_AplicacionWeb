@@ -399,3 +399,17 @@ TEMPLATES MEJORADOS y STATICS
 - **Puesto**:
   - No puede contener caracteres especiales como `@`, `#`, `$`, `%`, `&`, `*`.
 
+
+INSTALACION PILLOW PARA IMAGENES EN FORMULARIO
+
+    -Crear carpeta media/imagenes en la carpeta raiz del proyecto
+    -Añadir Pillow~=11.0.0, en los requirements.txt
+    -He añadido el campo imagen en el modelo cliente
+    -Al hacer el makemigrations he usado la opcion de añadir por defecto la misma imagen en todos los objetos cliente de mi base de datos
+    -Hacemos el migrate
+    -Vemos ahora que en nuestros formularios tenemos el campo para subir una imagen y podemos ver la que actualmente tenemos seleccionada.
+    -He modificado el template del cliente para que aparezca la imagen con el siguiente bloque de boostrap
+        <p class="card-text">
+            <strong>Imagen:</strong>
+            <img src="{{ cliente.imagen.url }}" class="img-fluid" alt="Imagen de {{ cliente.nombre }}">
+        </p>

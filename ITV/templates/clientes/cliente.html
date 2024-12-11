@@ -10,6 +10,10 @@
         <p class="card-text"><strong>Correo:</strong> {{ cliente.correo }}</p>
         <p class="card-text"><strong>Domicilio:</strong> {{ cliente.domicilio }}</p>
         <p class="card-text"><strong>Fecha de nacimiento:</strong> {{ cliente.fecha_nacimiento|date:"Y-m-d" }}</p>
+        <p class="card-text">
+            <strong>Imagen:</strong>
+            <img src="{{ cliente.imagen.url }}" class="img-fluid" alt="Imagen de {{ cliente.nombre }}">
+        </p>
 
         <h5 class="mt-4">Citas del Cliente</h5>
         <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#contenidoCollapse_{{ cliente.id }}" aria-expanded="false" aria-controls="contenidoCollapse_{{ cliente.id }}">

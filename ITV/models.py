@@ -14,6 +14,7 @@ class Cliente(models.Model):
     correo= models.EmailField(max_length=50)
     telefono=models.PositiveIntegerField()
     dni=models.CharField(max_length=9,unique=True)
+    imagen = models.ImageField(upload_to='imagenes/')
     
     def __str__(self):
         return self.dni + " "+ self.nombre + " "+ self.apellidos

@@ -9,8 +9,7 @@ from django.utils import timezone
 class ClienteForm(ModelForm):
     class Meta:
         model = Cliente
-        fields = ['nombre','apellidos','sexo','fecha_nacimiento','codigo_postal',
-                'domicilio','correo','telefono','dni']
+        fields = '__all__'
         labels = {
             "fecha_nacimiento" : ("Fecha de nacimiento"),
             "codigo_postal": ("Codigo postal")
