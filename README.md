@@ -294,4 +294,108 @@ TEMPLATES MEJORADOS y STATICS
             -|get_digit:"1"
 
 
+## Widgets utilizados en los formularios del proyecto
+
+- **forms.SelectDateWidget**: Usado para seleccionar fechas en varios formularios.
+- **forms.TextInput**: Usado para campos de texto simples.
+- **forms.DateInput**: Configurado con el atributo `type="date"` para entrada de fechas.
+- **forms.CheckboxInput**: Usado para seleccionar opciones booleanas.
+- **forms.Select**: Usado para desplegables con una sola selección.
+- **forms.SelectMultiple**: Usado para desplegables con selección múltiple.
+- **forms.NumberInput**: Usado para entradas de números.
+
+
+
+## Validaciones utilizadas en los formularios del proyecto
+
+### ClienteForm
+- **DNI**:
+  - Debe cumplir con el patrón: `^[0-9]{8}[A-Z]$`.
+  - No debe existir previamente en la base de datos.
+
+### BusquedaAvanzadaCliente
+- Al menos un campo debe estar relleno (`nombre`, `dni`, o `fecha_nacimiento`).
+- **Nombre**:
+  - Máximo 50 caracteres.
+- **Fecha de nacimiento**:
+  - No puede ser una fecha futura.
+- **DNI**:
+  - Debe cumplir con el patrón: `^[0-9]{8}[A-Z]$`.
+
+### InspeccionForm
+- **Fecha de inspección**:
+  - No puede ser una fecha futura.
+- **Notas de inspección**:
+  - No puede estar vacío o contener solo espacios.
+
+### BusquedaAvanzadaInspeccion
+- Al menos un campo debe estar relleno (`resultado_inspeccion`, `notas_inspeccion`, o `fecha_inspeccion`).
+- **Resultado de inspección**:
+  - No puede contener el carácter `_`.
+- **Notas de inspección**:
+  - No puede contener el carácter `!`.
+- **Fecha de inspección**:
+  - No puede ser una fecha futura.
+
+### VehiculoForm
+- **Tipo de vehículo**:
+  - Si es "moto", no puede tener más de un asiento.
+  - Si es "bus", debe tener más de dos ejes.
+- **Matrícula**:
+  - Debe ser única en la base de datos.
+
+### BusquedaAvanzadaVehiculo
+- Al menos un campo debe estar relleno (`marca`, `potencia`, o `matrícula`).
+- **Marca**:
+  - No puede contener el carácter `_`.
+- **Potencia**:
+  - Debe ser mayor que 0.
+- **Matrícula**:
+  - No puede contener el carácter `!`.
+
+### LocalForm
+- **Precio**:
+  - No puede ser negativo.
+- **Metros**:
+  - No puede ser negativo.
+
+### BusquedaAvanzadaLocal
+- Al menos un campo debe estar relleno (`precio`, `metros`, o `anio_arrendamiento`).
+- **Precio**:
+  - No puede ser negativo.
+- **Metros**:
+  - No puede ser negativo.
+- **Año de arrendamiento**:
+  - No puede ser una fecha futura.
+
+### EstacionForm
+- **Comunidad Autónoma**:
+  - Debe comenzar con una letra mayúscula.
+- **Eficiencia Energética**:
+  - No puede estar vacío o contener solo espacios.
+
+### BusquedaAvanzadaEstacion
+- Al menos un campo debe estar relleno (`nombre`, `munipio`, o `comunidad_autonoma`).
+- **Nombre**:
+  - Debe comenzar con una letra mayúscula.
+- **Municipio**:
+  - No puede comenzar con un número.
+- **Comunidad Autónoma**:
+  - No puede contener el carácter `_`.
+
+### TrabajadorForm
+- **Observaciones**:
+  - No puede contener el carácter `!`.
+- **Sueldo**:
+  - No puede ser negativo.
+
+### BusquedaAvanzadaTrabajador
+- Al menos un campo debe estar relleno (`nombre`, `sueldo`, o `puesto`).
+- **Nombre**:
+  - Debe tener al menos 3 caracteres.
+  - No puede contener números.
+- **Sueldo**:
+  - Debe ser mayor que 10.
+- **Puesto**:
+  - No puede contener caracteres especiales como `@`, `#`, `$`, `%`, `&`, `*`.
 
