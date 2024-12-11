@@ -83,8 +83,28 @@ urlpatterns = [
     path('locales/editar/<int:local_id>', views.editar_local,name="editar_local"),
     
     #Actualizar estacion
-    # path('estaciones/editar/<int:estacion_id>', views.editar_estacion,name="editar_estacion"),
+    path('estaciones/editar/<int:estacion_id>', views.editar_estacion,name="editar_estacion"),
     
     #Actualizar trabajador
-    # path('trabajadores/editar/<int:trabajador_id>', views.editar_trabajador,name="editar_trabajador"),
+    path('trabajadores/editar/<int:trabajador_id>', views.editar_trabajador,name="editar_trabajador"),
+    
+        #Eliminar
+        
+    #Eliminar cliente    
+    path('clientes/eliminar/<int:cliente_id>',views.eliminar_cliente,name='eliminar_cliente'),
+    
+    #Eliminar inspeccion    
+    path('inspecciones/eliminar/<int:inspeccion_id>',views.eliminar_inspeccion,name='eliminar_inspeccion'),
+    
+    #Eliminar vehiculo    
+    path('vehiculos/eliminar/<int:vehiculo_id>',views.eliminar_vehiculo,name='eliminar_vehiculo'),
+    
+    #Eliminar local    
+    path('locales/eliminar/<int:local_id>',views.eliminar_local,name='eliminar_local'),
+    
+    #Eliminar estacion    
+    path('estaciones/eliminar/<int:estacion_id>',views.eliminar_estacion,name='eliminar_estacion'),
+    
+    #Eliminar trabajador    
+    path('trabajadores/eliminar/<int:trabajador_id>',views.eliminar_trabajador,name='eliminar_trabajador'),
 ]       

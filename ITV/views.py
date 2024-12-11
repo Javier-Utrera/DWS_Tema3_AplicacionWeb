@@ -130,6 +130,15 @@ def editar_cliente(request,cliente_id):
             except Exception as error:
                 print(error)
     return render(request, 'clientes/actualizar.html',{"formulario":formulario,"cliente":cliente})
+
+def eliminar_cliente(request,cliente_id):
+    cliente = Cliente.objects.get(id=cliente_id)
+    try:
+        cliente.delete()
+        messages.success(request, "Se ha elimnado el cliente "+cliente.nombre+" correctamente")
+    except Exception as error:
+        print(error)
+    return redirect('listar_clientes')
             
 #INSPECCION------------------------------
        
@@ -178,6 +187,7 @@ def buscar_inspeccion(request):
         formulario=BusquedaAvanzadaInspeccion(None)
     return render(request, 'inspecciones/busqueda_avanzada.html',{"formulario":formulario})
 
+
 def editar_inspeccion(request,inspeccion_id):
     inspeccion = Inspeccion.objects.get(id=inspeccion_id)
     
@@ -199,6 +209,15 @@ def editar_inspeccion(request,inspeccion_id):
             except Exception as error:
                 print(error)
     return render(request, 'inspecciones/actualizar.html',{"formulario":formulario,"inspeccion":inspeccion})
+
+def eliminar_inspeccion(request,inspeccion_id):
+    inspeccion = Inspeccion.objects.get(id=inspeccion_id)
+    try:
+        inspeccion.delete()
+        messages.success(request, "Se ha elimnado la inspeccion con el resultado "+inspeccion.resultado_inspeccion+" correctamente")
+    except Exception as error:
+        print(error)
+    return redirect('listar_inspecciones')
 
 #VEHICULO------------------------------
     
@@ -269,6 +288,15 @@ def editar_vehiculo(request,vehiculo_id):
                 print(error)
     return render(request, 'vehiculos/actualizar.html',{"formulario":formulario,"vehiculo":vehiculo})
 
+def eliminar_vehiculo(request,vehiculo_id):
+    vehiculo = Vehiculo.objects.get(id=vehiculo_id)
+    try:
+        vehiculo.delete()
+        messages.success(request, "Se ha elimnado el vehiculo con matricula "+vehiculo.matricula+" correctamente")
+    except Exception as error:
+        print(error)
+    return redirect('listar_vehiculos')
+
 #LOCAL------------------------------
 
 def procesar_local(request):
@@ -338,6 +366,15 @@ def editar_local(request,local_id):
                 print(error)
     return render(request, 'locales/actualizar.html',{"formulario":formulario,"local":local})
 
+def eliminar_local(request,local_id):
+    local = Local.objects.get(id=local_id)
+    try:
+        local.delete()
+        messages.success(request, "Se ha elimnado el local con el dueño "+local.duenio+" correctamente")
+    except Exception as error:
+        print(error)
+    return redirect('listar_locales')
+
 #ESTACION------------------------------
 
 def procesar_estacion(request):
@@ -386,6 +423,38 @@ def buscar_estacion(request):
     else:
         formulario=BusquedaAvanzadaEstacion(None)
     return render(request,'estaciones/busqueda_avanzada.html',{"formulario":formulario})
+
+def editar_estacion(request,estacion_id):
+    estacion = EstacionItv.objects.get(id=estacion_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    
+    formulario = EstacionForm(datosFormulario,instance = estacion)
+    
+    if (request.method == "POST"):
+       
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado la estacion con el nombre '+formulario.cleaned_data.get('nombre')+" correctamente")
+                return redirect('listar_estaciones')  
+            except Exception as error:
+                print(error)
+    return render(request, 'estaciones/actualizar.html',{"formulario":formulario,"estacion":estacion})
+
+def eliminar_estacion(request,estacion_id):
+    estacion = EstacionItv.objects.get(id=estacion_id)
+    try:
+        estacion.delete()
+        messages.success(request, "Se ha elimnado la estacion con el nombre "+estacion.nombre+" correctamente")
+    except Exception as error:
+        print(error)
+    return redirect('listar_estaciones')
+
 #TRABAJADOR------------------------------
 
 def procesar_trabajador(request):
@@ -434,3 +503,34 @@ def buscar_trabajador(request):
     else:
         formulario=BusquedaAvanzadaTrabajador(None)
     return render(request,'trabajadores/busqueda_avanzada.html',{"formulario":formulario})
+
+def editar_trabajador(request,trabajador_id):
+    trabajador = Trabajador.objects.get(id=trabajador_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    
+    formulario = TrabajadorForm(datosFormulario,instance = trabajador)
+    
+    if (request.method == "POST"):
+       
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado el trabajador con el nombre '+formulario.cleaned_data.get('nombre')+" correctamente")
+                return redirect('listar_trabajadores')  
+            except Exception as error:
+                print(error)
+    return render(request, 'trabajadores/actualizar.html',{"formulario":formulario,"trabajador":trabajador})
+
+def eliminar_trabajador(request,trabajador_id):
+    trabajador = Trabajador.objects.get(id=trabajador_id)
+    try:
+        trabajador.delete()
+        messages.success(request, "Se ha elimnado el trabajador con el nombre "+trabajador.nombre+" correctamente")
+    except Exception as error:
+        print(error)
+    return redirect('listar_trabajadores')

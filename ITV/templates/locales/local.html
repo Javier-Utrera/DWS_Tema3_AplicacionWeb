@@ -14,6 +14,14 @@
                     <a href="{% url 'editar_local' local.id %}" ><span>{% bs_icon 'pencil' %}</span></a>
             </button>
         </div>
+        <div class="mb-2">
+            <form action = "{% url 'eliminar_local' local.id %}" method = "post"> 
+                {% csrf_token %}
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                    <span>{% bs_icon 'trash' %}</span>
+                </button> 
+            </form>
+        </div>
     </div>
     </div>
     

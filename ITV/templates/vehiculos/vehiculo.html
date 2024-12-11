@@ -59,5 +59,13 @@
                 </button>
             </div>
         </div>
+        <div class="mb-2">
+            <form action = "{% url 'eliminar_vehiculo' vehiculo.id %}" method = "post"> 
+                {% csrf_token %}
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                    <span>{% bs_icon 'trash' %}</span>
+                </button> 
+            </form>
+        </div>
     </div>
 </div>
