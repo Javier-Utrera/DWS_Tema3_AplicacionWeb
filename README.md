@@ -411,5 +411,20 @@ INSTALACION PILLOW PARA IMAGENES EN FORMULARIO
     -He modificado el template del cliente para que aparezca la imagen con el siguiente bloque de boostrap
         <p class="card-text">
             <strong>Imagen:</strong>
-            <img src="{{ cliente.imagen.url }}" class="img-fluid" alt="Imagen de {{ cliente.nombre }}">
+            {% if cliente.imagen %}
+                <img src="{{ cliente.imagen.url }}" class="img-fluid" alt="Imagen de {{ cliente.nombre }}">
+            {% else %}
+                <p>No hay imagen disponible</p>
+            {% endif %}
         </p>
+    -He añadido los atributos enctype="multipart/form-data al form, asi indicamos al servidor que tiene que codificar los datos en binarios como imagenes o archivos ademas de texto normal
+    -En la view de editar el cliente tenemos que recoger los archivos enviados esto lo hacemos con:
+
+          datosFormulario = None
+          archivosFormulario = None
+
+          if request.method == "POST":
+              datosFormulario = request.POST
+              archivosFormulario = request.FILES
+              
+          formulario = ClienteForm(datosFormulario,archivosFormulario,instance = cliente)

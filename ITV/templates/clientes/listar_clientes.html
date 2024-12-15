@@ -22,6 +22,7 @@
     <div class="row">
         {% for cliente in views_listar_cliente %}
         <div class="col-sm-4 mb-2">
+            {% csrf_token %} 
             {% include 'clientes/cliente.html' %}
         </div>
         {% empty %}

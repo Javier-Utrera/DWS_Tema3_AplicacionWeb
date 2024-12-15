@@ -12,7 +12,11 @@
         <p class="card-text"><strong>Fecha de nacimiento:</strong> {{ cliente.fecha_nacimiento|date:"Y-m-d" }}</p>
         <p class="card-text">
             <strong>Imagen:</strong>
-            <img src="{{ cliente.imagen.url }}" class="img-fluid" alt="Imagen de {{ cliente.nombre }}">
+            {% if cliente.imagen %}
+                <img src="{{ cliente.imagen.url }}" class="img-fluid" alt="Imagen de {{ cliente.nombre }}">
+            {% else %}
+                <p>No hay imagen disponible</p>
+            {% endif %}
         </p>
 
         <h5 class="mt-4">Citas del Cliente</h5>

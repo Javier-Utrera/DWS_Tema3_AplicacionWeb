@@ -23,6 +23,7 @@ class ClienteForm(ModelForm):
         widgets = {
             "fecha_nacimiento" : forms.SelectDateWidget(),
             "domicilio" : forms.TextInput(),
+            'imagen': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
         localized_fields = ["fecha_nacimiento"]
         

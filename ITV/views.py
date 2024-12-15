@@ -113,12 +113,13 @@ def editar_cliente(request,cliente_id):
     cliente = Cliente.objects.get(id=cliente_id)
     
     datosFormulario = None
-    
+    archivosFormulario = None
     if request.method == "POST":
         datosFormulario = request.POST
+        archivosFormulario = request.FILES
     
     
-    formulario = ClienteForm(datosFormulario,instance = cliente)
+    formulario = ClienteForm(datosFormulario,archivosFormulario,instance = cliente)
     
     if (request.method == "POST"):
        
