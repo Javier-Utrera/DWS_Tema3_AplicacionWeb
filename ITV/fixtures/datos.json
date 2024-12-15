@@ -744,47 +744,18 @@
 },
 {
     "model": "ITV.cliente",
-    "pk": 1,
-    "fields": {
-        "nombre": "Head respond edge school call.",
-        "apellidos": "Lead party commercial carry. Air be up.",
-        "sexo": "F",
-        "fecha_nacimiento": "1992-01-30",
-        "codigo_postal": -11994,
-        "domicilio": "Fact young gun hotel from adult quite. Box wonder prove director film at. Follow window sure catch tell.\nDefense over foot financial. Public tough suffer human improve floor.",
-        "correo": "wrobertson@example.com",
-        "telefono": 991,
-        "dni": "Great."
-    }
-},
-{
-    "model": "ITV.cliente",
-    "pk": 2,
-    "fields": {
-        "nombre": "Option letter home ago shoulder sure Congress.",
-        "apellidos": "Exist product talk number.",
-        "sexo": "F",
-        "fecha_nacimiento": "1991-04-19",
-        "codigo_postal": -25862,
-        "domicilio": "Significant likely close measure state factor when. Hot physical least degree treatment cause population. College city purpose newspaper course.",
-        "correo": "katelyn73@example.com",
-        "telefono": 25867,
-        "dni": "Crime."
-    }
-},
-{
-    "model": "ITV.cliente",
     "pk": 3,
     "fields": {
         "nombre": "Single might throughout worker wait.",
         "apellidos": "Sound fund card success account south his.",
         "sexo": "M",
-        "fecha_nacimiento": "2023-12-09",
+        "fecha_nacimiento": "2024-12-09",
         "codigo_postal": 4901,
-        "domicilio": "Floor receive for. Tax moment order nothing now.\nPeace resource write clear case investment. Too glass chair true reality tax. Region individual per simply between former arm.",
+        "domicilio": "Floor receive for. Tax moment order nothing now.Peace resource write clear case investment. Too glass chair true reality tax. Region individual per simply between former arm.",
         "correo": "richsherry@example.com",
         "telefono": 25960,
-        "dni": "Father."
+        "dni": "18022534C",
+        "imagen": "imagenes/logo_a7qVApZ.png"
     }
 },
 {
@@ -799,7 +770,8 @@
         "domicilio": "Same she move night. Star leader color true rather.\nSeat employee save everyone risk finish spend. Between for story charge him. Magazine pretty glass million keep let your.",
         "correo": "brownhunter@example.org",
         "telefono": 13653,
-        "dni": "Enough."
+        "dni": "Enough.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -814,7 +786,8 @@
         "domicilio": "About enjoy station reality true need plan field. Plan oil reality kind. Theory open student police worker career science. Management parent enjoy court here.",
         "correo": "pirwin@example.net",
         "telefono": 16217,
-        "dni": "Could."
+        "dni": "Could.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -829,7 +802,8 @@
         "domicilio": "Safe truth customer throughout young skill.\nAble imagine way sign. Trouble resource interesting he order. Wrong citizen grow Mrs.",
         "correo": "hallmitchell@example.com",
         "telefono": 23999,
-        "dni": "Night."
+        "dni": "Night.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -844,7 +818,8 @@
         "domicilio": "Task organization that. Interview national great figure design factor.\nFund many impact single. Someone generation you gas PM strategy might plant.",
         "correo": "adkinschristine@example.org",
         "telefono": 17280,
-        "dni": "Total."
+        "dni": "Total.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -859,7 +834,8 @@
         "domicilio": "How radio friend piece street. Within outside cultural large Republican agree air.\nAnd different six water six. Participant main activity stand already quickly.",
         "correo": "samuelrichardson@example.org",
         "telefono": 37,
-        "dni": "Care put."
+        "dni": "Care put.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -874,7 +850,8 @@
         "domicilio": "Top risk morning indicate politics. Into woman control which now clearly must.\nHere third feel beyond. Month process store compare. Relate pressure entire process human.",
         "correo": "richardjenkins@example.com",
         "telefono": 23420,
-        "dni": "Common."
+        "dni": "Common.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -889,22 +866,8 @@
         "domicilio": "Source beautiful believe your fill. Nice see during address institution. Table use here need move.\nOpportunity two ahead allow. Throw positive air per. Require major scientist believe fall card.",
         "correo": "stephensonluis@example.net",
         "telefono": 5031,
-        "dni": "Hear say."
-    }
-},
-{
-    "model": "ITV.cliente",
-    "pk": 11,
-    "fields": {
-        "nombre": "Child though education technology study.",
-        "apellidos": "Trade direction friend blue dream guess deal.",
-        "sexo": "M",
-        "fecha_nacimiento": "1986-07-31",
-        "codigo_postal": 26391,
-        "domicilio": "Rule program answer defense city decide today. Manage my feeling early necessary. Age here young director my.",
-        "correo": "foxtodd@example.net",
-        "telefono": 16695,
-        "dni": "Risk."
+        "dni": "Hear say.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -919,7 +882,8 @@
         "domicilio": "Away wonder think particularly any center alone. Number military fall should identify certainly government.",
         "correo": "dcunningham@example.net",
         "telefono": 30380,
-        "dni": "Expert."
+        "dni": "Expert.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -934,7 +898,8 @@
         "domicilio": "Doctor major reflect laugh usually election.\nKitchen from beautiful school several. Prove son usually. Interview town factor professor who.",
         "correo": "rodriguezashlee@example.com",
         "telefono": 6945,
-        "dni": "Contain."
+        "dni": "Contain.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -949,7 +914,8 @@
         "domicilio": "Determine miss along such. Challenge whom floor effect woman person.\nAffect future cell purpose. Happen area tree generation.",
         "correo": "mparker@example.com",
         "telefono": 20857,
-        "dni": "Once."
+        "dni": "Once.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
@@ -964,16 +930,17 @@
         "domicilio": "Factor vote imagine else. Often medical value.\nFinally charge federal.\nAbility standard pick set. Up common ability kid upon could. Way brother pressure world.",
         "correo": "amiller@example.org",
         "telefono": 27196,
-        "dni": "Toward."
+        "dni": "Toward.",
+        "imagen": "imagenes/icono.png"
     }
 },
 {
     "model": "ITV.local",
     "pk": 1,
     "fields": {
-        "precio": 0.4646904291163583,
+        "precio": 0.46,
         "metros": "0.867",
-        "anio_arrendamiento": "2005-07-31",
+        "anio_arrendamiento": "2024-07-31",
         "duenio": "Hundred lawyer treatment level."
     }
 },
@@ -1105,38 +1072,6 @@
         "metros": "0.154",
         "anio_arrendamiento": "1995-10-31",
         "duenio": "Building require everybody play such."
-    }
-},
-{
-    "model": "ITV.local",
-    "pk": 15,
-    "fields": {
-        "precio": 0.7861377708812454,
-        "metros": "0.554",
-        "anio_arrendamiento": "2014-11-05",
-        "duenio": "Really find take hear news."
-    }
-},
-{
-    "model": "ITV.estacionitv",
-    "pk": 1,
-    "fields": {
-        "local": 15,
-        "nombre": "Amount success better may.",
-        "munipio": "Family finally citizen go husband store continue.",
-        "eficiencia_energetica": "m",
-        "comunidad_autonoma": "Exist professional."
-    }
-},
-{
-    "model": "ITV.estacionitv",
-    "pk": 2,
-    "fields": {
-        "local": 11,
-        "nombre": "Animal theory else key citizen.",
-        "munipio": "Play so worker if campaign indicate group.",
-        "eficiencia_energetica": "c",
-        "comunidad_autonoma": "Marriage power be."
     }
 },
 {
@@ -1300,22 +1235,6 @@
 },
 {
     "model": "ITV.cita",
-    "pk": 2,
-    "fields": {
-        "cliente": 2,
-        "estacion": 4,
-        "matricula": "Less.",
-        "fecha_matriculacion": "1983-10-16",
-        "numero_bastidor": "Part century day.",
-        "tipo_inspeccion": "VETAX",
-        "remolque": false,
-        "tipo_pago": "EF",
-        "fecha_propuesta": "1991-04-20",
-        "hora_propuesta": "19:10:49"
-    }
-},
-{
-    "model": "ITV.cita",
     "pk": 3,
     "fields": {
         "cliente": 4,
@@ -1348,22 +1267,6 @@
 },
 {
     "model": "ITV.cita",
-    "pk": 5,
-    "fields": {
-        "cliente": 2,
-        "estacion": 12,
-        "matricula": "Window.",
-        "fecha_matriculacion": "1973-04-06",
-        "numero_bastidor": "Writer support.",
-        "tipo_inspeccion": "NOPE",
-        "remolque": false,
-        "tipo_pago": "EF",
-        "fecha_propuesta": "1976-10-16",
-        "hora_propuesta": "05:29:21"
-    }
-},
-{
-    "model": "ITV.cita",
     "pk": 6,
     "fields": {
         "cliente": 8,
@@ -1376,22 +1279,6 @@
         "tipo_pago": "EF",
         "fecha_propuesta": "1984-10-24",
         "hora_propuesta": "10:29:06"
-    }
-},
-{
-    "model": "ITV.cita",
-    "pk": 7,
-    "fields": {
-        "cliente": 5,
-        "estacion": 2,
-        "matricula": "Final.",
-        "fecha_matriculacion": "1977-12-05",
-        "numero_bastidor": "Thus both who.",
-        "tipo_inspeccion": "NOPE",
-        "remolque": true,
-        "tipo_pago": "TA",
-        "fecha_propuesta": "1981-04-14",
-        "hora_propuesta": "12:23:26"
     }
 },
 {
@@ -1412,22 +1299,6 @@
 },
 {
     "model": "ITV.cita",
-    "pk": 9,
-    "fields": {
-        "cliente": 4,
-        "estacion": 2,
-        "matricula": "My.",
-        "fecha_matriculacion": "1973-11-10",
-        "numero_bastidor": "Color player.",
-        "tipo_inspeccion": "NOPE",
-        "remolque": true,
-        "tipo_pago": "TA",
-        "fecha_propuesta": "2007-10-02",
-        "hora_propuesta": "18:19:43"
-    }
-},
-{
-    "model": "ITV.cita",
     "pk": 10,
     "fields": {
         "cliente": 14,
@@ -1440,22 +1311,6 @@
         "tipo_pago": "TA",
         "fecha_propuesta": "1975-12-12",
         "hora_propuesta": "15:54:27"
-    }
-},
-{
-    "model": "ITV.cita",
-    "pk": 11,
-    "fields": {
-        "cliente": 11,
-        "estacion": 8,
-        "matricula": "Rock.",
-        "fecha_matriculacion": "1993-01-24",
-        "numero_bastidor": "Where prevent.",
-        "tipo_inspeccion": "NOPE",
-        "remolque": false,
-        "tipo_pago": "TA",
-        "fecha_propuesta": "1997-10-22",
-        "hora_propuesta": "20:04:31"
     }
 },
 {
@@ -1476,22 +1331,6 @@
 },
 {
     "model": "ITV.cita",
-    "pk": 13,
-    "fields": {
-        "cliente": 11,
-        "estacion": 1,
-        "matricula": "Mean.",
-        "fecha_matriculacion": "1998-12-28",
-        "numero_bastidor": "Them hour.",
-        "tipo_inspeccion": "PE",
-        "remolque": false,
-        "tipo_pago": "TA",
-        "fecha_propuesta": "1989-08-10",
-        "hora_propuesta": "14:47:47"
-    }
-},
-{
-    "model": "ITV.cita",
     "pk": 14,
     "fields": {
         "cliente": 10,
@@ -1504,22 +1343,6 @@
         "tipo_pago": "TA",
         "fecha_propuesta": "2024-05-04",
         "hora_propuesta": "00:44:27"
-    }
-},
-{
-    "model": "ITV.cita",
-    "pk": 15,
-    "fields": {
-        "cliente": 13,
-        "estacion": 2,
-        "matricula": "List.",
-        "fecha_matriculacion": "2021-08-16",
-        "numero_bastidor": "Again energy.",
-        "tipo_inspeccion": "PE",
-        "remolque": false,
-        "tipo_pago": "TA",
-        "fecha_propuesta": "1980-05-28",
-        "hora_propuesta": "18:40:55"
     }
 },
 {
@@ -1674,18 +1497,6 @@
 },
 {
     "model": "ITV.maquinaria",
-    "pk": 1,
-    "fields": {
-        "iestacionItv": 2,
-        "idmpresaExterna": 8,
-        "nombre": "Stuff great my candidate.",
-        "tipo": "DI",
-        "ultimo_mantenimiento": "1980-04-07",
-        "funcionando": true
-    }
-},
-{
-    "model": "ITV.maquinaria",
     "pk": 2,
     "fields": {
         "iestacionItv": 11,
@@ -1693,18 +1504,6 @@
         "nombre": "Exactly meet remember he there cold institution.",
         "tipo": "EM",
         "ultimo_mantenimiento": "1996-08-08",
-        "funcionando": true
-    }
-},
-{
-    "model": "ITV.maquinaria",
-    "pk": 3,
-    "fields": {
-        "iestacionItv": 2,
-        "idmpresaExterna": 14,
-        "nombre": "Determine base may military theory near.",
-        "tipo": "DI",
-        "ultimo_mantenimiento": "2007-09-25",
         "funcionando": true
     }
 },
@@ -1782,18 +1581,6 @@
 },
 {
     "model": "ITV.maquinaria",
-    "pk": 10,
-    "fields": {
-        "iestacionItv": 2,
-        "idmpresaExterna": 14,
-        "nombre": "Ahead huge public make somebody culture painting.",
-        "tipo": "FR",
-        "ultimo_mantenimiento": "2013-01-19",
-        "funcionando": true
-    }
-},
-{
-    "model": "ITV.maquinaria",
     "pk": 11,
     "fields": {
         "iestacionItv": 6,
@@ -1801,18 +1588,6 @@
         "nombre": "Level prepare show shake action baby baby risk.",
         "tipo": "FR",
         "ultimo_mantenimiento": "1981-04-03",
-        "funcionando": true
-    }
-},
-{
-    "model": "ITV.maquinaria",
-    "pk": 12,
-    "fields": {
-        "iestacionItv": 2,
-        "idmpresaExterna": 10,
-        "nombre": "So form minute. Successful should hundred.",
-        "tipo": "DI",
-        "ultimo_mantenimiento": "1987-07-28",
         "funcionando": true
     }
 },
@@ -1856,11 +1631,11 @@
     "model": "ITV.trabajador",
     "pk": 1,
     "fields": {
-        "nombre": "Cell suffer hear reach bit own.",
+        "nombre": "Cell",
         "apellidos": "Decade kid truth perform month.",
         "puesto": "FR",
         "sueldo": 0.19609045728845031,
-        "observaciones": "Fact north condition. Thought onto region record everyone east.\nStand about including north exist claim yeah.",
+        "observaciones": "Fact north condition. Thought onto region record everyone east.\r\nStand about including north exist claim yeah.",
         "estacion": [
             5
         ]
@@ -1892,7 +1667,6 @@
         "sueldo": 0.0001013018770381624,
         "observaciones": "Current moment data friend. Industry allow by.\nCurrent agency both environment. Then hair show chair environment pass American.",
         "estacion": [
-            1,
             3,
             12
         ]
@@ -1908,7 +1682,6 @@
         "sueldo": 0.31516077096347395,
         "observaciones": "He maybe last. Day thing business up himself gas. Whether team might ahead process include at image.",
         "estacion": [
-            2,
             3,
             4
         ]
@@ -1984,7 +1757,6 @@
         "sueldo": 0.21734677613476872,
         "observaciones": "Institution organization reality song quality. Record appear development. Type throw describe series future describe.",
         "estacion": [
-            2,
             13,
             14,
             15
@@ -2015,9 +1787,7 @@
         "puesto": "DI",
         "sueldo": 0.5904649155181851,
         "observaciones": "Most marriage story building. Alone structure look particularly decide even part.\nAffect let citizen do use. End or final its government response small reason.\nYou institution significant.",
-        "estacion": [
-            2
-        ]
+        "estacion": []
     }
 },
 {
@@ -2062,21 +1832,6 @@
             5,
             7,
             13
-        ]
-    }
-},
-{
-    "model": "ITV.trabajador",
-    "pk": 15,
-    "fields": {
-        "nombre": "Myself again firm husband stop.",
-        "apellidos": "Phone include once partner.",
-        "puesto": "DI",
-        "sueldo": 0.3471576992721791,
-        "observaciones": "Red control to easy actually practice certainly. Hour physical today central husband.\nToo can even bill ground first. Kind avoid drop see.",
-        "estacion": [
-            2,
-            6
         ]
     }
 },
@@ -2434,18 +2189,6 @@
 },
 {
     "model": "ITV.inspeccion",
-    "pk": 5,
-    "fields": {
-        "trabajador": 15,
-        "vehiculo": 2,
-        "fecha_inspeccion": "2024-10-29",
-        "resultado_inspeccion": "",
-        "notas_inspeccion": "",
-        "cliente_puntual": true
-    }
-},
-{
-    "model": "ITV.inspeccion",
     "pk": 6,
     "fields": {
         "trabajador": 5,
@@ -2554,18 +2297,6 @@
 },
 {
     "model": "ITV.inspeccion",
-    "pk": 15,
-    "fields": {
-        "trabajador": 15,
-        "vehiculo": 6,
-        "fecha_inspeccion": "2024-10-29",
-        "resultado_inspeccion": "",
-        "notas_inspeccion": "",
-        "cliente_puntual": true
-    }
-},
-{
-    "model": "ITV.inspeccion",
     "pk": 16,
     "fields": {
         "trabajador": 8,
@@ -2629,18 +2360,6 @@
     "pk": 21,
     "fields": {
         "trabajador": 8,
-        "vehiculo": 9,
-        "fecha_inspeccion": "2024-10-29",
-        "resultado_inspeccion": "",
-        "notas_inspeccion": "",
-        "cliente_puntual": true
-    }
-},
-{
-    "model": "ITV.inspeccion",
-    "pk": 22,
-    "fields": {
-        "trabajador": 15,
         "vehiculo": 9,
         "fecha_inspeccion": "2024-10-29",
         "resultado_inspeccion": "",
@@ -2926,26 +2645,14 @@
 },
 {
     "model": "ITV.inspeccion",
-    "pk": 46,
-    "fields": {
-        "trabajador": 15,
-        "vehiculo": 7,
-        "fecha_inspeccion": "2024-10-29",
-        "resultado_inspeccion": "Behavior professor where measure.\nTeacher left friend local. Media magazine network around.",
-        "notas_inspeccion": "Worker beyond federal attention cost media. Education none body get use the director. Store even security relate around someone front.",
-        "cliente_puntual": true
-    }
-},
-{
-    "model": "ITV.inspeccion",
     "pk": 47,
     "fields": {
         "trabajador": 13,
         "vehiculo": 3,
         "fecha_inspeccion": "2024-10-29",
-        "resultado_inspeccion": "Culture grow almost since phone direction. White many prepare daughter organization pull even.",
-        "notas_inspeccion": "Rich positive former too focus very. Several final simple senior.\nEducation prove early hope more point. Before stage business approach. Table benefit effect degree or call guess.",
-        "cliente_puntual": true
+        "resultado_inspeccion": "Culture grow",
+        "notas_inspeccion": "Rich positive former",
+        "cliente_puntual": false
     }
 },
 {
@@ -3022,18 +2729,6 @@
 },
 {
     "model": "ITV.inspeccion",
-    "pk": 54,
-    "fields": {
-        "trabajador": 15,
-        "vehiculo": 15,
-        "fecha_inspeccion": "2024-10-29",
-        "resultado_inspeccion": "Adult dinner close trade. Its huge success fly personal less catch.",
-        "notas_inspeccion": "Action for special turn how charge owner.\nImprove edge forward try agreement work discuss. Middle rise in necessary a firm catch. Security Mrs quickly girl attention Mr.",
-        "cliente_puntual": true
-    }
-},
-{
-    "model": "ITV.inspeccion",
     "pk": 55,
     "fields": {
         "trabajador": 6,
@@ -3041,18 +2736,6 @@
         "fecha_inspeccion": "2024-10-29",
         "resultado_inspeccion": "Life computer short speech indicate before our. Former order strong exactly second cold.",
         "notas_inspeccion": "Risk century race rock.\nYear sing none card because. Side several position all Mrs top.\nReveal attention program fact other onto face still. State television past high two though.",
-        "cliente_puntual": true
-    }
-},
-{
-    "model": "ITV.inspeccion",
-    "pk": 56,
-    "fields": {
-        "trabajador": 9,
-        "vehiculo": 4,
-        "fecha_inspeccion": "2024-10-29",
-        "resultado_inspeccion": "East the few home hope room could. Chair school detail beat none professional.",
-        "notas_inspeccion": "Traditional agent travel reality his meeting listen to. Which responsibility force develop bit.\nDown produce first nice school. Detail war discover institution main certain line. Gas current term.",
         "cliente_puntual": true
     }
 },
@@ -3124,17 +2807,6 @@
 },
 {
     "model": "ITV.factura",
-    "pk": 7,
-    "fields": {
-        "inspeccion": 56,
-        "importe": "0.76",
-        "pagado": true,
-        "fecha_emision_factura": "2024-10-29",
-        "observaciones": "Protect interest number brother decide. Success either knowledge. Class most evidence less magazine understand sure campaign."
-    }
-},
-{
-    "model": "ITV.factura",
     "pk": 8,
     "fields": {
         "inspeccion": 44,
@@ -3175,28 +2847,6 @@
         "pagado": true,
         "fecha_emision_factura": "2024-10-29",
         "observaciones": "Local structure area day option hundred machine help. Yet personal high drug such operation.\nRather record huge somebody. Trip live look find many south."
-    }
-},
-{
-    "model": "ITV.factura",
-    "pk": 12,
-    "fields": {
-        "inspeccion": 46,
-        "importe": "0.81",
-        "pagado": true,
-        "fecha_emision_factura": "2024-10-29",
-        "observaciones": "Teach check morning establish. Example happy four. Finally care agent conference live success walk nothing."
-    }
-},
-{
-    "model": "ITV.factura",
-    "pk": 13,
-    "fields": {
-        "inspeccion": 54,
-        "importe": "0.56",
-        "pagado": true,
-        "fecha_emision_factura": "2024-10-29",
-        "observaciones": "Language rather debate. With off human gun.\nGet data yes process. Drop turn back former. Half simply organization. About pressure north design.\nDemocrat big job keep. Offer page thank particularly."
     }
 },
 {
