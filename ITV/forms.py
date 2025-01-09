@@ -3,7 +3,9 @@ from django.forms import ModelForm
 from .models import *
 from datetime import *
 import re 
-from django.utils import timezone 
+from django.utils import timezone
+from django.contrib.auth.forms import UserCreationForm
+
 
     #CLIENTE   
 class ClienteForm(ModelForm):
@@ -41,8 +43,11 @@ class ClienteForm(ModelForm):
         
         dniCliente=Cliente.objects.filter(dni=dni).first()
         
-        if(dniCliente):
-           self.add_error("dni","El dni ya existe en la base de datos") 
+        if(not dniCliente is None):
+            if(not self.instance is None and dniCliente.id == self.instance.id):
+                pass
+            else:
+                self.add_error("dni","El dni ya existe en la base de datos") 
            
         return self.cleaned_data
 
@@ -193,9 +198,11 @@ class VehiculoForm(ModelForm):
             self.add_error("ejes","Revisa el tipo de vehiculo, el que has seleccionado tiene mas de 2 ejes")
             
         matriculaVehiculo=Vehiculo.objects.filter(matricula=matricula).first()
-        
-        if(matriculaVehiculo):
-            self.add_error("matricula","Esta matricula ya esta registrada") 
+        if (not matriculaVehiculo is None):
+            if(not self.instance is None and matriculaVehiculo.id == self.instance.id):
+                pass
+            else:
+                self.add_error("matricula","Esta matricula ya esta registrada") 
             
         return self.cleaned_data
 
@@ -402,5 +409,15 @@ class BusquedaAvanzadaTrabajador(forms.Form):
         
         return self.cleaned_data 
 
-            
-        
+#REGISTRO
+
+class RegistroForm(UserCreationForm):
+    roles = (
+        (Usuario.CLIENTE,"cliente"),
+        (Usuario.TRABAJADOR,"trabajador")        
+    )
+    rol= forms.ChoiceField(choices=roles)
+    
+    class Meta:
+        model = Usuario
+        fields = ()

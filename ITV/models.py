@@ -1,23 +1,39 @@
 from django.db import models
 from django.conf import settings
-from django.utils import timezone 
+from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
+class Usuario (AbstractUser):
+    ADMINISTRADOR = 1
+    CLIENTE = 2
+    TRABAJADOR = 3
+    ROLES = (
+        (ADMINISTRADOR,"administrador"),
+        (CLIENTE,"cliente"),
+        (TRABAJADOR,"trabajador")
+    )
+    rol = models.PositiveBigIntegerField(choices=ROLES,default=2)
+
+
+
 class Cliente(models.Model):
-    nombre=models.CharField(max_length=50)
     apellidos=models.CharField(max_length=50,blank=True)
     SEXO=[('M','Masculino'),('F','Femenino')]
     sexo=models.CharField(max_length=1,choices=SEXO)
     fecha_nacimiento=models.DateField()
     codigo_postal=models.IntegerField()
     domicilio=models.TextField()
-    correo= models.EmailField(max_length=50)
     telefono=models.PositiveIntegerField()
     dni=models.CharField(max_length=9,unique=True)
     imagen = models.ImageField(upload_to='imagenes/',null=True, blank=True)
     
+    usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE)
+    
     def __str__(self):
-        return self.dni + " "+ self.nombre + " "+ self.apellidos
+        return self.usuario.username + " " + self.apellidos
+
+
 
 class Local(models.Model):
     precio=models.FloatField()
@@ -87,15 +103,15 @@ class Maquinaria(models.Model):
 class Trabajador(models.Model):
     #relaciones
     estacion=models.ManyToManyField(EstacionItv,related_name="estacionItv_trabajadores")
+    usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE)
     #
-    nombre=models.CharField(max_length=50,null=False)
     apellidos=models.CharField(max_length=50,null=False)
     puesto=models.CharField(max_length=2,choices=Maquinaria.TIPO)
     sueldo=models.FloatField(editable=True,null=False)
     observaciones=models.TextField()
     
     def __str__(self):
-        return self.nombre + " "+ self.apellidos
+        return self.usuario.username + " "+ self.apellidos
     
 class Vehiculo(models.Model):
     #relaciones

@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_bootstrap5',
     'django_bootstrap_icons',
-    
+    'django.contrib.auth',  
+    'django.contrib.contenttypes',   
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.contrib.sessions.middleware'	,    
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -131,3 +134,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Configuración de archivos multimedia
 MEDIA_URL = '/media/'  # URL base para acceder a los archivos
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directorio donde se almacenarán los archivos subidos
+
+#Configuracion custom de login
+AUTH_USER_MODEL = "ITV.Usuario"
