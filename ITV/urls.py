@@ -107,4 +107,9 @@ urlpatterns = [
     
     #Eliminar trabajador    
     path('trabajadores/eliminar/<int:trabajador_id>',views.eliminar_trabajador,name='eliminar_trabajador'),
+    
+        #Registro
+        
+    #Registrar Usuario
+    path('registrar',views.registrar_usuario,name='registrar_usuario'),
 ]       

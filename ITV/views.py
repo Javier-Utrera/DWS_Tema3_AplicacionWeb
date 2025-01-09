@@ -5,6 +5,10 @@ from django.db.models import Q,Prefetch
 from django.shortcuts import redirect
 from django.contrib import messages
 
+from django.contrib.auth import login
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import Group
+
 # Create your views here.
 def index(request):
     return render(request,"index.html")
@@ -535,3 +539,28 @@ def eliminar_trabajador(request,trabajador_id):
     except Exception as error:
         print(error)
     return redirect('listar_trabajadores')
+
+#Registro Usuario-------------
+
+def registrar_usuario(request):
+    if request.method == 'POST':
+        formulario = RegistroForm(request.POST)
+        if formulario.is_valid():
+            user= formulario.save()
+            rol= int(formulario.cleaned_data.get('rol'))
+            if(rol==Usuario.CLIENTE):
+                grupo = Group.objects.get(name='Clientes')
+                grupo.user_set.add(user)
+                cliente = Cliente.objects.create(usuario=user)
+                cliente.save()
+            elif(rol == Usuario.TRABAJADOR):
+                grupo = Group.objects.get(name='Trabajadores')
+                grupo.user_set.add(user)
+                trabajador= Trabajador.objects.create(usuario=user)
+                trabajador.save()
+                
+            login(request,user)
+            return redirect('urls_index')
+    else:
+        formulario = RegistroForm()
+    return render(request,'registration/signup.html',{'formulario':formulario})

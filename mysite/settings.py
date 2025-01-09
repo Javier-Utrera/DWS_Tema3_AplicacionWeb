@@ -41,8 +41,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_bootstrap5',
     'django_bootstrap_icons',
-    'django.contrib.auth',  
-    'django.contrib.contenttypes',   
 ]
 
 MIDDLEWARE = [
@@ -53,9 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'django.contrib.sessions.middleware'	,    
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -137,3 +133,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directorio donde se almacenarán
 
 #Configuracion custom de login
 AUTH_USER_MODEL = "ITV.Usuario"
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'

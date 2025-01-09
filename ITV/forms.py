@@ -420,4 +420,4 @@ class RegistroForm(UserCreationForm):
     
     class Meta:
         model = Usuario
-        fields = ()
+        fields = ('username','email','password1','password2','rol')
