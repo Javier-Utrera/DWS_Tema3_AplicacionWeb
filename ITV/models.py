@@ -21,11 +21,11 @@ class Cliente(models.Model):
     apellidos=models.CharField(max_length=50,blank=True)
     SEXO=[('M','Masculino'),('F','Femenino')]
     sexo=models.CharField(max_length=1,choices=SEXO)
-    fecha_nacimiento=models.DateField()
-    codigo_postal=models.IntegerField()
-    domicilio=models.TextField()
-    telefono=models.PositiveIntegerField()
-    dni=models.CharField(max_length=9,unique=True)
+    fecha_nacimiento=models.DateField(null=True)
+    codigo_postal=models.IntegerField(null=True)
+    domicilio=models.TextField(null=True)
+    telefono=models.PositiveIntegerField(null=True)
+    dni=models.CharField(max_length=9,unique=True, null=True)
     imagen = models.ImageField(upload_to='imagenes/',null=True, blank=True)
     
     usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE)
@@ -78,7 +78,7 @@ class Cita(models.Model):
     hora_propuesta=models.TimeField(null=True)
 
     def __str__(self):
-        return self.tipo_inspeccion + " "+ self.fecha_propuesta+ " "+ self.hora_propuesta
+        return self.tipo_inspeccion 
     
 class EmpresaExterna(models.Model):
     nombre=models.CharField(max_length=50,null=False)

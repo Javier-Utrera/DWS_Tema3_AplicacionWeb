@@ -2,12 +2,12 @@
     <div class="card-body">
         <h5 class="card-title">Detalles del Cliente</h5>
         <p class="card-text"><strong>ID Cliente:</strong> {{ cliente.id }}</p>
-        <p class="card-text"><strong>Nombre:</strong> {{ cliente.nombre }}</p>
+        <p class="card-text"><strong>Nombre:</strong> {{ cliente.usuario.username }}</p>
         <p class="card-text"><strong>Apellidos:</strong> {{ cliente.apellidos }}</p>
         <p class="card-text"><strong>Sexo:</strong> {{ cliente.sexo }}</p>
         <p class="card-text"><strong>DNI:</strong> {{ cliente.dni }}</p>
         <p class="card-text"><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
-        <p class="card-text"><strong>Correo:</strong> {{ cliente.correo }}</p>
+        <p class="card-text"><strong>Correo:</strong> {{ cliente.usuario.email }}</p>
         <p class="card-text"><strong>Domicilio:</strong> {{ cliente.domicilio }}</p>
         <p class="card-text"><strong>Fecha de nacimiento:</strong> {{ cliente.fecha_nacimiento|date:"Y-m-d" }}</p>
         <p class="card-text">
