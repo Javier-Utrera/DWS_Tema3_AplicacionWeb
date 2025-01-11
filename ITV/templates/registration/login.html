@@ -1,0 +1,24 @@
+{% extends "estructura/padre.html" %}
+
+{% comment %} {% block contenido %}
+<form action = "{% url 'login' %}" method = "post"> 
+    
+     {% load django_bootstrap5 %}
+    {% csrf_token %} 
+    {% bootstrap_form form %}         
+
+    {% bootstrap_button "Enviar" button_type="submit" button_class="btn-primary" %}
+</form>
+{% endblock %} {% endcomment %}
+
+
+{% block contenido %}
+
+{% load django_bootstrap5 %}
+<form action = "{% url 'login' %}" method = "post"> 
+    {% load django_bootstrap5 %} 
+    {% csrf_token %} 
+    {% bootstrap_form form %}       
+    {% bootstrap_button "Enviar" button_type="submit" button_class="btn-primary" %}
+</form> 
+{% endblock %}

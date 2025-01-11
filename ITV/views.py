@@ -11,7 +11,9 @@ from django.contrib.auth.models import Group
 
 # Create your views here.
 def index(request):
-    return render(request,"index.html")
+    if(not "fecha_inicio" in request.session):
+        request.session["fecha_inicio"] = datetime.now().strftime('%d/%m/%Y %H:%M')
+    return render(request, 'index.html')
 
 # 1 
 def listar_clientes(request):
@@ -146,7 +148,8 @@ def eliminar_cliente(request,cliente_id):
     return redirect('listar_clientes')
             
 #INSPECCION------------------------------
-       
+
+@permission_required('ITV.add_inspeccion')        
 def procesar_inspeccion(request): 
     if (request.method == "POST"):
         formulario=InspeccionForm(request.POST)
@@ -160,6 +163,7 @@ def procesar_inspeccion(request):
         formulario=InspeccionForm()  
     return render(request,'inspecciones/create.html',{"formulario":formulario})
 
+@permission_required('ITV.view_inspeccion')  
 def buscar_inspeccion(request):
         
     if len(request.GET)>0:
@@ -192,7 +196,7 @@ def buscar_inspeccion(request):
         formulario=BusquedaAvanzadaInspeccion(None)
     return render(request, 'inspecciones/busqueda_avanzada.html',{"formulario":formulario})
 
-
+@permission_required('ITV.change_inspeccion')  
 def editar_inspeccion(request,inspeccion_id):
     inspeccion = Inspeccion.objects.get(id=inspeccion_id)
     
@@ -215,6 +219,7 @@ def editar_inspeccion(request,inspeccion_id):
                 print(error)
     return render(request, 'inspecciones/actualizar.html',{"formulario":formulario,"inspeccion":inspeccion})
 
+@permission_required('ITV.delete_inspeccion')  
 def eliminar_inspeccion(request,inspeccion_id):
     inspeccion = Inspeccion.objects.get(id=inspeccion_id)
     try:
@@ -225,10 +230,10 @@ def eliminar_inspeccion(request,inspeccion_id):
     return redirect('listar_inspecciones')
 
 #VEHICULO------------------------------
-    
+@permission_required('ITV.add_vehiculo')    
 def procesar_vehiculo(request):
     if (request.method == "POST"):
-        formulario=VehiculoForm(request.POST)
+        formulario=VehiculoForm(request.POST,request=request)
         if formulario.is_valid():
             try:
                 formulario.save()
@@ -239,6 +244,7 @@ def procesar_vehiculo(request):
         formulario=VehiculoForm()          
     return render(request,'vehiculos/create.html',{"formulario":formulario})
 
+@permission_required('ITV.view_vehiculo')  
 def buscar_vehiculo(request):
         
     if len(request.GET)>0:
@@ -271,6 +277,7 @@ def buscar_vehiculo(request):
         formulario=BusquedaAvanzadaVehiculo(None)
     return render(request,'vehiculos/busqueda_avanzada.html',{"formulario":formulario})
 
+@permission_required('ITV.change_vehiculo')  
 def editar_vehiculo(request,vehiculo_id):
     vehiculo = Vehiculo.objects.get(id=vehiculo_id)
     
@@ -293,6 +300,7 @@ def editar_vehiculo(request,vehiculo_id):
                 print(error)
     return render(request, 'vehiculos/actualizar.html',{"formulario":formulario,"vehiculo":vehiculo})
 
+@permission_required('ITV.delete_vehiculo')  
 def eliminar_vehiculo(request,vehiculo_id):
     vehiculo = Vehiculo.objects.get(id=vehiculo_id)
     try:
@@ -304,6 +312,7 @@ def eliminar_vehiculo(request,vehiculo_id):
 
 #LOCAL------------------------------
 
+@permission_required('ITV.add_local')
 def procesar_local(request):
     if(request.method=="POST"):
         formulario=LocalForm(request.POST)
@@ -317,6 +326,7 @@ def procesar_local(request):
         formulario=LocalForm()
     return render(request,'locales/create.html',{"formulario":formulario})
 
+@permission_required('ITV.view_local') 
 def buscar_local(request):
         
     if len(request.GET)>0:
@@ -349,6 +359,7 @@ def buscar_local(request):
         formulario=BusquedaAvanzadaLocal(None)
     return render(request,'locales/busqueda_avanzada.html',{"formulario":formulario})
 
+@permission_required('ITV.change_local')
 def editar_local(request,local_id):
     local = Local.objects.get(id=local_id)
     
@@ -371,6 +382,7 @@ def editar_local(request,local_id):
                 print(error)
     return render(request, 'locales/actualizar.html',{"formulario":formulario,"local":local})
 
+@permission_required('ITV.delete_local')
 def eliminar_local(request,local_id):
     local = Local.objects.get(id=local_id)
     try:
@@ -382,6 +394,7 @@ def eliminar_local(request,local_id):
 
 #ESTACION------------------------------
 
+@permission_required('ITV.add_estacion')
 def procesar_estacion(request):
     if(request.method=="POST"):
         formulario=EstacionForm(request.POST)
@@ -395,6 +408,7 @@ def procesar_estacion(request):
         formulario=EstacionForm()
     return render(request,'estaciones/create.html',{"formulario":formulario})
 
+@permission_required('ITV.view_estacion') 
 def buscar_estacion(request):
         
     if len(request.GET)>0:
@@ -429,6 +443,7 @@ def buscar_estacion(request):
         formulario=BusquedaAvanzadaEstacion(None)
     return render(request,'estaciones/busqueda_avanzada.html',{"formulario":formulario})
 
+@permission_required('ITV.change_estacion')
 def editar_estacion(request,estacion_id):
     estacion = EstacionItv.objects.get(id=estacion_id)
     
@@ -451,6 +466,7 @@ def editar_estacion(request,estacion_id):
                 print(error)
     return render(request, 'estaciones/actualizar.html',{"formulario":formulario,"estacion":estacion})
 
+@permission_required('ITV.delete_estacion')
 def eliminar_estacion(request,estacion_id):
     estacion = EstacionItv.objects.get(id=estacion_id)
     try:
@@ -462,6 +478,7 @@ def eliminar_estacion(request,estacion_id):
 
 #TRABAJADOR------------------------------
 
+@permission_required('ITV.add_trabajador')
 def procesar_trabajador(request):
     if(request.method=="POST"):
         formulario=TrabajadorForm(request.POST)
@@ -475,6 +492,7 @@ def procesar_trabajador(request):
         formulario=TrabajadorForm()
     return render(request,'trabajadores/create.html',{"formulario":formulario})
 
+@permission_required('ITV.view_trabajador') 
 def buscar_trabajador(request):
         
     if len(request.GET)>0:
@@ -509,6 +527,7 @@ def buscar_trabajador(request):
         formulario=BusquedaAvanzadaTrabajador(None)
     return render(request,'trabajadores/busqueda_avanzada.html',{"formulario":formulario})
 
+@permission_required('ITV.change_trabajador')
 def editar_trabajador(request,trabajador_id):
     trabajador = Trabajador.objects.get(id=trabajador_id)
     
@@ -531,6 +550,7 @@ def editar_trabajador(request,trabajador_id):
                 print(error)
     return render(request, 'trabajadores/actualizar.html',{"formulario":formulario,"trabajador":trabajador})
 
+@permission_required('ITV.delete_trabajador')
 def eliminar_trabajador(request,trabajador_id):
     trabajador = Trabajador.objects.get(id=trabajador_id)
     try:
@@ -564,3 +584,7 @@ def registrar_usuario(request):
     else:
         formulario = RegistroForm()
     return render(request,'registration/signup.html',{'formulario':formulario})
+
+def borrar_session(request):
+    del request.session['fecha_inicio']
+    return render(request, 'index.html')

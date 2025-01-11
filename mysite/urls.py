@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ITV.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 handler400="ITV.views.mi_error_400"
 handler403="ITV.views.mi_error_403"
