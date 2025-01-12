@@ -14,6 +14,11 @@ class Usuario (AbstractUser):
         (TRABAJADOR,"trabajador")
     )
     rol = models.PositiveBigIntegerField(choices=ROLES,default=1)
+    
+    fecha_nacimiento=models.DateField(null=True)
+    
+    TIPO=[('EM','Emisiones'),('FR','Frenos'),('DI','Direccion')]
+    puesto=models.CharField(max_length=2,choices=TIPO)
 
 
 

@@ -85,6 +85,7 @@ class BusquedaAvanzadaCliente(forms.Form):
         return self.cleaned_data
     
     #INSPECCION
+
 class InspeccionForm(ModelForm):
     class Meta:
         model=Inspeccion
@@ -150,6 +151,7 @@ class BusquedaAvanzadaInspeccion(forms.Form):
         return self.cleaned_data 
           
     #VEHICULO
+
 class VehiculoForm(ModelForm):
     class Meta:
         model=Vehiculo
@@ -235,6 +237,7 @@ class BusquedaAvanzadaVehiculo(forms.Form):
         return self.cleaned_data 
     
     #LOCAL   
+
 class LocalForm(ModelForm):
     class Meta:
         model=Local
@@ -294,6 +297,7 @@ class BusquedaAvanzadaLocal(forms.Form):
         return self.cleaned_data 
 
     #ESTACION    
+
 class EstacionForm(ModelForm):
     class Meta:
         model=EstacionItv
@@ -352,6 +356,7 @@ class BusquedaAvanzadaEstacion(forms.Form):
         return self.cleaned_data 
 
     #TRABAJADOR            
+
 class TrabajadorForm(ModelForm):
     class Meta:
         model=Trabajador
@@ -413,11 +418,16 @@ class BusquedaAvanzadaTrabajador(forms.Form):
 
 class RegistroForm(UserCreationForm):
     roles = (
+        (0,"Seleccione un tipo de rol"),
         (Usuario.CLIENTE,"cliente"),
         (Usuario.TRABAJADOR,"trabajador")        
     )
     rol= forms.ChoiceField(choices=roles)
+    fecha_nacimiento=forms.SelectDateWidget()
+    
+    tipo=(('EM','Emisiones'),('FR','Frenos'),('DI','Direccion'))
+    puesto=forms.ChoiceField(choices=tipo)
     
     class Meta:
         model = Usuario
-        fields = ('username','email','password1','password2','rol')
+        fields = ('username','email','password1','password2','rol','fecha_nacimiento','puesto')
