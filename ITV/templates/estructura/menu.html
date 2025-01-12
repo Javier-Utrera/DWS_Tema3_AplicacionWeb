@@ -1,21 +1,15 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-success px-4">
+
     <a class="navbar-brand" href="#">
       <img src="{% static  'imagenes/ba.jpg' %}" 
           alt="" width="100" height="50" 
           class="d-inline-block align-text-middle">
     </a>
-    <p>
-      Fecha Inicio:
-      </br>
-      {{ request.session.fecha_inicio}}
-    </p>
-    {% if request.user.is_authenticated %}
-    <p>
-      Nombre Usuario: {{ request.user }}
-    </p>
-  {% endif %}
+
+    <p>Fecha Inicio:</br>{{ request.session.fecha_inicio}}</p>
+
     <button class="navbar-toggler" type="button" 
       data-bs-toggle="collapse" 
       data-bs-target="#accionesBiblioteca" 
@@ -26,10 +20,49 @@
     </button>
     <div class="collapse navbar-collapse" id="accionesBiblioteca">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'urls_index' %}">Inicio</a>
         </li>
 
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" 
+              id="accionesDatos" 
+              role="button" 
+              data-bs-toggle="dropdown" 
+              aria-expanded="false">
+            Datos del Usuario
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="accionesDatos">
+            <li><a class="dropdown-item">Nombre : {{ request.user.username }}</a></li>
+            <li><a class="dropdown-item">Email : {{ request.user.email }}</a></li>
+            <li>
+              {% if request.user.rol == 1 %}
+                <a class="dropdown-item">Tipo de usuario : <strong>Administrador</strong></a>
+              {% elif request.user.rol == 2  %}
+                <a class="dropdown-item">Tipo de usuario : <strong>Cliente</strong></a>
+              {% elif request.user.rol == 3  %}
+                <a class="dropdown-item">Tipo de usuario : <strong>Trabajador</strong></a>
+              {% else %} 
+                <a class="dropdown-item">Tipo de usuario : </a>
+              {% endif %}
+            </li>
+            {% comment %} Como solo puede pertenecer a un unico grupo saco el primero {% endcomment %}
+            <li><a class="dropdown-item">Grupo :
+              {% if request.user.groups.first.name == Null %}
+                Administrador
+              {% else %} 
+                {{ request.user.groups.first.name }}
+              {% endif %}  
+            </a></li>
+          </ul>
+        </li>
+        
+
+
+
+        {% if request.user.is_authenticated and perms.ITV.add_cita%}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" 
               id="accionesLibrosLink" 
@@ -42,7 +75,9 @@
             <li><a class="dropdown-item" href="{% url 'listar_citas' %}">Ver Citas</a></li>
           </ul>
         </li>
+        {% endif %}
 
+        {% if request.user.is_authenticated and perms.ITV.add_clientes%}
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" 
                 id="accionesLibrosLink" 
@@ -57,7 +92,9 @@
               <li><a class="dropdown-item" href="{% url 'buscar_cliente' %}">Buscar Clientes</a></li>
             </ul>
         </li>
+        {% endif %}
 
+        {% if request.user.is_authenticated and perms.ITV.add_estacion%}
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" 
                 id="accionesLibrosLink" 
@@ -72,7 +109,9 @@
               <li><a class="dropdown-item" href="{% url 'buscar_estacion' %}">Buscar Estaciones</a></li>
             </ul>
         </li>
+        {% endif %}
 
+        {% if request.user.is_authenticated and perms.ITV.add_inspeccion%}
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" 
                 id="accionesLibrosLink" 
@@ -87,7 +126,9 @@
               <li><a class="dropdown-item" href="{% url 'buscar_inspeccion' %}">Buscar Inspeccion</a></li>
             </ul>
         </li>
+        {% endif %}
 
+        {% if request.user.is_authenticated and perms.ITV.add_local %}
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" 
                 id="accionesLibrosLink" 
@@ -102,7 +143,9 @@
               <li><a class="dropdown-item" href="{% url 'buscar_local' %}">Buscar Local</a></li>
             </ul>
         </li>
+        {% endif %}
 
+        {% if request.user.is_authenticated and perms.ITV.add_trabajador %}
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" 
                 id="accionesLibrosLink" 
@@ -117,7 +160,9 @@
               <li><a class="dropdown-item" href="{% url 'buscar_trabajador' %}">Buscar Trabajadores</a></li>
             </ul>
         </li>
+        {% endif %}
 
+        {% if request.user.is_authenticated and perms.ITV.add_vehiculo %}
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" 
                 id="accionesLibrosLink" 
@@ -133,6 +178,7 @@
             </ul>
         </li>
       </ul>
+      {% endif %}
 
       <div class="ml-2">
         {% if not request.user.is_authenticated %}

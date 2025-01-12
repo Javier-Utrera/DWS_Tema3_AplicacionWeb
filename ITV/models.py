@@ -13,7 +13,7 @@ class Usuario (AbstractUser):
         (CLIENTE,"cliente"),
         (TRABAJADOR,"trabajador")
     )
-    rol = models.PositiveBigIntegerField(choices=ROLES,default=2)
+    rol = models.PositiveBigIntegerField(choices=ROLES,default=1)
 
 
 
@@ -105,13 +105,13 @@ class Trabajador(models.Model):
     estacion=models.ManyToManyField(EstacionItv,related_name="estacionItv_trabajadores")
     usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE)
     #
-    apellidos=models.CharField(max_length=50,null=False)
+    apellidos=models.CharField(max_length=50,null=True)
     puesto=models.CharField(max_length=2,choices=Maquinaria.TIPO)
-    sueldo=models.FloatField(editable=True,null=False)
-    observaciones=models.TextField()
+    sueldo=models.FloatField(editable=True,null=True)
+    observaciones=models.TextField(null=True)
     
     def __str__(self):
-        return self.usuario.username + " "+ self.apellidos
+        return self.usuario.username + " "
     
 class Vehiculo(models.Model):
     #relaciones
