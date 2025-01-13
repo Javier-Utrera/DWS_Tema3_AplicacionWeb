@@ -140,6 +140,7 @@ def editar_cita(request, cita_id):
     formulario = CitaForm(datosFormulario,instance=cita)
     
     if (request.method == "POST"):
+        
         if formulario.is_valid():
             try:
                 formulario.save()
