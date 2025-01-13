@@ -47,5 +47,22 @@
             <p><strong>Eficiencia Energética:</strong> {{ cita.estacion.eficiencia_energetica }}</p>
             <p><strong>Comunidad Autónoma:</strong> {{ cita.estacion.comunidad_autonoma }}</p>
         </div>
+        {% load bootstrap_icons %}
+        <div class="row btn-group">
+            <div class="mb-2">
+                <button type="button" 
+                        class="btn btn-outline-primary"> 
+                        <a href="{% url 'editar_cita' cita.id %}" ><span>{% bs_icon 'pencil' %}</span></a>
+                </button>
+            </div>
+            <div class="mb-2">
+                <form action = "{% url 'eliminar_cita' cita.id %}" method = "post"> 
+                    {% csrf_token %}
+                    <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                        <span>{% bs_icon 'trash' %}</span>
+                    </button> 
+                </form>
+            </div>
+        </div>
     </div>
 </div>

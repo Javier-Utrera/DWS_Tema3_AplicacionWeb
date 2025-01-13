@@ -25,6 +25,8 @@ class Usuario (AbstractUser):
 
 
 class Cliente(models.Model):
+    email=models.CharField(max_length=50,blank=True)
+    nombre=models.CharField(max_length=50,blank=True)
     apellidos=models.CharField(max_length=50,blank=True)
     SEXO=[('M','Masculino'),('F','Femenino')]
     sexo=models.CharField(max_length=1,choices=SEXO)
@@ -112,6 +114,8 @@ class Trabajador(models.Model):
     estacion=models.ManyToManyField(EstacionItv,related_name="estacionItv_trabajadores")
     usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE)
     #
+    email=models.CharField(max_length=50,blank=True)
+    nombre=models.CharField(max_length=50,blank=True)
     apellidos=models.CharField(max_length=50,null=True)
     puesto=models.CharField(max_length=2,choices=Maquinaria.TIPO)
     sueldo=models.FloatField(editable=True,null=True)

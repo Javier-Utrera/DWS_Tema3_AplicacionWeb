@@ -74,7 +74,9 @@
             Citas
           </a>
           <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
-            <li><a class="dropdown-item" href="{% url 'listar_citas' %}">Ver Citas</a></li>
+            <li><a class="dropdown-item" href="{% url 'listar_citas' request.user.id %}">Ver Citas</a></li>
+            <li><a class="dropdown-item" href="{% url 'procesar_cita' %}">Crear Citas</a></li>
+            <li><a class="dropdown-item" href="{% url 'buscar_cita' %}">Buscar Citas</a></li>
           </ul>
         </li>
         {% endif %}
@@ -90,8 +92,8 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
               <li><a class="dropdown-item" href="{% url 'listar_clientes' %}">Ver Clientes</a></li>
-              <li><a class="dropdown-item" href="{% url 'procesar_cliente' %}">Crear Clientes</a></li>
-              <li><a class="dropdown-item" href="{% url 'buscar_cliente' %}">Buscar Clientes</a></li>
+              <li><a class="dropdown-item" href="{% url 'procesar_cita' %}">Crear Clientes</a></li>
+              <li><a class="dropdown-item" href="{% url 'buscar_cita' %}">Buscar Clientes</a></li>
             </ul>
         </li>
         {% endif %}

@@ -7,7 +7,174 @@ from django.utils import timezone
 from django.contrib.auth.forms import UserCreationForm
 
 
-    #CLIENTE   
+    
+# class CitaForm(ModelForm):
+#     class Meta:
+#         model = Cita
+#         fields = '__all__'
+#         labels = {
+#             "fecha_matriculacion": "Fecha de Matriculación",
+#             "numero_bastidor": "Número de Bastidor",
+#             "tipo_inspeccion": "Tipo de Inspección",
+#             "tipo_pago": "Tipo de Pago",
+#             "fecha_propuesta": "Fecha Propuesta",
+#             "hora_propuesta": "Hora Propuesta",
+#         }
+#         widgets = {
+#             "fecha_matriculacion": forms.SelectDateWidget(),
+#             "fecha_propuesta": forms.SelectDateWidget(),
+#             "hora_propuesta": forms.TimeInput(attrs={'type': 'time'}),
+#         }
+#         help_texts = {
+#             "matricula": "Introduce la matrícula en formato válido (máximo 7 caracteres).",
+#             "fecha_matriculacion": "Este campo o el número de bastidor debe estar relleno.",
+#         }
+
+#     def clean(self):
+#         cleaned_data = super().clean()
+#         matricula = cleaned_data.get("matricula")
+#         numero_bastidor = cleaned_data.get("numero_bastidor")
+        
+#         # Validación para asegurarse de que al menos uno de los dos campos esté lleno
+#         if not matricula and not numero_bastidor:
+#             self.add_error("matricula","Debes rellenar al menos la matrícula o el número de bastidor.")
+#             self.add_error("numero_bastidor","Debes rellenar al menos la matrícula o el número de bastidor.")
+        
+#         return cleaned_data
+
+#     def __init__(self, *args, **kwargs):
+#         self.request = kwargs.pop("request")
+#         super(CitaForm, self).__init__(*args, **kwargs)
+#         estacionesdisponibles = EstacionItv.objects.all()
+#         estacion = forms.ModelChoiceField(
+#             queryset=estacionesdisponibles,
+#             widget=forms.Select,
+#             required=True,
+#             empty_label="Ninguna"
+#         )   
+
+class CitaForm(forms.Form):
+    estacion = forms.ModelChoiceField(
+        queryset=EstacionItv.objects.all(),
+        required=True,
+        label="Estación ITV",
+        empty_label="Seleccione una estación"
+    )
+    matricula = forms.CharField(
+        max_length=7,
+        required=True,
+        label="Matrícula",
+        widget=forms.TextInput(attrs={'maxlength': '7'})
+    )
+    numero_bastidor = forms.CharField(
+        max_length=17,
+        required=False,
+        label="Número de Bastidor"
+    )
+    tipo_inspeccion = forms.ChoiceField(
+        choices=Cita.TIPOINSPECCION,
+        required=True,
+        label="Tipo de Inspección"
+    )
+    remolque = forms.BooleanField(
+        required=False,
+        label="¿Remolque?"
+    )
+    tipo_pago = forms.ChoiceField(
+        choices=Cita.TIPOPAGO,
+        required=True,
+        label="Tipo de Pago"
+    )
+    fecha_matriculacion = forms.DateField(
+        required=True,
+        label="Fecha de Matriculación",
+        widget=forms.SelectDateWidget()
+    )
+    fecha_propuesta = forms.DateField(
+        required=True,
+        label="Fecha Propuesta",
+        widget=forms.SelectDateWidget()
+    )
+    hora_propuesta = forms.TimeField(
+        required=True,
+        label="Hora Propuesta",
+        widget=forms.TimeInput(attrs={'type': 'time'})
+    )
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        matricula = cleaned_data.get("matricula")
+        numero_bastidor = cleaned_data.get("numero_bastidor")
+        
+        # Validación para asegurarse de que al menos uno de los dos campos esté lleno
+        if not matricula and not numero_bastidor:
+            self.add_error("matricula","Debes rellenar al menos la matrícula o el número de bastidor.")
+            self.add_error("numero_bastidor","Debes rellenar al menos la matrícula o el número de bastidor.")
+        
+        return cleaned_data
+    
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(CitaForm, self).__init__(*args, **kwargs)
+        estacionesdisponibles = EstacionItv.objects.all()
+        estacion = forms.ModelChoiceField(
+            queryset=estacionesdisponibles,
+            widget=forms.Select,
+            required=True,
+            empty_label="Ninguna"
+        )    
+    
+class BusquedaAvanzadaCita(forms.Form):
+    matricula = forms.CharField(
+        required=False,
+        label="Matrícula del vehículo",
+        max_length=7,
+    )
+    tipo_inspeccion = forms.ChoiceField(
+        required=False,
+        label="Tipo de Inspección",
+        choices=[('', 'Seleccione un tipo de inspección')] + Cita.TIPOINSPECCION,
+    )
+    fecha_propuesta = forms.DateField(
+        required=False,
+        label="Fecha propuesta",
+        widget=forms.DateInput(
+            format="%Y-%m-%d",
+            attrs={"type": "date"},
+        ),
+    )
+    cliente = forms.ModelChoiceField(
+        queryset=Cliente.objects.all(),
+        required=False,
+        label="Cliente asociado",
+        empty_label="Seleccione un cliente",
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+    
+    def clean(self):
+        super().clean()
+        
+        matricula = self.cleaned_data.get("matricula")
+        tipo_inspeccion = self.cleaned_data.get("tipo_inspeccion")
+        fecha_propuesta = self.cleaned_data.get("fecha_propuesta")
+        cliente = self.cleaned_data.get("cliente")
+        
+        # Validación para que al menos un campo esté lleno
+        if not matricula and not tipo_inspeccion and not fecha_propuesta:
+            self.add_error("matricula","Debe introducir al menos un valor en un campo del formulario")
+            self.add_error("tipo_inspeccion","Debe introducir al menos un valor en un campo del formulario")
+            self.add_error("fecha_propuesta","Debe introducir al menos un valor en un campo del formulario")
+        
+        # Validación de longitud de matrícula
+        if matricula and len(matricula) > 7:
+            self.add_error("matricula", "La matrícula no puede tener más de 7 caracteres.")
+        
+        # Validación de fecha futura
+        if fecha_propuesta and fecha_propuesta < timezone.now().date():
+            self.add_error("fecha_propuesta", "La fecha propuesta no puede ser una fecha pasada.")
+        
+        return self.cleaned_data
+
 class ClienteForm(ModelForm):
     class Meta:
         model = Cliente

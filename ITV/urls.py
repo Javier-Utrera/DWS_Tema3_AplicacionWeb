@@ -8,7 +8,7 @@ urlpatterns = [
     path('clientes/listar_clientes', views.listar_clientes,name="listar_clientes"),
     
     #2
-    path('citas/listar_citas', views.listar_citas,name="listar_citas"),
+    path('citas/listar_citas/<int:usuario_id>', views.listar_citas,name="listar_citas"),
     
     #3
     path('estaciones/listar_estaciones', views.listar_estaciones,name="listar_estaciones"),
@@ -47,6 +47,9 @@ urlpatterns = [
     
     #Crear trabajador
     path('trabajadores/create', views.procesar_trabajador,name="procesar_trabajador"),
+
+    #Crear cita
+    path('citas/create', views.procesar_cita,name="procesar_cita"),
     
         #BUSQUEDA AVANZADA
         
@@ -67,6 +70,9 @@ urlpatterns = [
     
     #Buscar trabajador  
     path('trabajadores/buscar',views.buscar_trabajador,name="buscar_trabajador"),
+
+    #Buscar cita  
+    path('citas/buscar',views.buscar_cita,name="buscar_cita"),
     
         #ACTUALIZAR
     
@@ -88,6 +94,9 @@ urlpatterns = [
     #Actualizar trabajador
     path('trabajadores/editar/<int:trabajador_id>', views.editar_trabajador,name="editar_trabajador"),
     
+    #Actualizar cita
+    path('citas/editar/<int:cita_id>', views.editar_cita,name="editar_cita"),
+    
         #Eliminar
         
     #Eliminar cliente    
@@ -107,6 +116,9 @@ urlpatterns = [
     
     #Eliminar trabajador    
     path('trabajadores/eliminar/<int:trabajador_id>',views.eliminar_trabajador,name='eliminar_trabajador'),
+    
+    #Eliminar cita   
+    path('citas/eliminar/<int:cita_id>',views.eliminar_cita,name='eliminar_cita'),
     
         #Registro
         

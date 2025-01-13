@@ -21,8 +21,10 @@ def listar_clientes(request):
     return render(request,"clientes/listar_clientes.html",{'views_listar_cliente':clientes})
 
 # 2 
-def listar_citas(request):
-    citas=Cita.objects.select_related("cliente","estacion").all() 
+def listar_citas(request,usuario_id):
+    cliente = Cliente.objects.get(usuario_id=usuario_id)
+    citas = Cita.objects.filter(cliente_id=cliente.id).select_related("cliente", "estacion")
+    citas = citas.filter(cliente_id=cliente.id).all()
     return render(request,"citas/listar_citas.html",{'views_citas':citas})
     
 # 3 
@@ -67,6 +69,98 @@ def mi_error_500(request,exception=None):
     return render(request,"errores/500.html",None,None,500)
 
 #FORMULARIOS
+
+#CITAS---------------------------------
+
+def procesar_cita(request):
+    if (request.method == "POST"):
+        formulario=CitaForm(request.POST,request=request)
+        if formulario.is_valid():
+            try:
+                cita=Cita.objects.create(
+                    estacion=formulario.cleaned_data.get('estacion'),
+                    matricula=formulario.cleaned_data.get('matricula'),
+                    numero_bastidor=formulario.cleaned_data.get('numero_bastidor'),
+                    tipo_inspeccion=formulario.cleaned_data.get('tipo_inspeccion'),
+                    remolque=formulario.cleaned_data.get('remolque'),
+                    tipo_pago=formulario.cleaned_data.get('tipo_pago'),
+                    fecha_matriculacion=formulario.cleaned_data.get('fecha_matriculacion'),
+                    fecha_propuesta=formulario.cleaned_data.get('fecha_propuesta'),
+                    hora_propuesta=formulario.cleaned_data.get('hora_propuesta'),
+                    cliente=request.user.cliente,
+                )
+                cita.save()
+                return redirect("listar_citas",usuario_id=request.user.id)
+            except Exception as error:
+                print(error)
+    else:
+        formulario=CitaForm(None,request=request)             
+    return render(request,'citas/create.html',{"formulario":formulario})
+
+def buscar_cita(request):
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaCita(request.GET)
+        if formulario.is_valid():
+            mensaje = "Se ha buscado con los siguientes criterios:\n"
+            citas = Cita.objects.select_related("cliente", "estacion")
+            
+            matriculav = formulario.cleaned_data.get("matricula")
+            tipo_inspeccionv = formulario.cleaned_data.get("tipo_inspeccion")
+            fecha_propuestav = formulario.cleaned_data.get("fecha_propuesta")
+            
+            if matriculav != "":
+                citas = citas.filter(matricula__icontains=matriculav)
+                mensaje += f"Matrícula buscada: {matriculav}\n"
+            if tipo_inspeccionv != "":
+                citas = citas.filter(tipo_inspeccion=tipo_inspeccionv)
+                mensaje += f"Tipo de inspección buscado: {tipo_inspeccionv}\n"
+            if fecha_propuestav is not None:
+                citas = citas.filter(fecha_propuesta=fecha_propuestav)
+                mensaje += f"Fecha propuesta buscada: {fecha_propuestav.strftime('%d-%m-%Y')}\n"
+            
+            citas = citas.all()
+            
+            return render(request, "citas/busqueda_avanzada.html", {
+                "views_listar_citas": citas,
+                "texto_busqueda": mensaje,
+            })
+    else:
+        formulario = BusquedaAvanzadaCita(None)
+    
+    return render(request, 'citas/busqueda_avanzada.html', {"formulario": formulario})
+            
+def editar_cita(request, cita_id):
+    cita = Cita.objects.get(id=cita_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    formulario = CitaForm(datosFormulario,instance=cita)
+    
+    if (request.method == "POST"):
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, 'Se ha editado la cita correctamente.')
+                return redirect("listar_citas",usuario_id=request.user.id)
+            except Exception as error:
+                print(error)
+    
+    return render(request, 'citas/actualizar.html', {
+        "formulario": formulario,
+        "cita": cita
+    })
+
+def eliminar_cita(request, cita_id):
+    cita = Cita.objects.get(id=cita_id)
+    try:
+        cita.delete()
+        messages.success(request, f"Se ha eliminado la cita de matrícula {cita.matricula} correctamente.")
+    except Exception as error:
+        print(error)
+    return redirect('listar_citas') 
 
 #CLIENTE------------------------------
 
@@ -566,14 +660,15 @@ def registrar_usuario(request):
     if request.method == 'POST':
         formulario = RegistroForm(request.POST)
         if formulario.is_valid():
-            user= formulario.save()
-            
+            user= formulario.save()          
             rol= int(formulario.cleaned_data.get('rol'))
             if(rol==Usuario.CLIENTE):
                 grupo = Group.objects.get(name='Clientes')
                 grupo.user_set.add(user)
                 cliente = Cliente.objects.create(
-                    usuario=user,
+                    usuario = user,
+                    nombre=formulario.cleaned_data.get("username"),
+                    email=formulario.cleaned_data.get("email"),
                     fecha_nacimiento=formulario.cleaned_data.get("fecha_nacimiento"),
                     apellidos=formulario.cleaned_data.get("apellidos"),
                     dni=formulario.cleaned_data.get("dni"))
@@ -582,8 +677,7 @@ def registrar_usuario(request):
                 grupo = Group.objects.get(name='Trabajadores')
                 grupo.user_set.add(user)
                 trabajador= Trabajador.objects.create(usuario=user,puesto=formulario.cleaned_data.get("puesto"))
-                trabajador.save()
-                
+                trabajador.save()               
             login(request,user)
             return redirect('urls_index')
     else:
