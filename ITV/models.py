@@ -16,9 +16,11 @@ class Usuario (AbstractUser):
     rol = models.PositiveBigIntegerField(choices=ROLES,default=1)
     
     fecha_nacimiento=models.DateField(null=True)
+    apellidos=models.CharField(max_length=50,blank=True)
+    dni=models.CharField(max_length=9,unique=True,null=True)    
     
-    TIPO=[('EM','Emisiones'),('FR','Frenos'),('DI','Direccion')]
-    puesto=models.CharField(max_length=2,choices=TIPO)
+    TIPO=[('',''),('EM','Emisiones'),('FR','Frenos'),('DI','Direccion')]
+    puesto=models.CharField(max_length=2,choices=TIPO,null=True)
 
 
 
@@ -100,7 +102,7 @@ class Maquinaria(models.Model):
     idmpresaExterna=models.ForeignKey(EmpresaExterna,on_delete=models.CASCADE,related_name="empresaexterna_Maquinaria")
     #
     nombre=models.CharField(max_length=50)
-    TIPO=[('EM','Emisiones'),('FR','Frenos'),('DI','Direccion')]
+    TIPO=[('',''),('EM','Emisiones'),('FR','Frenos'),('DI','Direccion')]
     tipo=models.CharField(max_length=2,choices=TIPO)
     ultimo_mantenimiento=models.DateField(blank=True)
     funcionando=models.BooleanField(default=True)

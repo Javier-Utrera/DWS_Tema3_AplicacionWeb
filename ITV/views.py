@@ -567,16 +567,21 @@ def registrar_usuario(request):
         formulario = RegistroForm(request.POST)
         if formulario.is_valid():
             user= formulario.save()
+            
             rol= int(formulario.cleaned_data.get('rol'))
             if(rol==Usuario.CLIENTE):
                 grupo = Group.objects.get(name='Clientes')
                 grupo.user_set.add(user)
-                cliente = Cliente.objects.create(usuario=user)
+                cliente = Cliente.objects.create(
+                    usuario=user,
+                    fecha_nacimiento=formulario.cleaned_data.get("fecha_nacimiento"),
+                    apellidos=formulario.cleaned_data.get("apellidos"),
+                    dni=formulario.cleaned_data.get("dni"))
                 cliente.save()
             elif(rol == Usuario.TRABAJADOR):
                 grupo = Group.objects.get(name='Trabajadores')
                 grupo.user_set.add(user)
-                trabajador= Trabajador.objects.create(usuario=user)
+                trabajador= Trabajador.objects.create(usuario=user,puesto=formulario.cleaned_data.get("puesto"))
                 trabajador.save()
                 
             login(request,user)

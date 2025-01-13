@@ -422,12 +422,38 @@ class RegistroForm(UserCreationForm):
         (Usuario.CLIENTE,"cliente"),
         (Usuario.TRABAJADOR,"trabajador")        
     )
-    rol= forms.ChoiceField(choices=roles)
-    fecha_nacimiento=forms.SelectDateWidget()
     
-    tipo=(('EM','Emisiones'),('FR','Frenos'),('DI','Direccion'))
-    puesto=forms.ChoiceField(choices=tipo)
+    rol= forms.ChoiceField(choices=roles)
+    
+    fecha_nacimiento=forms.DateField(required=False)
+    apellidos=models.CharField(max_length=50,blank=True)
+    dni=models.CharField(max_length=9,null=True)
+       
+    tipo=(('',''),('EM','Emisiones'),('FR','Frenos'),('DI','Direccion'))
+    puesto=forms.ChoiceField(choices=tipo,required=False)
     
     class Meta:
         model = Usuario
-        fields = ('username','email','password1','password2','rol','fecha_nacimiento','puesto')
+        fields = ('username','email','password1','password2','rol','fecha_nacimiento','puesto','apellidos','dni')
+        
+    def clean(self):
+        super().clean()
+        fecha_nacimiento=self.cleaned_data.get("fecha_nacimiento")
+        apellidos=self.cleaned_data.get("apellidos")
+        dni=self.cleaned_data.get('dni')
+        
+        expresion = "^[0-9]{8}[A-Z]$"        
+        if(not re.search(expresion,dni)):
+            self.add_error("dni","El formato del dni no es correcto")
+            
+        if(fecha_nacimiento>timezone.now().date()):
+            self.add_error("fecha_nacimiento","La fecha de nacimiento no puede ser superior a la actual")
+            
+        if ('_' in apellidos):
+            self.add_error("apellidos","Este campo no puede contener un _")        
+        
+        puesto=self.cleaned_data.get("puesto")
+        
+        return self.cleaned_data
+        
+        

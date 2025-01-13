@@ -50,8 +50,10 @@
             </li>
             {% comment %} Como solo puede pertenecer a un unico grupo saco el primero {% endcomment %}
             <li><a class="dropdown-item">Grupo :
-              {% if request.user.groups.first.name == Null %}
+              {% if request.user.rol == 1  %}
                 Administrador
+              {% elif request.user.groups.first.name == Null %}
+                El usuario no esta registrado
               {% else %} 
                 {{ request.user.groups.first.name }}
               {% endif %}  
@@ -193,6 +195,7 @@
 
         {% if not request.user.is_authenticated %}
           <a class="btn btn-outline-warning" href="{% url 'registrar_usuario' %}">
+            {% csrf_token %} 
               Registrarse
           </a>
          {% endif %}
