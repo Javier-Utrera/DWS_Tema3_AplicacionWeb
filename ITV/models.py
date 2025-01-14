@@ -14,13 +14,6 @@ class Usuario (AbstractUser):
         (TRABAJADOR,"trabajador")
     )
     rol = models.PositiveBigIntegerField(choices=ROLES,default=1)
-    
-    fecha_nacimiento=models.DateField(null=True)
-    apellidos=models.CharField(max_length=50,blank=True)
-    dni=models.CharField(max_length=9,unique=True,null=True)    
-    
-    TIPO=[('',''),('EM','Emisiones'),('FR','Frenos'),('DI','Direccion')]
-    puesto=models.CharField(max_length=2,choices=TIPO,null=True)
 
 
 
@@ -37,7 +30,7 @@ class Cliente(models.Model):
     dni=models.CharField(max_length=9,unique=True, null=True)
     imagen = models.ImageField(upload_to='imagenes/',null=True, blank=True)
     
-    usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE)
+    usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE,related_name="usuario_Cliente")
     
     def __str__(self):
         return self.usuario.username + " " + self.apellidos

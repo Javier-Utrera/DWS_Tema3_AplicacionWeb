@@ -74,7 +74,7 @@
             Citas
           </a>
           <ul class="dropdown-menu" aria-labelledby="accionesLibrosLink">
-            <li><a class="dropdown-item" href="{% url 'listar_citas' request.user.id %}">Ver Citas</a></li>
+            <li><a class="dropdown-item" href="{% url 'listar_citas' request.user.usuario_Cliente.id %}">Ver Citas</a></li>
             <li><a class="dropdown-item" href="{% url 'procesar_cita' %}">Crear Citas</a></li>
             <li><a class="dropdown-item" href="{% url 'buscar_cita' %}">Buscar Citas</a></li>
           </ul>
@@ -186,13 +186,9 @@
 
       <div class="ml-2">
         {% if not request.user.is_authenticated %}
-        <form action="{% url 'login' %}" method="post">
-          {% csrf_token %} 
-          <button class="btn btn-outline-warning" type="submit">Login</button>
-        </form>
-        {% comment %} <a class="btn btn-outline-warning" href="{% url 'login' %}">
+         <a class="btn btn-outline-warning" href="{% url 'login' %}">
             Login
-        </a> {% endcomment %}
+        </a> 
         {% endif %}
 
         {% if not request.user.is_authenticated %}

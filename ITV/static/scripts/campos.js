@@ -12,7 +12,8 @@ function clases(id){
         document.getElementById("id_fecha_nacimiento"),
         document.getElementById("id_apellidos"),
         document.getElementById("id_dni")];
-    var listatrabajador=[document.getElementById("id_puesto")];
+    var listatrabajador=[
+        document.getElementById("id_puesto")];
     listacliente.forEach(id=>{
         id.parentNode.setAttribute("class","cliente bg-info bg-opacity-25")
     });

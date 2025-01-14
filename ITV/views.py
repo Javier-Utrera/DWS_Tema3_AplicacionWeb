@@ -21,9 +21,9 @@ def listar_clientes(request):
     return render(request,"clientes/listar_clientes.html",{'views_listar_cliente':clientes})
 
 # 2 
-def listar_citas(request,usuario_id):
-    cliente = Cliente.objects.get(usuario_id=usuario_id)
-    citas = Cita.objects.filter(cliente_id=cliente.id).select_related("cliente", "estacion")
+def listar_citas(request,cliente_id):
+    cliente = Cliente.objects.get(id=cliente_id)
+    citas = Cita.objects.select_related("cliente", "estacion")
     citas = citas.filter(cliente_id=cliente.id).all()
     return render(request,"citas/listar_citas.html",{'views_citas':citas})
     
@@ -74,7 +74,7 @@ def mi_error_500(request,exception=None):
 
 def procesar_cita(request):
     if (request.method == "POST"):
-        formulario=CitaForm(request.POST,request=request)
+        formulario=CitaForm(request.POST)
         if formulario.is_valid():
             try:
                 cita=Cita.objects.create(
@@ -87,14 +87,14 @@ def procesar_cita(request):
                     fecha_matriculacion=formulario.cleaned_data.get('fecha_matriculacion'),
                     fecha_propuesta=formulario.cleaned_data.get('fecha_propuesta'),
                     hora_propuesta=formulario.cleaned_data.get('hora_propuesta'),
-                    cliente=request.user.cliente,
+                    cliente=request.user.usuario_Cliente,
                 )
                 cita.save()
-                return redirect("listar_citas",usuario_id=request.user.id)
+                return redirect("listar_citas",cliente_id=request.user.usuario_Cliente.id)
             except Exception as error:
                 print(error)
     else:
-        formulario=CitaForm(None,request=request)             
+        formulario=CitaForm(None)             
     return render(request,'citas/create.html',{"formulario":formulario})
 
 def buscar_cita(request):
@@ -103,10 +103,11 @@ def buscar_cita(request):
         if formulario.is_valid():
             mensaje = "Se ha buscado con los siguientes criterios:\n"
             citas = Cita.objects.select_related("cliente", "estacion")
-            
+            citas= citas.filter(cliente_id=request.user.usuario_Cliente.id)           
             matriculav = formulario.cleaned_data.get("matricula")
             tipo_inspeccionv = formulario.cleaned_data.get("tipo_inspeccion")
             fecha_propuestav = formulario.cleaned_data.get("fecha_propuesta")
+            
             
             if matriculav != "":
                 citas = citas.filter(matricula__icontains=matriculav)
@@ -123,6 +124,7 @@ def buscar_cita(request):
             return render(request, "citas/busqueda_avanzada.html", {
                 "views_listar_citas": citas,
                 "texto_busqueda": mensaje,
+                "formulario": formulario
             })
     else:
         formulario = BusquedaAvanzadaCita(None)
