@@ -233,7 +233,7 @@ class BusquedaAvanzadaInspeccion(forms.Form):
 class VehiculoForm(ModelForm):
     class Meta:
         model=Vehiculo
-        fields='__all__'
+        fields=('trabajadores','fecha_matriculacion','marca','modelo','numero_bastidor','tipo_vehiculo','cilindrada','potencia','combustible','mma','asientos','ejes','dni_propietario','matricula')
         labels = {
             "fecha_matriculacion": ("Fecha de matriculación"),
             "marca": ("Marca del vehículo"),
@@ -248,14 +248,14 @@ class VehiculoForm(ModelForm):
             "ejes": ("Número de ejes"),
             "dni_propietario": ("DNI del propietario"),
             "matricula": ("Matrícula"),
-            # "trabajadores" : ("Trabajadores")
+            "trabajadores" : ("Trabajadores")
         }
         help_texts = {
-            # "trabajadores" : ("Manten pulsada la tecla control para seleccionar varios elementos"),
+            "trabajadores" : ("Manten pulsada la tecla control para seleccionar varios elementos"),
         }
         widgets = {
             "fecha_matriculacion" : forms.SelectDateWidget(),
-            # "trabajadores" : forms.SelectMultiple(),
+            "trabajadores" : forms.SelectMultiple(),
             "tipo_vehiculo" : forms.Select(),
             "combustible" : forms.Select(),
             "numero_bastidor":forms.NumberInput
@@ -515,19 +515,21 @@ class RegistroForm(UserCreationForm):
         fields = ('username','email','password1','password2','rol')
         
     def clean(self):
+        
         super().clean()
+        
         fecha_nacimiento=self.cleaned_data.get("fecha_nacimiento")
         apellidos=self.cleaned_data.get("apellidos")
         dni=self.cleaned_data.get('dni')
         
         expresion = "^[0-9]{8}[A-Z]$"        
-        if(not re.search(expresion,dni)):
+        if(dni !="" and not re.search(expresion,dni)):
             self.add_error("dni","El formato del dni no es correcto")
             
-        if(fecha_nacimiento>timezone.now().date()):
+        if(fecha_nacimiento is not None and fecha_nacimiento>timezone.now().date()):
             self.add_error("fecha_nacimiento","La fecha de nacimiento no puede ser superior a la actual")
             
-        if ('_' in apellidos):
+        if (apellidos!="" and '_' in apellidos):
             self.add_error("apellidos","Este campo no puede contener un _")        
         
         puesto=self.cleaned_data.get("puesto")

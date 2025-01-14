@@ -42,13 +42,15 @@ def listar_trabajadores(request):
     return render(request,"trabajadores/listar_trabajadores.html",{'views_trabajadores_estacion':trabajadores})
 
 # 5 
-def listar_inspecciones(request):
-    inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura")).all()
+def listar_inspecciones(request,trabajador_id):
+    trabajador = Trabajador.objects.get(id=trabajador_id)
+    inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura")).filter(trabajador_id=trabajador.id).all()
     return render(request,"inspecciones/listar_inspecciones.html",{'views_inspecciones_vehiculo':inspecciones})
 
 # 7 
-def listar_vehiculos(request):
-    vehiculos=Vehiculo.objects.prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion")).all()
+def listar_vehiculos(request,cliente_id):
+    cliente = Cliente.objects.get(id=cliente_id)
+    vehiculos=Vehiculo.objects.select_related("propietario").prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion")).filter(propietario_id=cliente.id).all()
     return render(request,"vehiculos/listar_vehiculos.html",{'views_vehiculos':vehiculos})
     
 # 8
@@ -71,7 +73,7 @@ def mi_error_500(request,exception=None):
 #FORMULARIOS
 
 #CITAS---------------------------------
-
+@permission_required('ITV.add_cita')   
 def procesar_cita(request):
     if (request.method == "POST"):
         formulario=CitaForm(request.POST)
@@ -87,23 +89,26 @@ def procesar_cita(request):
                     fecha_matriculacion=formulario.cleaned_data.get('fecha_matriculacion'),
                     fecha_propuesta=formulario.cleaned_data.get('fecha_propuesta'),
                     hora_propuesta=formulario.cleaned_data.get('hora_propuesta'),
-                    cliente=request.user.usuario_Cliente,
+                    cliente=request.user.cliente,
                 )
                 cita.save()
-                return redirect("listar_citas",cliente_id=request.user.usuario_Cliente.id)
+                return redirect("listar_citas",cliente_id=request.user.cliente.id)
             except Exception as error:
                 print(error)
     else:
         formulario=CitaForm(None)             
     return render(request,'citas/create.html',{"formulario":formulario})
 
+@permission_required('ITV.view_cita') 
 def buscar_cita(request):
     if len(request.GET) > 0:
         formulario = BusquedaAvanzadaCita(request.GET)
         if formulario.is_valid():
             mensaje = "Se ha buscado con los siguientes criterios:\n"
+            cliente = Cliente.objects.get(id=request.user.cliente.id)
             citas = Cita.objects.select_related("cliente", "estacion")
-            citas= citas.filter(cliente_id=request.user.usuario_Cliente.id)           
+            citas = citas.filter(cliente_id=cliente.id).all()
+            
             matriculav = formulario.cleaned_data.get("matricula")
             tipo_inspeccionv = formulario.cleaned_data.get("tipo_inspeccion")
             fecha_propuestav = formulario.cleaned_data.get("fecha_propuesta")
@@ -111,26 +116,25 @@ def buscar_cita(request):
             
             if matriculav != "":
                 citas = citas.filter(matricula__icontains=matriculav)
-                mensaje += f"Matrícula buscada: {matriculav}\n"
+                mensaje += "Matrícula buscada: {matriculav}\n"
             if tipo_inspeccionv != "":
                 citas = citas.filter(tipo_inspeccion=tipo_inspeccionv)
-                mensaje += f"Tipo de inspección buscado: {tipo_inspeccionv}\n"
+                mensaje += "Tipo de inspección buscado: {tipo_inspeccionv}\n"
             if fecha_propuestav is not None:
                 citas = citas.filter(fecha_propuesta=fecha_propuestav)
-                mensaje += f"Fecha propuesta buscada: {fecha_propuestav.strftime('%d-%m-%Y')}\n"
+                mensaje += "Fecha propuesta buscada: {fecha_propuestav.strftime('%d-%m-%Y')}\n"
             
-            citas = citas.all()
             
-            return render(request, "citas/busqueda_avanzada.html", {
-                "views_listar_citas": citas,
+            return render(request, "citas/listar_citas.html", {
+                "views_citas": citas,
                 "texto_busqueda": mensaje,
-                "formulario": formulario
             })
     else:
         formulario = BusquedaAvanzadaCita(None)
     
     return render(request, 'citas/busqueda_avanzada.html', {"formulario": formulario})
-            
+
+@permission_required('ITV.change_cita')              
 def editar_cita(request, cita_id):
     cita = Cita.objects.get(id=cita_id)
     
@@ -156,6 +160,7 @@ def editar_cita(request, cita_id):
         "cita": cita
     })
 
+@permission_required('ITV.delete_cita')  
 def eliminar_cita(request, cita_id):
     cita = Cita.objects.get(id=cita_id)
     try:
@@ -167,6 +172,7 @@ def eliminar_cita(request, cita_id):
 
 #CLIENTE------------------------------
 
+@permission_required('ITV.add_cliente')  
 def procesar_cliente(request):
     if (request.method == "POST"):
         formulario=ClienteForm(request.POST)
@@ -180,6 +186,7 @@ def procesar_cliente(request):
         formulario=ClienteForm()             
     return render(request,'clientes/create.html',{"formulario":formulario})
 
+@permission_required('ITV.view_cliente')  
 def buscar_cliente(request):
         
     if len(request.GET)>0:
@@ -212,6 +219,7 @@ def buscar_cliente(request):
         formulario=BusquedaAvanzadaCliente(None)
     return render(request, 'clientes/busqueda_avanzada.html',{"formulario":formulario})
             
+@permission_required('ITV.change_cliente')  
 def editar_cliente(request,cliente_id):
     cliente = Cliente.objects.get(id=cliente_id)
     
@@ -235,6 +243,7 @@ def editar_cliente(request,cliente_id):
                 print(error)
     return render(request, 'clientes/actualizar.html',{"formulario":formulario,"cliente":cliente})
 
+@permission_required('ITV.delete_cliente') 
 def eliminar_cliente(request,cliente_id):
     cliente = Cliente.objects.get(id=cliente_id)
     try:
@@ -330,15 +339,34 @@ def eliminar_inspeccion(request,inspeccion_id):
 @permission_required('ITV.add_vehiculo')    
 def procesar_vehiculo(request):
     if (request.method == "POST"):
-        formulario=VehiculoForm(request.POST,request=request)
+        formulario=VehiculoForm(request.POST)
         if formulario.is_valid():
             try:
-                formulario.save()
-                return redirect("listar_vehiculos")
+                vehiculo=Vehiculo.objects.create(
+                    fecha_matriculacion=formulario.cleaned_data.get('fecha_matriculacion'),
+                    marca=formulario.cleaned_data.get('marca'),
+                    modelo=formulario.cleaned_data.get('modelo'),
+                    numero_bastidor=formulario.cleaned_data.get('numero_bastidor'),
+                    tipo_vehiculo=formulario.cleaned_data.get('tipo_vehiculo'),
+                    cilindrada=formulario.cleaned_data.get('cilindrada'),
+                    potencia=formulario.cleaned_data.get('potencia'),
+                    combustible=formulario.cleaned_data.get('combustible'),
+                    mma=formulario.cleaned_data.get('mma'),
+                    asientos=formulario.cleaned_data.get('asientos'),
+                    ejes=formulario.cleaned_data.get('ejes'),
+                    dni_propietario=formulario.cleaned_data.get('dni_propietario'),
+                    matricula=formulario.cleaned_data.get('matricula'),
+                    propietario = request.user.cliente,
+                )
+                trabajadores = formulario.cleaned_data.get('trabajadores')
+                if trabajadores:
+                    vehiculo.trabajadores.set(trabajadores)
+                vehiculo.save()
+                return redirect("listar_vehiculos",cliente_id=request.user.cliente.id)
             except Exception as error:
                 print(error)
     else:
-        formulario=VehiculoForm()          
+        formulario=VehiculoForm(None)          
     return render(request,'vehiculos/create.html',{"formulario":formulario})
 
 @permission_required('ITV.view_vehiculo')  
@@ -348,7 +376,8 @@ def buscar_vehiculo(request):
         formulario = BusquedaAvanzadaVehiculo(request.GET)
         if formulario.is_valid():
             mensaje="Se ha buscado los siguientes valores: \n"
-            vehiculos=Vehiculo.objects.prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion"))
+            cliente = Cliente.objects.get(id=request.user.cliente.id)
+            vehiculos=Vehiculo.objects.select_related("propietario").prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion")).filter(propietario_id=cliente.id)
             
             marcav=formulario.cleaned_data.get("marca")
             potenciav=formulario.cleaned_data.get("potencia") 
@@ -357,7 +386,7 @@ def buscar_vehiculo(request):
             if(marcav != ""):
                 vehiculos=vehiculos.filter(marca=marcav)
                 mensaje+="Marca que se ha buscado " + marcav  +"\n"
-            if(potenciav!= ""):
+            if(potenciav is not None):
                 vehiculos=vehiculos.filter(potencia=potenciav)
                 mensaje+="Inspeccion por el que se ha buscado " + str(potenciav) + "\n"
             if(matriculav!= ""):
@@ -366,7 +395,7 @@ def buscar_vehiculo(request):
             
             vehiculos=vehiculos.all()
             
-            return render(request,"vehiculos/lista_vehiculos.html",{
+            return render(request,"vehiculos/listar_vehiculos.html",{
             "views_vehiculos":vehiculos,
             "texto_busqueda":mensaje})
     
@@ -392,7 +421,7 @@ def editar_vehiculo(request,vehiculo_id):
             try:  
                 formulario.save()
                 messages.success(request, 'Se ha editado el vehiculo con matricula '+formulario.cleaned_data.get('matricula')+" correctamente")
-                return redirect('listar_vehiculos')  
+                return redirect("listar_vehiculos",cliente_id=request.user.cliente.id) 
             except Exception as error:
                 print(error)
     return render(request, 'vehiculos/actualizar.html',{"formulario":formulario,"vehiculo":vehiculo})

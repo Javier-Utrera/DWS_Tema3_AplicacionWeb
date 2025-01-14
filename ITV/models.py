@@ -30,7 +30,7 @@ class Cliente(models.Model):
     dni=models.CharField(max_length=9,unique=True, null=True)
     imagen = models.ImageField(upload_to='imagenes/',null=True, blank=True)
     
-    usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE,related_name="usuario_Cliente")
+    usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE)
     
     def __str__(self):
         return self.usuario.username + " " + self.apellidos
@@ -48,7 +48,7 @@ class Local(models.Model):
     
 class EstacionItv(models.Model):
     #relaciones
-    local=models.OneToOneField(Local,on_delete=models.CASCADE,null=True,related_name="local_EstacionItv")
+    local=models.OneToOneField(Local,on_delete=models.CASCADE,null=True)
     #
     nombre=models.CharField(max_length=50,unique=True)
     munipio=models.CharField(max_length=50)
@@ -60,8 +60,8 @@ class EstacionItv(models.Model):
     
 class Cita(models.Model):
     #relaciones
-    cliente=models.ForeignKey(Cliente,on_delete=models.CASCADE,related_name="cliente_Cita")
-    estacion=models.ForeignKey(EstacionItv,on_delete=models.CASCADE, related_name="estacionitv_Cita")
+    cliente=models.ForeignKey(Cliente,on_delete=models.CASCADE,related_name="cliente_cita")
+    estacion=models.ForeignKey(EstacionItv,on_delete=models.CASCADE)
     #
     matricula=models.CharField(max_length=7)
     fecha_matriculacion=models.DateField(help_text="Este campo o el numero de bastidor debe estar relleno",null=True)
@@ -121,6 +121,7 @@ class Vehiculo(models.Model):
     #relaciones
     #Para relacionar vehiculo con trabajador usando la tabla intermedia Inspeccion
     trabajadores = models.ManyToManyField(Trabajador, through='Inspeccion' ,related_name="trabajador_Vehiculo")
+    propietario = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='propietario_vehiculo')
     #
     fecha_matriculacion=models.DateField()
     marca=models.CharField(max_length=50)
