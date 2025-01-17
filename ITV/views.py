@@ -21,10 +21,13 @@ def listar_clientes(request):
     return render(request,"clientes/listar_clientes.html",{'views_listar_cliente':clientes})
 
 # 2 
-def listar_citas(request,cliente_id):
-    cliente = Cliente.objects.get(id=cliente_id)
+def listar_citas(request):
     citas = Cita.objects.select_related("cliente", "estacion")
-    citas = citas.filter(cliente_id=cliente.id).all()
+    if(request.user.rol == 2) :
+        cliente = Cliente.objects.get(id=request.user.cliente.id)
+        citas = citas.filter(cliente_id=cliente.id).all()
+    else :
+        citas = citas.all() 
     return render(request,"citas/listar_citas.html",{'views_citas':citas})
     
 # 3 
@@ -42,15 +45,23 @@ def listar_trabajadores(request):
     return render(request,"trabajadores/listar_trabajadores.html",{'views_trabajadores_estacion':trabajadores})
 
 # 5 
-def listar_inspecciones(request,trabajador_id):
-    trabajador = Trabajador.objects.get(id=trabajador_id)
-    inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura")).filter(trabajador_id=trabajador.id).all()
+def listar_inspecciones(request):
+    inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura"))
+    if(request.user.rol == 3) :
+        trabajador = Trabajador.objects.get(id=request.user.trabajador.id)
+        inspecciones = inspecciones.filter(trabajador_id=trabajador.id).all()
+    else :
+        inspecciones = inspecciones.all()
     return render(request,"inspecciones/listar_inspecciones.html",{'views_inspecciones_vehiculo':inspecciones})
 
 # 7 
-def listar_vehiculos(request,cliente_id):
-    cliente = Cliente.objects.get(id=cliente_id)
-    vehiculos=Vehiculo.objects.select_related("propietario").prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion")).filter(propietario_id=cliente.id).all()
+def listar_vehiculos(request):
+    vehiculos=Vehiculo.objects.select_related("propietario").prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion"))
+    if(request.user.rol == 2) :
+        cliente = Cliente.objects.get(id=request.user.cliente.id)
+        vehiculos = vehiculos.filter(propietario_id=cliente.id).all()
+    else :
+        vehiculos = vehiculos.all()    
     return render(request,"vehiculos/listar_vehiculos.html",{'views_vehiculos':vehiculos})
     
 # 8
@@ -92,7 +103,7 @@ def procesar_cita(request):
                     cliente=request.user.cliente,
                 )
                 cita.save()
-                return redirect("listar_citas",cliente_id=request.user.cliente.id)
+                return redirect("listar_citas")
             except Exception as error:
                 print(error)
     else:
@@ -105,6 +116,7 @@ def buscar_cita(request):
         formulario = BusquedaAvanzadaCita(request.GET)
         if formulario.is_valid():
             mensaje = "Se ha buscado con los siguientes criterios:\n"
+            
             cliente = Cliente.objects.get(id=request.user.cliente.id)
             citas = Cita.objects.select_related("cliente", "estacion")
             citas = citas.filter(cliente_id=cliente.id).all()
@@ -362,7 +374,7 @@ def procesar_vehiculo(request):
                 if trabajadores:
                     vehiculo.trabajadores.set(trabajadores)
                 vehiculo.save()
-                return redirect("listar_vehiculos",cliente_id=request.user.cliente.id)
+                return redirect("listar_vehiculos")
             except Exception as error:
                 print(error)
     else:

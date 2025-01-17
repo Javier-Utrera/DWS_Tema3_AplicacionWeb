@@ -8,7 +8,7 @@ urlpatterns = [
     path('clientes/listar_clientes', views.listar_clientes,name="listar_clientes"),
     
     #2
-    path('citas/listar_citas/<int:cliente_id>', views.listar_citas,name="listar_citas"),
+    path('citas/listar_citas', views.listar_citas,name="listar_citas"),
     
     #3
     path('estaciones/listar_estaciones', views.listar_estaciones,name="listar_estaciones"),
@@ -17,10 +17,10 @@ urlpatterns = [
     path('trabajadores/listar_trabajadores', views.listar_trabajadores,name="listar_trabajadores"),
     
     #5
-    path('inspecciones/listar_inspecciones/<int:trabajador_id>', views.listar_inspecciones,name="listar_inspecciones"),
+    path('inspecciones/listar_inspecciones', views.listar_inspecciones,name="listar_inspecciones"),
      
     #7
-    path('vehiculos/listar_vehiculos/<int:cliente_id>', views.listar_vehiculos,name="listar_vehiculos"),
+    path('vehiculos/listar_vehiculos', views.listar_vehiculos,name="listar_vehiculos"),
     
     #8
     path('locales/listar_locales', views.listar_locales,name="listar_locales"),
