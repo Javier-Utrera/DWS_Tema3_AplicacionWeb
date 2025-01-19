@@ -24,7 +24,7 @@ class CitaForm(ModelForm):
             "fecha_matriculacion": forms.SelectDateWidget(),
             "fecha_propuesta": forms.SelectDateWidget(),
             "hora_propuesta": forms.TimeInput(attrs={'type': 'time'}),
-            "cliente":forms.HiddenInput()
+            # "cliente":forms.HiddenInput()
         }
         help_texts = {
             "matricula": "Introduce la matrícula en formato válido (máximo 7 caracteres).",

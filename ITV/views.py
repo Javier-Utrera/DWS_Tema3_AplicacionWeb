@@ -35,11 +35,13 @@ def index(request):
     return render(request, 'index.html')
 
 # 1 
+@permission_required('ITV.view_cliente')  
 def listar_clientes(request):
     clientes=Cliente.objects.prefetch_related(Prefetch("cliente_Cita")).all()
     return render(request,"clientes/listar_clientes.html",{'views_listar_cliente':clientes})
 
 # 2 
+@permission_required('ITV.view_cita')  
 def listar_citas(request):
     citas = Cita.objects.select_related("cliente", "estacion")
     if(request.user.rol == 2) :
@@ -50,6 +52,7 @@ def listar_citas(request):
     return render(request,"citas/listar_citas.html",{'views_citas':citas})
     
 # 3 
+@permission_required('ITV.view_estacion')  
 def listar_estaciones(request):
     estaciones=EstacionItv.objects.select_related("local").prefetch_related(Prefetch("estacionitv_Cita"),
                                                                             Prefetch("estacionitv_Maquinaria"),
@@ -57,6 +60,7 @@ def listar_estaciones(request):
     return render(request,"estaciones/listar_estaciones.html",{'views_estaciones_con_locales':estaciones})
 
 # 4 
+@permission_required('ITV.view_trabajador')  
 def listar_trabajadores(request):
     trabajadores=Trabajador.objects.prefetch_related("estacion",
                                                      Prefetch("trabajador_Inspeccion"),
@@ -64,6 +68,7 @@ def listar_trabajadores(request):
     return render(request,"trabajadores/listar_trabajadores.html",{'views_trabajadores_estacion':trabajadores})
 
 # 5 
+@permission_required('ITV.view_inspeccion')  
 def listar_inspecciones(request):
     inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura"))
     if(request.user.rol == 3) :
@@ -74,6 +79,7 @@ def listar_inspecciones(request):
     return render(request,"inspecciones/listar_inspecciones.html",{'views_inspecciones_vehiculo':inspecciones})
 
 # 7 
+@permission_required('ITV.view_vehiculo')  
 def listar_vehiculos(request):
     vehiculos=Vehiculo.objects.select_related("propietario").prefetch_related("trabajadores",Prefetch("vehiculo_Inspeccion"))
     if(request.user.rol == 2) :
@@ -84,6 +90,7 @@ def listar_vehiculos(request):
     return render(request,"vehiculos/listar_vehiculos.html",{'views_vehiculos':vehiculos})
     
 # 8
+@permission_required('ITV.view_local')  
 def listar_locales(request):
     locales=Local.objects.all()
     return render(request,"locales/listar_local.html",{'views_locales':locales})

@@ -196,79 +196,150 @@ Se incluyen validaciones específicas para campos como DNI, fechas, resultados y
 3. Configurar modelos y formularios para admitir campos de imágenes.
 
 
-# Funcionalidades Nuevas Implementadas TEMA 7 PERMISOS
-Datos. He tenido que crear un crud nuevo para el usuario "cliente" , en la anterior entrega no habia tenido en cuenta que casi todo lo que se podia crear con mis cruds era para el administrador
+# Funcionalidades Nuevas Implementadas
 
-El usuario cliente puede usar los crud de Citas y Vehiculo
-El usuario trabajador puede usar el crud de Inspeccion
+## TEMA 7: PERMISOS
 
+### Datos:
+He tenido que crear un CRUD nuevo para el usuario "cliente". En la entrega anterior no había tenido en cuenta que casi todo lo que se podía crear con mis CRUDs era para el administrador. Ahora he detallado dos tipos de usuarios adicionales: "Cliente" y "Trabajador". 
+
+- El usuario **cliente** puede usar los CRUDs de **Citas** y **Vehículo**.
+- El usuario **trabajador** puede usar el CRUD de **Inspección**.
+
+---
 
 ## 1. Tipos de Usuarios Claramente Diferenciados  
-He creado un nuevo model 'Usuario' donde he detallado ademas del usuario Administrador, dos usuarios mas, el "Cliente" y el "Trabajador" 
+He creado un nuevo modelo `Usuario` donde he detallado, además del usuario administrador, dos usuarios más: **Cliente** y **Trabajador**.
 
-      ROLES = (
-        (ADMINISTRADOR,"administrador"),
-        (CLIENTE,"cliente"),
-        (TRABAJADOR,"trabajador")
-    )
+```python
+ROLES = (
+    (ADMINISTRADOR, "administrador"),
+    (CLIENTE, "cliente"),
+    (TRABAJADOR, "trabajador"),
+)
+```
+
+---
 
 ## 2. Control de Permisos y Autenticación en Vistas  
-En cada vista, se ha implementado el control de permisos para verificar si el usuario está logueado o no, y si tiene permisos para acceder a esa vista.  
-Aunque hay crud donde mis usuarios no pueden acceder, les he asignados permisos de todas formas.
+En cada vista, se ha implementado el control de permisos para verificar si el usuario está logueado o no, y si tiene permisos para acceder a esa vista.
 
-    @permission_required('ITV.add_cita') 
+Aunque hay CRUDs donde mis usuarios no pueden acceder, les he asignado permisos de todas formas.
+
+```python
+@permission_required('ITV.add_cita')
+```
+
+---
 
 ## 3. Control de Permisos en Plantillas  
 En cada template (vista y formulario), se ha controlado si el usuario está logueado y si tiene permisos para acceder o interactuar con los formularios y las vistas.  
-En el template de menu.html he controlado que bloques de urls estan accesibles para los distintos tipos de usuarios
 
-    {% if request.user.is_authenticated and perms.ITV.add_cita%}
+En el template `menu.html`, he controlado qué bloques de URLs están accesibles para los distintos tipos de usuarios.
+
+```html
+{% if request.user.is_authenticated and perms.ITV.add_cita %}
+```
+
+---
 
 ## 4. Variables Guardadas en la Sesión  
-Se han incluido al menos cuatro variables que se guardan en la sesión y que aparecen siempre en la cabecera de la página. Estas variables se eliminan cuando el usuario se desloguea.  
-En en la funcion index he creado 4 variabless para mostrarlas en el template de menu.html. En esta funcion compruebo so existen dichas variables cuando el usuario entra en mi pagina web.
+Se han incluido al menos cuatro variables que se guardan en la sesión y que aparecen siempre en la cabecera de la página. Estas variables se eliminan cuando el usuario se desloguea.
 
-He controlado que si el usuario de la sesion no pertenece a mi aplicacion con request.user.is_anonymous, solo va crear la fecha de inicio de sesion, en caso que si pertenezca a mi aplicacion se crearan las demas variables
+En la función `index`, he creado 4 variables para mostrarlas en el template `menu.html`. En esta función, compruebo si existen dichas variables cuando el usuario entra en la página web. Si el usuario no pertenece a la aplicación (con `request.user.is_anonymous`), solo se crea la fecha de inicio de sesión. Si pertenece, se crean las demás variables.
 
-El metodo que usas para borrar los datos de la sesion no consigo ver como lo implementes, con el depurador he manjeado la informacion del request, y al usar el logout las variables son elminadas de la sesion.
+Para borrar las variables de la sesión al hacer logout, he observado en el depurador que se eliminan automáticamente cuando el usuario se desloguea.
 
+---
 
 ## 5. Registro de Usuarios y Validaciones  
-Se ha implementado un sistema de registro para los distintos tipos de usuario (excepto el administrador). Este sistema incluye validaciones específicas para controlar que, dependiendo del tipo de usuario, se asignen valores correspondientes.  
-He controlado que al registrar segun el tipo de usuario que vamos a registrar, primero lo añada al grupo correspondiente y luego lo cree si no hay errores en las validaciones.
+He implementado un sistema de registro para los distintos tipos de usuario (excepto el administrador). Este sistema incluye validaciones específicas para controlar que, dependiendo del tipo de usuario, se asignen valores correspondientes.
 
-Para mostrar y ocultar los campos he usado el script de campos.js. Me ha costado un par de vueltas que en caso de que el usuario al registrarse tenga algun error de validacion y la pagina se vuelva a ocultar, los campos mostrados y ocultados sean los mismos
+Al registrar un usuario, según el tipo de usuario que se va a registrar, primero se le asigna al grupo correspondiente y luego se crea el usuario si no hay errores en las validaciones.
+
+Para mostrar y ocultar campos, he usado un script `campos.js`. Me ha costado un par de intentos asegurarme de que, en caso de que el usuario tenga errores de validación y la página se recargue, los campos mostrados y ocultados permanezcan igual.
+
+---
 
 ## 6. Login y Logout de Usuario  
-Se ha implementado un sistema de login y logout para los usuarios.  
-Hemos usado el sistema de loging y logout que nos proporciona el propio django incluyengo en urls.py dentro de mysite 
-  path('accounts/', include('django.contrib.auth.urls'))
-Se ha tenido en cuenta la configuracion en el settings.py,ademas de crear el template de login.html y controlar que si un usuario esta logueado, no le aparezca el boton de login, que le salga el boton de logout
+Se ha implementado un sistema de login y logout para los usuarios.
+
+He usado el sistema de login y logout proporcionado por Django, incluyendo en `urls.py` dentro de `mysite`:
+
+```python
+path('accounts/', include('django.contrib.auth.urls'))
+```
+
+Se ha tenido en cuenta la configuración en `settings.py`, además de crear el template `login.html` y controlar que, si un usuario está logueado, no le aparezca el botón de login, sino el botón de logout.
+
+---
 
 ## 7. Variación de Contenido en Formularios Según el Usuario Logueado  
-En algún formulario, se ha creado una funcionalidad que hace que el contenido de algún campo `ManyToMany` o `ManyToOne` varie dependiendo del usuario logueado.
+En un formulario, se ha creado una funcionalidad que hace que el contenido de algún campo `ManyToMany` o `ManyToOne` varíe dependiendo del usuario logueado.
 
-Esta funcionalidad la he implementado cuando un trabajador crea una inspeccion, en mi aplicacion un trabajador puede trabajar en varias estaciones de itv a la vez, he pensado que seria buena idea hacer que un trabajador solo pueda realizar inspecciones de los vehiculos que esten en las estaciones donde el trabaja.
+Esta funcionalidad la he implementado cuando un trabajador crea una inspección. En mi aplicación, un trabajador puede trabajar en varias estaciones de ITV a la vez, por lo que he decidido que solo pueda realizar inspecciones en los vehículos que están en las estaciones donde trabaja.
 
-Para ello he usado un formulario de inspeccion ModelForm pero usando el request para crear un field que no importo automaticamente del modelo
+Para ello, he utilizado un formulario de inspección `ModelForm`, pero usando el `request` para crear un campo que no importa automáticamente del modelo.
 
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        super(InspeccionForm, self).__init__(*args, **kwargs)
-          --Aqui busco el trabajador de mi sesion activa
-        trabajador = Trabajador.objects.get(id=self.request.user.trabajador.id)
-          --Busco todas las estaciones donde este trabajador se encuentre prestando servicio
-        estaciones = trabajador.estacion.all()
-          --Filtro los vehiculos que se encuentran en las estaciones buscadas anteriormente
-        vehiculos_disponibles = Vehiculo.objects.filter(trabajadores__estacion__in=estaciones).distinct()
-          --Aqui creo el campo vehiculo con los resultados de la busqueda
-        self.fields["vehiculo"] = forms.ModelChoiceField(
-            queryset=vehiculos_disponibles,
-            widget=forms.Select,
-            required=True,
-            empty_label="Seleccione un vehículo"
-        )
+```python
+def __init__(self, *args, **kwargs):
+    self.request = kwargs.pop("request")
+    super(InspeccionForm, self).__init__(*args, **kwargs)
+    trabajador = Trabajador.objects.get(id=self.request.user.trabajador.id)
+    estaciones = trabajador.estacion.all()
+    vehiculos_disponibles = Vehiculo.objects.filter(trabajadores__estacion__in=estaciones).distinct()
+    self.fields["vehiculo"] = forms.ModelChoiceField(
+        queryset=vehiculos_disponibles,
+        widget=forms.Select,
+        required=True,
+        empty_label="Seleccione un vehículo"
+    )
+```
+
+---
 
 ## 8. Registro de Usuario en Formularios de Creación  
-En los formularios de creación, se incluye siempre el usuario que crea el registro a través de la sesión del usuario.  
+En los formularios de creación, se incluye siempre el usuario que crea el registro a través de la sesión del usuario.
 
+Para no cambiar el tipo de formulario que ya tenía implementado, he optado por no incluir el campo del cliente o trabajador en el formulario de creación. 
+
+Cuando Django comprueba que los datos del formulario son válidos, creo la cita "manualmente" y asigno el cliente al objeto `Cita`.
+
+```python
+cita = Cita.objects.create(
+    estacion=formulario.cleaned_data.get('estacion'),
+    matricula=formulario.cleaned_data.get('matricula'),
+    numero_bastidor=formulario.cleaned_data.get('numero_bastidor'),
+    tipo_inspeccion=formulario.cleaned_data.get('tipo_inspeccion'),
+    remolque=formulario.cleaned_data.get('remolque'),
+    tipo_pago=formulario.cleaned_data.get('tipo_pago'),
+    fecha_matriculacion=formulario.cleaned_data.get('fecha_matriculacion'),
+    fecha_propuesta=formulario.cleaned_data.get('fecha_propuesta'),
+    hora_propuesta=formulario.cleaned_data.get('hora_propuesta'),
+    cliente=request.user.cliente,
+)
+cita.save()
+```
+
+---
+
+## 9. Filtrado de Contenido en Formularios de Búsqueda Según Usuario Logueado  
+Se ha implementado una funcionalidad en un formulario de búsqueda en el que el contenido se filtra de acuerdo con el usuario que está logueado. Esto permite que solo se muestren los registros relacionados con el usuario actual, mejorando la personalización de la búsqueda.
+
+En las vistas de crear y listar contenido, antes mostraba todos los registros. Ahora he modificado esas vistas para que solo muestre los registros asociados al usuario logueado.
+
+```python
+citas = Cita.objects.select_related("cliente", "estacion")
+if(request.user.rol == 2) :
+    cliente = Cliente.objects.get(id=request.user.cliente.id)
+    citas = citas.filter(cliente_id=cliente.id).all()
+else :
+    citas = citas.all()
+```
+
+
+## 10. Implementación de Funcionalidad de Reinicio de Contraseña  
+Se ha implementado una funcionalidad de reinicio de contraseña utilizando las herramientas proporcionadas por Django. Aunque en la aplicación local no se permite el envío de correos electrónicos, Django ofrece una manera de generar un enlace de recuperación de contraseña sin necesidad de enviar un email real. Se ha utilizado el sistema de autenticación de Django para permitir a los usuarios restablecer su contraseña de forma segura mediante un enlace generado.
+
+**Descripción de lo que has hecho:**
+_[Rellena con lo que has hecho aquí, por ejemplo, si configuraste `django.contrib.auth.views.PasswordResetView`, si usaste un enlace generado sin enviar correos o si creaste un enlace para la recuperación manual en desarrollo.]_
