@@ -9,10 +9,29 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 
-# Create your views here.
+#Variables almacenadas de la sesion
 def index(request):
     if(not "fecha_inicio" in request.session):
         request.session["fecha_inicio"] = datetime.now().strftime('%d/%m/%Y %H:%M')
+    if (request.user.is_anonymous == False):       
+        if(not "nombreusuario" in request.session):
+            request.session["nombreusuario"] = request.user.username
+        if(not "email" in request.session):
+            request.session["email"] = request.user.email
+        if(not "rol" in request.session):
+            if (request.user.rol == 1):
+                request.session["rol"] = "Administrador"
+            elif (request.user.rol == 2):
+                request.session["rol"] = "Cliente"
+            else:
+                request.session["rol"] ="Trabajador"
+        if (not "grupo" in request.session):
+            if (request.user.rol == 1):
+                request.session["grupo"] = "Administrador"
+            elif (request.user.rol == 2):
+                request.session["grupo"] = "Cliente"
+            else:
+                request.session["grupo"] ="Trabajador" 
     return render(request, 'index.html')
 
 # 1 
@@ -270,15 +289,23 @@ def eliminar_cliente(request,cliente_id):
 @permission_required('ITV.add_inspeccion')        
 def procesar_inspeccion(request): 
     if (request.method == "POST"):
-        formulario=InspeccionForm(request.POST)
+        formulario=InspeccionForm(request.POST,request=request)
         if formulario.is_valid():
             try:
-                formulario.save()
+                inspeccion = Inspeccion.objects.create(
+                    vehiculo=formulario.cleaned_data.get('vehiculo'),
+                    fecha_inspeccion=formulario.cleaned_data.get('fecha_inspeccion'),
+                    resultado_inspeccion=formulario.cleaned_data.get('resultado_inspeccion'),
+                    notas_inspeccion=formulario.cleaned_data.get('notas_inspeccion'),
+                    cliente_puntual=formulario.cleaned_data.get('cliente_puntual'),
+                    trabajador =request.user.trabajador                    
+                )
+                inspeccion.save()
                 return redirect("listar_inspecciones")
             except Exception as error:
                 print(error)
     else:
-        formulario=InspeccionForm()  
+        formulario=InspeccionForm(None,request=request)  
     return render(request,'inspecciones/create.html',{"formulario":formulario})
 
 @permission_required('ITV.view_inspeccion')  
@@ -288,9 +315,13 @@ def buscar_inspeccion(request):
         formulario = BusquedaAvanzadaInspeccion(request.GET)
         if formulario.is_valid():
             mensaje="Se ha buscado los siguientes valores: \n"
-            inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura"))
             
+            inspecciones=Inspeccion.objects.select_related("trabajador","vehiculo").prefetch_related(Prefetch("inspeccion_Factura"))
+            trabajador = Trabajador.objects.get(id=request.user.trabajador.id)
+            
+            inspecciones = inspecciones.filter(trabajador_id=trabajador.id)
             resultado_inspeccionv=formulario.cleaned_data.get("resultado_inspeccion")
+            
             notas_inspeccionv=formulario.cleaned_data.get("notas_inspeccion") 
             fecha_inspeccionv=formulario.cleaned_data.get("fecha_inspeccion") 
             
@@ -727,7 +758,3 @@ def registrar_usuario(request):
     else:
         formulario = RegistroForm()
     return render(request,'registration/signup.html',{'formulario':formulario})
-
-def borrar_session(request):
-    del request.session['fecha_inicio']
-    return render(request, 'index.html')

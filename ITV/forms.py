@@ -167,20 +167,21 @@ class BusquedaAvanzadaCliente(forms.Form):
 class InspeccionForm(ModelForm):
     class Meta:
         model=Inspeccion
-        fields='__all__'
+        fields='fecha_inspeccion','resultado_inspeccion','notas_inspeccion','cliente_puntual'
         labels= {
             "fecha_inspeccion" : ("Fecha de la inspección"),
             "resultado_inspeccion" : ("Resultado de la inspección"),
             "notas_inspeccion" : ("Notas de la inspección"),
             "cliente_puntual" : ("¿Es un cliente habitual?"),
-            "trabajador" : ("Trabajador a cargo"),
-            "vehiculo" : ("Vehiculo inspeccionado"),
+            # "trabajador" : ("Trabajador a cargo"),
+                # Van a salir solo los vehiculos que estan en su estacion
+            # "vehiculo" : ("Vehiculo inspeccionado"),
         }
         widgets = {
             "fecha_inspeccion" : forms.SelectDateWidget(),
             "notas_inspeccion" : forms.TextInput(),
             "cliente_puntual":forms.CheckboxInput(),
-            "trabajador" : forms.Select(),
+            # "trabajador" : forms.Select(),
         }
     
     def clean(self):
@@ -197,6 +198,21 @@ class InspeccionForm(ModelForm):
             self.add_error("notas_inspeccion","Las notas de la inspeccion no pueden estar vacias")
             
         return self.cleaned_data
+    
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(InspeccionForm, self).__init__(*args, **kwargs)
+        
+        trabajador = Trabajador.objects.get(id=self.request.user.trabajador.id)
+        estaciones = trabajador.estacion.all()
+        vehiculos_disponibles = Vehiculo.objects.filter(trabajadores__estacion__in=estaciones).distinct()
+        self.fields["vehiculo"] = forms.ModelChoiceField(
+            queryset=vehiculos_disponibles,
+            widget=forms.Select,
+            required=True,
+            empty_label="Seleccione un vehículo"
+        )
+        
     
 class BusquedaAvanzadaInspeccion(forms.Form):
     

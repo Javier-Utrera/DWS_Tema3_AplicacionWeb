@@ -32,36 +32,16 @@
               role="button" 
               data-bs-toggle="dropdown" 
               aria-expanded="false">
-            Datos del Usuario
+            Datos del usuario de la  sesion
           </a>
           <ul class="dropdown-menu" aria-labelledby="accionesDatos">
-            <li><a class="dropdown-item">Nombre : {{ request.user.username }}</a></li>
-            <li><a class="dropdown-item">Email : {{ request.user.email }}</a></li>
-            <li>
-              {% if request.user.rol == 1 %}
-                <a class="dropdown-item">Tipo de usuario : <strong>Administrador</strong></a>
-              {% elif request.user.rol == 2  %}
-                <a class="dropdown-item">Tipo de usuario : <strong>Cliente</strong></a>
-              {% elif request.user.rol == 3  %}
-                <a class="dropdown-item">Tipo de usuario : <strong>Trabajador</strong></a>
-              {% else %} 
-                <a class="dropdown-item">Tipo de usuario : </a>
-              {% endif %}
-            </li>
+            <li><a class="dropdown-item">Nombre : {{ request.session.nombreusuario}}</a></li>
+            <li><a class="dropdown-item">Email : {{ request.session.email}}</a></li>
+            <li><a class="dropdown-item">Tipo de usuario : {{ request.session.rol}}</a></li>
             {% comment %} Como solo puede pertenecer a un unico grupo saco el primero {% endcomment %}
-            <li><a class="dropdown-item">Grupo :
-              {% if request.user.rol == 1  %}
-                Administrador
-              {% elif request.user.groups.first.name == Null %}
-                El usuario no esta registrado
-              {% else %} 
-                {{ request.user.groups.first.name }}
-              {% endif %}  
-            </a></li>
+            <li><a class="dropdown-item">Grupo : {{ request.session.grupo}}</a></li>
           </ul>
         </li>
-        
-
 
 
         {% if request.user.is_authenticated and perms.ITV.add_cita%}

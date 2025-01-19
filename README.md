@@ -1,430 +1,274 @@
 # DWS_Tema3_AplicacionWeb
 
-# Explicacion de mi aplicacion web
+## Explicación de mi aplicación web
 
-Esta aplicacion esta enfocada en la gestion del servicio ITV a nivel autonómico, para ello un cliente que no necesariamente tiene que ser el dueño del vehiculo que va ser inspeccionado, pide una cita en la itv que desee, su vehiculo sera inspeccionado por los trabajadores generando un resultado de la inspeccion y su correspondiente factura para su pago.
+Esta aplicación está enfocada en la gestión del servicio ITV a nivel autonómico. Un cliente, que no necesariamente tiene que ser el dueño del vehículo a inspeccionar, puede pedir una cita en la ITV que desee. Su vehículo será inspeccionado por trabajadores que generarán un resultado de la inspección y su correspondiente factura para el pago.
 
-# Explicacion de los modelos, atributos y parametros
-Modelo: Cliente
-    Modelo que representa a los clientes de la ITV.
+---
 
-    Atributos:
+## Modelos, atributos y parámetros
 
-        nombre: Campo de tipo CharField con un máximo de 50 caracteres, almacena el nombre del cliente.
+### **Cliente**
+Modelo que representa a los clientes de la ITV.
 
-        apellidos: Campo de tipo CharField (cadena) con un máximo de 50 caracteres. El parámetro (blank=True) indica que este campo es opcional. (No va ser necesario almacenar el apellido del cliente)
+- **Atributos:**
+  - `nombre`: CharField (máx. 50 caracteres). Almacena el nombre del cliente.
+  - `apellidos`: CharField (opcional, máx. 50 caracteres).
+  - `sexo`: CharField con `choices` ('M' o 'F').
+  - `fecha_nacimiento`: DateField.
+  - `codigo_postal`: IntegerField.
+  - `domicilio`: TextField.
+  - `correo`: EmailField con validación automática.
+  - `telefono`: PositiveIntegerField.
+  - `dni`: CharField único (9 caracteres).
+  - `dueño`: CharField (50 caracteres), almacena el dueño del local.
 
-        sexo: Campo CharField que almacena un valor de 1 carácter. Se utilizan el parametro (choices) para especificar si es 'Masculino' o 'Femenino', en la base de datos se guarda como "M" o una "F". 
+---
 
-        fecha_nacimiento: Campo de tipo DateField, que almacena la fecha de nacimiento del cliente.
+### **Local**
+Modelo que representa los locales donde se pueden establecer estaciones ITV.
 
-        codigo_postal: Campo IntegerField, almacena el código postal.
+- **Atributos:**
+  - `precio`: FloatField. Precio del alquiler.
+  - `metros`: DecimalField (máx. 50 dígitos, 3 decimales).
+  - `anio_arrendamiento`: DateField.
 
-        domicilio: Campo TextField que puede almacenar texto largo, representa la dirección del cliente.
+---
 
-        correo: Campo EmailField, que almacena una dirección de correo electrónico con validación automática de formato.
+### **EstacionItv**
+Modelo de las estaciones ITV.
 
-        telefono: Campo PositiveIntegerField, almacena un número de teléfono (solo valores positivos).
+- **Relaciones:**
+  - `id_local`: Relación OneToOne con el modelo `Local`.
 
-        dni: Campo CharField de 9 caracteres, que almacena el DNI del cliente. El modificador unique=True asegura que cada DNI sea único en la base de datos.
+- **Atributos:**
+  - `nombre`: CharField único (50 caracteres).
+  - `municipio`: CharField (50 caracteres).
+  - `eficiencia_energetica`: CharField (1 carácter, como A, B, C...).
+  - `comunidad_autonoma`: CharField.
 
-        dueño: Campo Charfield de 50 caracteres donde almacena el dueño del local.
+---
 
-Modelo: Local
+### **Cita**
+Modelo que representa las citas para la inspección de vehículos.
 
-    Modelo que representa la información de los locales donde se puede establecer una estación ITV.
+- **Relaciones:**
+  - `id_cliente`: ForeignKey a `Cliente`.
+  - `id_estacion`: ForeignKey a `EstacionItv`.
 
-    Atributos:
+- **Atributos:**
+  - `matricula`: CharField (7 caracteres).
+  - `fecha_matriculacion`: DateField.
+  - `numero_bastidor`: CharField (17 caracteres).
+  - `tipo_inspeccion`: CharField con `choices` (ej.: 'PE', 'NOPE', 'VETAX').
+  - `remolque`: BooleanField (por defecto `False`).
+  - `tipo_pago`: CharField (`choices`: tarjeta o efectivo).
+  - `fecha_propuesta`: DateField.
+  - `hora_propuesta`: TimeField.
 
-        precio: Campo FloatField, almacena el precio del alquiler del local.
+---
 
-        metros: Campo DecimalField con un máximo de 50 dígitos y 3 decimales, que almacena el tamaño en metros cuadrados.
+### **EmpresaExterna**
+Modelo que representa las empresas externas que mantienen las máquinas de la ITV.
 
-        anio_arrendamiento: Campo DateField, almacena el año en que se arrendó el local.
+- **Atributos:**
+  - `nombre`: CharField.
+  - `municipio`: CharField.
+  - `coste`: FloatField (editable).
+  - `cif`: CharField.
 
-Modelo: EstacionItv
+---
 
-    Modelo las estaciones ITV.
+### **Maquinaria**
+Modelo que representa la maquinaria usada en estaciones ITV.
 
-    Relaciones:
+- **Relaciones:**
+  - `id_estacionItv`: ForeignKey a `EstacionItv`.
+  - `id_empresaExterna`: OneToOneField a `EmpresaExterna`.
 
-        (ONETOONE,cada Estacion esta relacionada con un unico local)id_local: Relación OneToOneField con el modelo Local. La opción on_delete=models.CASCADE indica que si se elimina un local, también se eliminará la estación asociada.
+- **Atributos:**
+  - `nombre`: CharField.
+  - `tipo`: CharField (`choices`: emisiones, frenos, dirección).
+  - `ultimo_mantenimiento`: DateField (opcional).
+  - `funcionando`: BooleanField (por defecto `True`).
 
-    Atributos:
+---
 
-        nombre: Campo CharField de 50 caracteres, almacena el nombre de la estación. El modificador unique=True asegura que el nombre sea único.
-        
-        municipio: Campo CharField de 50 caracteres, almacena el municipio donde está la estación.
+### **Trabajador**
+Modelo que representa a los trabajadores de las estaciones ITV.
 
-        eficiencia_energetica: Campo CharField que almacena un código de un carácter (como A, B, C...) para indicar la eficiencia energética.
+- **Relaciones:**
+  - `id_estacion`: ManyToManyField con `EstacionItv`.
+  - `jefe`: ManyToManyField recursivo (`self`).
 
-        comunidad_autonoma: Campo CharField que almacena la comunidad autonoma donde se encuentra la estacion
+- **Atributos:**
+  - `nombre`: CharField.
+  - `apellidos`: CharField.
+  - `puesto`: CharField con `choices`.
+  - `sueldo`: FloatField.
+  - `observaciones`: TextField.
 
-Modelo: Cita
+---
 
-    Modelo que representa las citas para la inspección de vehículos.
+### **Vehiculo**
+Modelo que representa los vehículos inspeccionados.
 
-    Relaciones:
+- **Relaciones:**
+  - `trabajadores`: ManyToManyField con `Trabajador` (a través de `Inspeccion`).
 
-        (MANYTOONE,un cliente puede tener varias citas)id_cliente: Relación ForeignKey con el modelo Cliente, establece que una cita está asociada con un cliente. La opción on_delete=models.CASCADE indica que si se elimina el cliente, se eliminan también las citas asociadas.
+- **Atributos:**
+  - `fecha_matriculacion`: DateField.
+  - `marca`, `modelo`, `numero_bastidor`: CharField.
+  - `tipo_vehiculo`: CharField (`choices`).
+  - `cilindrada`, `potencia`: IntegerField.
+  - `combustible`: CharField (`choices`: gasolina, diésel, eléctrico...).
+  - `mma`: PositiveIntegerField.
+  - `asientos`, `ejes`: PositiveSmallIntegerField.
+  - `dni_propietario`, `matricula`: CharField.
 
-        (MANYTOONE,una itv puede tener varias citas)id_estacion: Relación ForeignKey con EstacionItv, indica la estación donde se realizará la inspección.
+---
 
-    Atributos:
+### **Inspeccion**
+Modelo que representa las inspecciones realizadas.
 
-        matricula: Campo CharField de 7 caracteres, almacena la matrícula del vehículo.
-        
-        fecha_matriculacion: Campo DateField, almacena la fecha de matriculación del vehículo. Utiliza el parametro (help_text) para mostrar una indicación adicional al usuario.
-        
-        numero_bastidor: Campo CharField de 17 caracteres, almacena el número de bastidor del vehículo.
-        
-        tipo_inspeccion: Campo CharField que almacena el tipo de inspección a realizar, utilizando el parametro (choices) con las opciones: 'Periodica', 'NoPeriodica', 'VerificacionTaximetro', etc. Almacena 'PE','NOPE','VETAX' etc..
-        
-        remolque: Campo BooleanField, que indica si el vehículo lleva o no remolque. Con el parametro (default=false) le indico que por defecto el vehiculo no lleva remolque
-        
-        tipo_pago: Campo CharField que define el método de pago (tarjeta o efectivo) usando el parametro (choices).
-        
-        fecha_propuesta: Campo DateField, fecha propuesta para la cita.
-        
-        hora_propuesta: Campo TimeField, hora propuesta para la cita.
+- **Relaciones:**
+  - `trabajador`: ForeignKey a `Trabajador`.
+  - `vehiculo`: ForeignKey a `Vehiculo`.
 
-Modelo: EmpresaExterna
+- **Atributos:**
+  - `fecha_inspeccion`: DateField (por defecto `timezone.now`).
+  - `resultado_inspeccion`, `notas_inspeccion`: CharField y TextField.
+  - `cliente_puntual`: BooleanField (por defecto `True`).
 
-    Modelo que representa a las empresas externas que mantienen las maquinas de la ITV.
+---
 
-    Atributos:
+### **Factura**
+Modelo que representa las facturas generadas.
 
-        nombre: Campo CharField, almacena el nombre de la empresa.
+- **Relaciones:**
+  - `id_inspeccion`: OneToOneField con `Inspeccion`.
 
-        municipio: Campo CharField, almacena el municipio donde está la empresa.
+- **Atributos:**
+  - `importe`: DecimalField.
+  - `pagado`: BooleanField.
+  - `fecha_emision_factura`: DateField.
+  - `observaciones`: TextField.
 
-        coste: Campo FloatField, almacena el coste del servicio de la empresa, contiene el atributo (editable=true) para que este valor se pueda cambiar a posterior.
+---
 
-        cif: Campo CharField, almacena el CIF de la empresa.
+## Vistas
 
-Modelo: Maquinaria
+1. **Lista de Clientes**: Ordenados por sexo, nombre y fecha de nacimiento.
+2. **Citas de un Cliente**: Muestra citas asociadas a un cliente.
+3. **Estaciones con Locales**: Lista estaciones y sus locales.
+4. **Trabajadores de Estación**: Muestra trabajadores de una estación.
+5. **Inspecciones de Vehículo**: Lista inspecciones de un vehículo por matrícula.
+6. **Maquinaria y Empresa**: Detalle de maquinaria y su empresa asociada.
+7. **Citas por Rango de Fechas**: Cita más reciente en un rango de años.
+8. **Conteo de Vehículos**: Cuenta vehículos por combustible.
+9. **Citas de una Estación**: Filtra citas por cliente y tipo.
+10. **Vehículos sin Trabajadores**: Lista vehículos sin trabajadores.
 
-    Modelo que representa la maquinaria usada en las estaciones ITV.
+---
 
-    Relaciones:
+## Widgets en Formularios
 
-        (MANYTOONE,la itv contiene muchas maquinas, pero cada maquina solo puede estar en una ITV)id_estacionItv: Relación ForeignKey con EstacionItv, indica en qué estación se encuentra la maquinaria.
+- `forms.SelectDateWidget`
+- `forms.TextInput`
+- `forms.DateInput`
+- `forms.CheckboxInput`
+- `forms.Select`
+- `forms.SelectMultiple`
+- `forms.NumberInput`
 
-        (ONETOONE,cada empresa externa se especializa en un tipo de maquinaria)id_empresaExterna: Relación OneToOneField con EmpresaExterna, indica qué empresa provee o gestiona la maquinaria.
+---
 
-    Atributos:
+## Validaciones en Formularios
 
-        nombre: Campo CharField, almacena el nombre de la máquina.
+Se incluyen validaciones específicas para campos como DNI, fechas, resultados y relaciones.
 
-        tipo: Campo CharField con el parametro (choices) para especificar el tipo de maquinaria (emisiones, frenos, dirección).
+---
 
-        ultimo_mantenimiento: Campo DateField, almacena la fecha del último mantenimiento. blank=True indica que es opcional.
+## Instalación de Pillow para manejo de imágenes
 
-        funcionando: Campo en el que por defecta es True, nos indica si la maquina esta en funcionamiento
+1. Crear carpeta `media/imagenes` en la raíz del proyecto.
+2. Agregar `Pillow~=11.0.0` al archivo `requirements.txt`.
+3. Configurar modelos y formularios para admitir campos de imágenes.
 
-Modelo: Trabajador
 
-    Modelo que representa a los trabajadores de las estaciones ITV.
+# Funcionalidades Nuevas Implementadas TEMA 7 PERMISOS
+Datos. He tenido que crear un crud nuevo para el usuario "cliente" , en la anterior entrega no habia tenido en cuenta que casi todo lo que se podia crear con mis cruds era para el administrador
 
-    En este modelo he intentado hacer una relacion recursiva MANYTOMANY consigo misma, ya que un trabajador puede ser jefe de varios empleados, y un mismo empleado puede tener varios jefes, no he conseguido hacerla funcionar son el seeder, pero al hacer el migrations no me salta ningun error
+El usuario cliente puede usar los crud de Citas y Vehiculo
+El usuario trabajador puede usar el crud de Inspeccion
 
-    Relaciones:
 
-        (MANYTOMANY,un trabajador puede trabajar en varias estaciones y una estacion puede tener varios trabajadores)id_estacion: Relación ManyToManyField con EstacionItv, indica en qué estaciones trabaja el empleado.
+## 1. Tipos de Usuarios Claramente Diferenciados  
+He creado un nuevo model 'Usuario' donde he detallado ademas del usuario Administrador, dos usuarios mas, el "Cliente" y el "Trabajador" 
 
-        (MANYTOMANY)jefe: Relación recursiva ManyToManyField que permite establecer una jerarquía entre trabajadores (un trabajador puede tener un jefe o subordinados).
-            Aqui he introducido 'self', ya que si llamaba a mi misma tabla me decia que no estaba definidica, con esto se llama a si misma como el .this de java.
-            He especificado que puede estar vacio, ya que puede ser que un trabajador no tenga jefe
-            Le he dado un related name por si evitaba el fallo del seed pero no he tenido suerte
-            El parametro symetrical lo he encontrado en foros con personas que le ocurria mi problema, y le recomendaban ponerlo, creo entender que lo que evita es que no tenga que tener siembre el mismo numero de empleados un trabajador jefe
+      ROLES = (
+        (ADMINISTRADOR,"administrador"),
+        (CLIENTE,"cliente"),
+        (TRABAJADOR,"trabajador")
+    )
 
-    Atributos:
+## 2. Control de Permisos y Autenticación en Vistas  
+En cada vista, se ha implementado el control de permisos para verificar si el usuario está logueado o no, y si tiene permisos para acceder a esa vista.  
+Aunque hay crud donde mis usuarios no pueden acceder, les he asignados permisos de todas formas.
 
-        nombre: Campo CharField, almacena el nombre del trabajador.
+    @permission_required('ITV.add_cita') 
 
-        apellidos: Campo CharField, almacena los apellidos.
+## 3. Control de Permisos en Plantillas  
+En cada template (vista y formulario), se ha controlado si el usuario está logueado y si tiene permisos para acceder o interactuar con los formularios y las vistas.  
+En el template de menu.html he controlado que bloques de urls estan accesibles para los distintos tipos de usuarios
 
-        puesto: Campo CharField que utiliza choices del modelo Maquinaria para especificar el tipo de trabajo que realiza el trabajador (según la maquinaria que use).
-        
-        sueldo: Campo FloatField, almacena el sueldo.
-       
-        observaciones: Campo TextField, almacena información adicional.
+    {% if request.user.is_authenticated and perms.ITV.add_cita%}
 
-Modelo: Vehiculo
+## 4. Variables Guardadas en la Sesión  
+Se han incluido al menos cuatro variables que se guardan en la sesión y que aparecen siempre en la cabecera de la página. Estas variables se eliminan cuando el usuario se desloguea.  
+En en la funcion index he creado 4 variabless para mostrarlas en el template de menu.html. En esta funcion compruebo so existen dichas variables cuando el usuario entra en mi pagina web.
 
-    Modelo que representa a los vehículos que pasan por la inspección.
+He controlado que si el usuario de la sesion no pertenece a mi aplicacion con request.user.is_anonymous, solo va crear la fecha de inicio de sesion, en caso que si pertenezca a mi aplicacion se crearan las demas variables
 
-    Relaciones:
+El metodo que usas para borrar los datos de la sesion no consigo ver como lo implementes, con el depurador he manjeado la informacion del request, y al usar el logout las variables son elminadas de la sesion.
 
-        trabajadores: Relación ManyToManyField con Trabajador a través del modelo intermedio Inspeccion.
 
-    Atributos:
+## 5. Registro de Usuarios y Validaciones  
+Se ha implementado un sistema de registro para los distintos tipos de usuario (excepto el administrador). Este sistema incluye validaciones específicas para controlar que, dependiendo del tipo de usuario, se asignen valores correspondientes.  
+He controlado que al registrar segun el tipo de usuario que vamos a registrar, primero lo añada al grupo correspondiente y luego lo cree si no hay errores en las validaciones.
 
-        fecha_matriculacion: Campo tipo Date, Fecha de matriculación del vehículo.
-        
-        marca, modelo, numero_bastidor: Campos CharField que describen la marca, el modelo y el número de bastidor.
-        
-        tipo_vehiculo: Campo CharField que utiliza el parametro (choices) para definir el tipo de vehículo (turismo, camión, etc.).
-        
-        cilindrada: Campo IntegerField que almacena la cilindrada en cm³.
-        
-        potencia: Campo IntegerField Potencia del motor en CV.
-        
-        combustible: Tipo de combustible, usando choices (gasolina, diésel, eléctrico, etc.).
-        
-        mma: Campo PositiveIntegerField Masa Máxima Autorizada.
-        
-        asientos,ejes: Campo PosisiveSmallIntegerField Número de asientos y de ejes, este campo lo uso para ahorrar memoria, ya que no se va almacenar numeros muy grandes
-        
-        dni_propietario: DNI del propietario.
-        
-        matricula: Matrícula del vehículo.
+Para mostrar y ocultar los campos he usado el script de campos.js. Me ha costado un par de vueltas que en caso de que el usuario al registrarse tenga algun error de validacion y la pagina se vuelva a ocultar, los campos mostrados y ocultados sean los mismos
 
-Modelo: Inspeccion
-    
-    Modelo representa la inspección realizada,esta tabla es generada por una relacion MANYTOMANY entre trabajadores y vehiculos. le he añadido dos atributos propios.
+## 6. Login y Logout de Usuario  
+Se ha implementado un sistema de login y logout para los usuarios.  
+Hemos usado el sistema de loging y logout que nos proporciona el propio django incluyengo en urls.py dentro de mysite 
+  path('accounts/', include('django.contrib.auth.urls'))
+Se ha tenido en cuenta la configuracion en el settings.py,ademas de crear el template de login.html y controlar que si un usuario esta logueado, no le aparezca el boton de login, que le salga el boton de logout
 
-    Relaciones:
+## 7. Variación de Contenido en Formularios Según el Usuario Logueado  
+En algún formulario, se ha creado una funcionalidad que hace que el contenido de algún campo `ManyToMany` o `ManyToOne` varie dependiendo del usuario logueado.
 
-        trabajador: Relación ForeignKey con Trabajador, indica quién realizó la inspección.
+Esta funcionalidad la he implementado cuando un trabajador crea una inspeccion, en mi aplicacion un trabajador puede trabajar en varias estaciones de itv a la vez, he pensado que seria buena idea hacer que un trabajador solo pueda realizar inspecciones de los vehiculos que esten en las estaciones donde el trabaja.
 
-        vehiculo: Relación ForeignKey con Vehiculo, indica el vehículo inspeccionado.
+Para ello he usado un formulario de inspeccion ModelForm pero usando el request para crear un field que no importo automaticamente del modelo
 
-    Atributos:
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(InspeccionForm, self).__init__(*args, **kwargs)
+          --Aqui busco el trabajador de mi sesion activa
+        trabajador = Trabajador.objects.get(id=self.request.user.trabajador.id)
+          --Busco todas las estaciones donde este trabajador se encuentre prestando servicio
+        estaciones = trabajador.estacion.all()
+          --Filtro los vehiculos que se encuentran en las estaciones buscadas anteriormente
+        vehiculos_disponibles = Vehiculo.objects.filter(trabajadores__estacion__in=estaciones).distinct()
+          --Aqui creo el campo vehiculo con los resultados de la busqueda
+        self.fields["vehiculo"] = forms.ModelChoiceField(
+            queryset=vehiculos_disponibles,
+            widget=forms.Select,
+            required=True,
+            empty_label="Seleccione un vehículo"
+        )
 
-        fecha_inspeccion: Fecha en la que se realizó la inspección, con valor por defecto el día actual (timezone.now).
-        
-        resultado_inspeccion: Campo Charfield donde Resultado de la inspección
+## 8. Registro de Usuario en Formularios de Creación  
+En los formularios de creación, se incluye siempre el usuario que crea el registro a través de la sesión del usuario.  
 
-        notas_inspeccion: Campo Text en el que se almacena indicaciones o comentarios relevantes en inspeccion
-
-        cliente_puntual: Campo Boolean con parametro "default=True", almacena si el cliente ha sido puntual
-
-Modelo: Factura
-
-    Modelo representa las facturas generadas.
-
-    Relaciones:
-
-        id_inspeccion: Relación OneToOneField con Inspeccion, cada inspección genera una factura.
-        
-        resultado: Relación OneToOneField con Inspeccion, usando un related_name ya que estoy relacionando en una misma tabla, la tabla Inspeccion 2 veces.
-
-    Atributos:
-        importe: Importe de la factura, almacenado como DecimalField.
-        
-        pagado: Campo BooleanField para indicar si se ha pagado la factura.
-
-        fecha_emision_factura: Campo date para indicar cuando se emite la factura
-
-        observaciones: Campo Text en el que se almacena indicaciones o comentarios relevantes en la factura
-
-
-VISTAS:
-    
-1. Lista de Clientes
-    Lista todos los clientes, ordenados por sexo, nombre y fecha de nacimiento.	
-    Relación ManyToOne, order_by, carga optimizada con prefetch_related.
-
-2. Citas de un Cliente	
-    Muestra todas las citas de un cliente específico.	
-    Parámetro entero, relación ManyToOne (cliente, estacion), select_related.
-
-3. Estaciones con Locales	
-    Lista las estaciones junto a su local, ordenadas por el precio del local.	
-    Relación OneToOne y ManyToMany, order_by, select_related, prefetch_related.
-
-4. Trabajadores de Estación	
-    Muestra los trabajadores de una estación específica.	
-    Parámetro entero, relaciones ManyToMany, prefetch_related.
-
-5. Inspecciones de Vehículo	
-    Lista todas las inspecciones de un vehículo usando la matrícula.	
-    Parámetro str, relación ManyToOne, select_related, prefetch_related.
-
-6. Maquinaria y Empresa	
-    Muestra el detalle de una maquinaria y su empresa externa asociada.	
-    Parámetro entero, relación OneToOne, select_related.
-
-7. Citas por Rango de Fechas	
-    Muestra la cita más reciente dentro de un rango de años.	
-    Dos parámetros, AND, order_by, relación ManyToOne.
-
-8. Conteo de Vehículos	
-    Cuenta vehículos por dos tipos de combustible.	
-    Filtro OR, aggregate, ManyToMany (trabajadores), prefetch_related.
-
-9. Citas de una Estación	
-    Filtra las citas de una estación por cliente y tipo de inspección.	
-    Dos parámetros, filtro AND, ManyToOne, select_related.
-    
-10. Vehículos sin Trabajadores	
-    Lista vehículos que no tienen trabajadores asociados.	
-    Filtro con None, ManyToMany, filter.
-
-
-TEMPLATES MEJORADOS y STATICS
-
-    -Primero voy a crear la estructura que la voy a dividir en un padre, en un menu (head) y un footer. Voy a utilizar la misma estructura de la tarea anterior para facilitarme el trabajo
-
-    -Vamos a unificar los templates para no tener dos templates mostrando lo mismo aunque usen views distintas
-
-    -Una vez unificados los he renombrado a listar_loquelisten
-
-    -Vamos a borrar la estructura html de los templates para que extiendan del padre
-
-    -Refactorizamos el contenido creando un html para cada tido de listado ej:vehiculo.html,trabajador.html etc...
-
-    -Voy a realizar un bloque de ifs else, para el "tipo de inspeccion" del modelo cita en el template cita.html, dependiendo de que tipo de cita sea, se coloreara de un color u otro
-    
-    -Se le da formato todas las fechas
-
-    -Voy aplicar los 10 template filters en el template de vehiculo
-
-        Filtros aplicados:
-            -|date:"d/m/Y"
-            -|lower
-            -|upper
-            -|truncatechars:10
-            -|length (Cuento el numero de trabajadores que hay en la lista)
-            -|default:"Sin notas"
-            -inspección{{ vehiculo.vehiculo_Inspeccion.all|pluralize:"es" }} 
-            -|add:"2"
-            -|divisibleby:"2"
-            -|get_digit:"1"
-
-
-## Widgets utilizados en los formularios del proyecto
-
-- **forms.SelectDateWidget**: Usado para seleccionar fechas en varios formularios.
-- **forms.TextInput**: Usado para campos de texto simples.
-- **forms.DateInput**: Configurado con el atributo `type="date"` para entrada de fechas.
-- **forms.CheckboxInput**: Usado para seleccionar opciones booleanas.
-- **forms.Select**: Usado para desplegables con una sola selección.
-- **forms.SelectMultiple**: Usado para desplegables con selección múltiple.
-- **forms.NumberInput**: Usado para entradas de números.
-
-
-
-## Validaciones utilizadas en los formularios del proyecto
-
-### ClienteForm
-- **DNI**:
-  - Debe cumplir con el patrón: `^[0-9]{8}[A-Z]$`.
-  - No debe existir previamente en la base de datos.
-
-### BusquedaAvanzadaCliente
-- Al menos un campo debe estar relleno (`nombre`, `dni`, o `fecha_nacimiento`).
-- **Nombre**:
-  - Máximo 50 caracteres.
-- **Fecha de nacimiento**:
-  - No puede ser una fecha futura.
-- **DNI**:
-  - Debe cumplir con el patrón: `^[0-9]{8}[A-Z]$`.
-
-### InspeccionForm
-- **Fecha de inspección**:
-  - No puede ser una fecha futura.
-- **Notas de inspección**:
-  - No puede estar vacío o contener solo espacios.
-
-### BusquedaAvanzadaInspeccion
-- Al menos un campo debe estar relleno (`resultado_inspeccion`, `notas_inspeccion`, o `fecha_inspeccion`).
-- **Resultado de inspección**:
-  - No puede contener el carácter `_`.
-- **Notas de inspección**:
-  - No puede contener el carácter `!`.
-- **Fecha de inspección**:
-  - No puede ser una fecha futura.
-
-### VehiculoForm
-- **Tipo de vehículo**:
-  - Si es "moto", no puede tener más de un asiento.
-  - Si es "bus", debe tener más de dos ejes.
-- **Matrícula**:
-  - Debe ser única en la base de datos.
-
-### BusquedaAvanzadaVehiculo
-- Al menos un campo debe estar relleno (`marca`, `potencia`, o `matrícula`).
-- **Marca**:
-  - No puede contener el carácter `_`.
-- **Potencia**:
-  - Debe ser mayor que 0.
-- **Matrícula**:
-  - No puede contener el carácter `!`.
-
-### LocalForm
-- **Precio**:
-  - No puede ser negativo.
-- **Metros**:
-  - No puede ser negativo.
-
-### BusquedaAvanzadaLocal
-- Al menos un campo debe estar relleno (`precio`, `metros`, o `anio_arrendamiento`).
-- **Precio**:
-  - No puede ser negativo.
-- **Metros**:
-  - No puede ser negativo.
-- **Año de arrendamiento**:
-  - No puede ser una fecha futura.
-
-### EstacionForm
-- **Comunidad Autónoma**:
-  - Debe comenzar con una letra mayúscula.
-- **Eficiencia Energética**:
-  - No puede estar vacío o contener solo espacios.
-
-### BusquedaAvanzadaEstacion
-- Al menos un campo debe estar relleno (`nombre`, `munipio`, o `comunidad_autonoma`).
-- **Nombre**:
-  - Debe comenzar con una letra mayúscula.
-- **Municipio**:
-  - No puede comenzar con un número.
-- **Comunidad Autónoma**:
-  - No puede contener el carácter `_`.
-
-### TrabajadorForm
-- **Observaciones**:
-  - No puede contener el carácter `!`.
-- **Sueldo**:
-  - No puede ser negativo.
-
-### BusquedaAvanzadaTrabajador
-- Al menos un campo debe estar relleno (`nombre`, `sueldo`, o `puesto`).
-- **Nombre**:
-  - Debe tener al menos 3 caracteres.
-  - No puede contener números.
-- **Sueldo**:
-  - Debe ser mayor que 10.
-- **Puesto**:
-  - No puede contener caracteres especiales como `@`, `#`, `$`, `%`, `&`, `*`.
-
-
-INSTALACION PILLOW PARA IMAGENES EN FORMULARIO
-
-    -Crear carpeta media/imagenes en la carpeta raiz del proyecto
-    -Añadir Pillow~=11.0.0, en los requirements.txt
-    -He añadido el campo imagen en el modelo cliente
-    -Al hacer el makemigrations he usado la opcion de añadir por defecto la misma imagen en todos los objetos cliente de mi base de datos
-    -Hacemos el migrate
-    -Vemos ahora que en nuestros formularios tenemos el campo para subir una imagen y podemos ver la que actualmente tenemos seleccionada.
-    -He modificado el template del cliente para que aparezca la imagen con el siguiente bloque de boostrap
-        <p class="card-text">
-            <strong>Imagen:</strong>
-            {% if cliente.imagen %}
-                <img src="{{ cliente.imagen.url }}" class="img-fluid" alt="Imagen de {{ cliente.nombre }}">
-            {% else %}
-                <p>No hay imagen disponible</p>
-            {% endif %}
-        </p>
-    -He añadido los atributos enctype="multipart/form-data al form, asi indicamos al servidor que tiene que codificar los datos en binarios como imagenes o archivos ademas de texto normal
-    -En la view de editar el cliente tenemos que recoger los archivos enviados esto lo hacemos con:
-
-          datosFormulario = None
-          archivosFormulario = None
-
-          if request.method == "POST":
-              datosFormulario = request.POST
-              archivosFormulario = request.FILES
-              
-          formulario = ClienteForm(datosFormulario,archivosFormulario,instance = cliente)
