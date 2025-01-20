@@ -226,6 +226,11 @@ En cada vista, se ha implementado el control de permisos para verificar si el us
 
 Aunque hay CRUDs donde mis usuarios no pueden acceder, les he asignado permisos de todas formas.
 
+Cuando usamos el @permission ya se comprueba que el usuario este autenticado antes de comprobar el permiso, si queremos dejarlo mas detallado podriamos añadirle el 
+```python
+@login_required
+```
+Si no con este nos valdria
 ```python
 @permission_required('ITV.add_cita')
 ```
@@ -341,7 +346,8 @@ else :
 ## 10. Implementación de Funcionalidad de Reinicio de Contraseña  
 Se ha implementado una funcionalidad de reinicio de contraseña utilizando las herramientas proporcionadas por Django. Aunque en la aplicación local no se permite el envío de correos electrónicos, Django ofrece una manera de generar un enlace de recuperación de contraseña sin necesidad de enviar un email real. Se ha utilizado el sistema de autenticación de Django para permitir a los usuarios restablecer su contraseña de forma segura mediante un enlace generado.
 
-Para realizar esta funcion vamos a indicar en el settings.py que a la hora de enviar correos de recuperacion, estos no sean correos reales, si no que nos rediriga esos "correos" a la consola, ademas del cuerpo del correo veremos lo que nos interesa, el enlace para modificar la contraseña.
+Para realizar esta funcion vamos a indicar en el settings.py que a la hora de enviar correos de recuperacion, estos no sean correos reales, si no que nos redirija esos "correos" a la consola, ademas del cuerpo del correo, veremos lo que nos interesa, el enlace para modificar la contraseña.
+
   EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 Al igual que hemos usado vistas genericas para manejar el login y el logout del usuario, django nos proporciona herramientas predeterminadas
@@ -356,3 +362,15 @@ En el archivo urls.py le indicamos que use estas 4 urls
 
 El token es una "clave" que usa django internamente para asegurarse de la identificacion y de la validez de la solicitud de cambio de contraseña
 
+En el template de login.html he creado con boostrap un pequeño div para que al usuario se le redirija a la url de recuperacion de contraseña 
+<div id="centrado" style="display: flex;justify-content: center;align-items: center;">
+    <div class="card text-center" style="width: 300px;">
+        <div class="card-header h5 text-white bg-primary">Recuperar contraseña</div>
+        <div class="card-body px-5">
+            <p class="card-text py-2">
+                Ingrese su email y sigue las instrucciones para recuperar su contraseña
+            </p>
+            <a href={% url 'password_reset' %} data-mdb-ripple-init class="btn btn-primary w-100">Resetear contraseña</a>
+        </div>
+    </div>
+</div>
