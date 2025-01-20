@@ -9,6 +9,15 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.template.loader import render_to_string
+from django.contrib.auth.tokens import default_token_generator
+from django.shortcuts import render
+
 #Variables almacenadas de la sesion
 def index(request):
     if(not "fecha_inicio" in request.session):

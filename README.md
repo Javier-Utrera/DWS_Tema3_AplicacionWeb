@@ -341,5 +341,18 @@ else :
 ## 10. Implementación de Funcionalidad de Reinicio de Contraseña  
 Se ha implementado una funcionalidad de reinicio de contraseña utilizando las herramientas proporcionadas por Django. Aunque en la aplicación local no se permite el envío de correos electrónicos, Django ofrece una manera de generar un enlace de recuperación de contraseña sin necesidad de enviar un email real. Se ha utilizado el sistema de autenticación de Django para permitir a los usuarios restablecer su contraseña de forma segura mediante un enlace generado.
 
-**Descripción de lo que has hecho:**
-_[Rellena con lo que has hecho aquí, por ejemplo, si configuraste `django.contrib.auth.views.PasswordResetView`, si usaste un enlace generado sin enviar correos o si creaste un enlace para la recuperación manual en desarrollo.]_
+Para realizar esta funcion vamos a indicar en el settings.py que a la hora de enviar correos de recuperacion, estos no sean correos reales, si no que nos rediriga esos "correos" a la consola, ademas del cuerpo del correo veremos lo que nos interesa, el enlace para modificar la contraseña.
+  EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+Al igual que hemos usado vistas genericas para manejar el login y el logout del usuario, django nos proporciona herramientas predeterminadas
+
+  from django.contrib.auth import views as auth_views
+
+En el archivo urls.py le indicamos que use estas 4 urls
+  /password_reset/: Donde el usuario ingresa su correo electrónico.
+  /password_reset/done/: Mensaje de confirmación después de enviar el correo.
+  /reset/<uidb64>/<token>/: Página para establecer una nueva contraseña.
+  /reset/done/: Mensaje de éxito tras cambiar la contraseña.
+
+El token es una "clave" que usa django internamente para asegurarse de la identificacion y de la validez de la solicitud de cambio de contraseña
+

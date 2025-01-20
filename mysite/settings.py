@@ -135,3 +135,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directorio donde se almacenarán
 AUTH_USER_MODEL = "ITV.Usuario"
 LOGIN_REDIRECT_URL = 'urls_index'
 LOGOUT_REDIRECT_URL = 'urls_index'
+
+#Configuracion para la recuperacion de contraseña
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

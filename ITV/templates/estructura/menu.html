@@ -38,7 +38,6 @@
             <li><a class="dropdown-item">Nombre : {{ request.session.nombreusuario}}</a></li>
             <li><a class="dropdown-item">Email : {{ request.session.email}}</a></li>
             <li><a class="dropdown-item">Tipo de usuario : {{ request.session.rol}}</a></li>
-            {% comment %} Como solo puede pertenecer a un unico grupo saco el primero {% endcomment %}
             <li><a class="dropdown-item">Grupo : {{ request.session.grupo}}</a></li>
           </ul>
         </li>
